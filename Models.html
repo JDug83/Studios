@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Models</title>
+</head>
+
+<body>
+    <!DOCTYPE html>
+    <html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>GazStudios</title>
+    </head>
+
+    <body>
+        <div class="row">
+            <div class="left">
+                <div class="left-top">
+                    <img src="Screenshot 2026-09-14 095212.png">
+                    <p>GazStudios</p>
+                    <button onclick="window.location.href='GazSTudios.html'">Home</button>
+                </div>
+
+                <div class="hero-content">
+                    <div class="ttext">
+                        <p>MAJOR UPDATE - NANO 1</p>
+                    </div>
+                    <h1>The World's best AI company</h1>
+                    <div class="small">
+                        <p>GazChat Nano is free, fast, and built for real work — no waitlist, no card required.</p>
+                    </div>
+
+                    <div class="button-group">
+                        <button onclick="window.location.href='https://jdug83.github.io/ai/'">Nano - 1 Light</button>
+                        <button onclick="window.location.href='https://jdug83.github.io/ai/'">Nano - 1 Medium</button>
+                        <button onclick="window.location.href='https://jdug83.github.io/ai/'">Nano - 1 Heavy</button>
+                    </div>
+                    <div class="alsosmall">
+                        <p>100% Free</p>
+                        <p>Free to use</p>
+                    </div>
+
+                    <div class="SignIn" id="signInBlock">
+                        <button id="btnAuthAction" onclick="window.location.href='Account.html'">Sign In</button>
+                        <a href="SignUp.html" id="linkSignUp"
+                            style="color: #ffb703; font-size: 14px; text-decoration: none; font-weight: 700; margin-left: 8px;">Sign
+                            Up</a>
+                    </div>
+
+                    <div class="SignedIn" id="signedInBlock" style="display: none;">
+                        <p id="signedInText" style="font-size: 14px; color: gray; margin: 0;"></p>
+                        <button onclick="signOut()" style="margin-top: 8px; padding: 8px 20px; font-size: 14px;">Sign
+                            out</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="center">
+                <svg width="220" height="220" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+                    <polygon points="60,4 65,26 55,26" fill="#f2b544" transform="rotate(0 60 60)" />
+                    <polygon points="60,4 65,26 55,26" fill="#f2b544" transform="rotate(22.5 60 60)" />
+                    <polygon points="60,4 65,26 55,26" fill="#f2b544" transform="rotate(45 60 60)" />
+                    <polygon points="60,4 65,26 55,26" fill="#f2b544" transform="rotate(67.5 60 60)" />
+                    <polygon points="60,4 65,26 55,26" fill="#f2b544" transform="rotate(90 60 60)" />
+                    <polygon points="60,4 65,26 55,26" fill="#f2b544" transform="rotate(112.5 60 60)" />
+                    <polygon points="60,4 65,26 55,26" fill="#f2b544" transform="rotate(135 60 60)" />
+                    <polygon points="60,4 65,26 55,26" fill="#f2b544" transform="rotate(157.5 60 60)" />
+                    <polygon points="60,4 65,26 55,26" fill="#f2b544" transform="rotate(180 60 60)" />
+                    <polygon points="60,4 65,26 55,26" fill="#f2b544" transform="rotate(202.5 60 60)" />
+                    <polygon points="60,4 65,26 55,26" fill="#f2b544" transform="rotate(225 60 60)" />
+                    <polygon points="60,4 65,26 55,26" fill="#f2b544" transform="rotate(247.5 60 60)" />
+                    <polygon points="60,4 65,26 55,26" fill="#f2b544" transform="rotate(270 60 60)" />
+                    <polygon points="60,4 65,26 55,26" fill="#f2b544" transform="rotate(292.5 60 60)" />
+                    <polygon points="60,4 65,26 55,26" fill="#f2b544" transform="rotate(315 60 60)" />
+                    <polygon points="60,4 65,26 55,26" fill="#f2b544" transform="rotate(337.5 60 60)" />
+
+                    <circle cx="60" cy="60" r="28" fill="#7a3f10" />
+                </svg>
+            </div>
+
+            <div class="right">
+            </div>
+        </div>
+        </div>
+        <style>
+            body {
+                margin: 0;
+                background-image: url('651710e0-2a3d-46a7-b58d-57c3d5114fd5_upscaled (1).jpg');
+                background-size: cover;
+                background-position: center;
+                background-repeat: no-repeat;
+                background-attachment: fixed;
+                color: white;
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+                font-size: 20px;
+                font-weight: 800;
+            }
+
+            .row {
+                display: flex;
+                flex-direction: row;
+                height: 100vh;
+            }
+
+            .left,
+            .center,
+            .right {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .left {
+                flex: 2.5;
+                position: relative;
+                justify-content: flex-start;
+                align-items: flex-start;
+                padding: 32px 64px;
+                box-sizing: border-box;
+            }
+
+            .center {
+                flex: 0.6;
+            }
+
+            .right {
+                flex: 0.6;
+            }
+
+            .left-top {
+                position: absolute;
+                top: 24px;
+                left: 24px;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+
+            .left-top img {
+                width: 40px;
+                height: 40px;
+            }
+
+            .left-top p {
+                margin: 0;
+                font-size: 20px;
+            }
+
+            .hero-content {
+                margin-top: 220px;
+                max-width: 100%;
+                width: 100%;
+            }
+
+            .ttext {
+                color: turquoise;
+                font-size: 18px;
+                margin-bottom: 16px;
+            }
+
+            .ttext p {
+                margin: 0;
+            }
+
+            h1 {
+                font-size: 72px;
+                line-height: 1.1;
+                margin: 0 0 24px;
+                max-width: 900px;
+            }
+
+            .small {
+                font-size: 22px;
+                font-weight: 400;
+                color: gray;
+                margin-bottom: 36px;
+                max-width: 700px;
+                line-height: 1.5;
+            }
+
+            .small p {
+                margin: 0;
+            }
+
+            .button-group {
+                display: flex;
+                gap: 16px;
+                margin-bottom: 32px;
+            }
+
+            button {
+                background-color: white;
+                color: black;
+                border: none;
+                padding: 16px 34px;
+                border-radius: 30px;
+                cursor: pointer;
+                font-size: 22px;
+            }
+
+            button:hover {
+                transform: scale(1.05);
+                box-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
+            }
+
+            .alsosmall {
+                font-size: 15px;
+                font-weight: 400;
+                color: gray;
+                display: flex;
+                gap: 20px;
+            }
+
+            .alsosmall p {
+                margin: 0;
+            }
+        </style>
+        <script>
+            function getActiveSession() {
+                const keys = ['gazstudios_session', 'gz.session.3'];
+                for (const k of keys) {
+                    try {
+                        const raw = localStorage.getItem(k);
+                        if (raw) {
+                            const sess = JSON.parse(raw);
+                            if (sess && sess.username && sess.expires > Date.now()) {
+                                return sess;
+                            }
+                        }
+                    } catch (e) { }
+                }
+                return null;
+            }
+
+            function signOut() {
+                ['gazstudios_session', 'gz.session.3'].forEach(k => localStorage.removeItem(k));
+                checkSignInStatus();
+            }
+
+            function checkSignInStatus() {
+                const signInBlock = document.getElementById('signInBlock');
+                const signedInBlock = document.getElementById('signedInBlock');
+                const sess = getActiveSession();
+
+                if (sess) {
+                    signInBlock.style.display = 'none';
+                    signedInBlock.style.display = 'block';
+                    document.getElementById('signedInText').textContent = 'Signed in as ' + sess.username;
+                } else {
+                    signInBlock.style.display = 'flex';
+                    signedInBlock.style.display = 'none';
+                }
+            }
+
+            checkSignInStatus();
+        </script>
+    </body>
+
+    </html>
+</body>
+
+</html>
