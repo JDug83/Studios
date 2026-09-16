@@ -4,251 +4,974 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GazStudios</title>
-</head>
 
-<body>
-    <div class="row">
-        <div class="left">
-            <div class="left-top">
-                <img src="Screenshot 2026-09-14 095212.png">
-                <p>GazStudios</p>
-            </div>
+    <title>GazStudios — AI for everyone</title>
 
-            <div class="hero-content">
-                <div class="ttext">
-                    <p>MAJOR UPDATE - NANO 1</p>
-                </div>
-                <h1>The World's best AI company</h1>
-                <div class="small">
-                    <p>GazChat Nano is free, fast, and built for real work — no waitlist, no card required.</p>
-                </div>
-
-                <div class="button-group">
-                    <button onclick="window.location.href='https://jdug83.github.io/ai/'">Ai Chatbot (nano)</button>
-                    <button onclick="window.location.href='Models.html'">Custom Models!</button>
-                </div>
-
-                <div class="alsosmall">
-                    <p>100% Free</p>
-                    <p>Free to use</p>
-                </div>
-
-                <div class="SignIn" id="signInBlock">
-                    <button id="btnAuthAction" onclick="window.location.href='Account.html'">Sign In</button>
-                    <a href="SignUp.html" id="linkSignUp"
-                        style="color: #ffb703; font-size: 14px; text-decoration: none; font-weight: 700; margin-left: 8px;">Sign
-                        Up</a>
-                </div>
-
-                <div class="SignedIn" id="signedInBlock" style="display: none;">
-                    <p id="signedInText" style="font-size: 14px; color: gray; margin: 0;"></p>
-                    <button onclick="signOut()" style="margin-top: 8px; padding: 8px 20px; font-size: 14px;">Sign
-                        out</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="center">
-            <svg width="220" height="220" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-                <polygon points="60,4 65,26 55,26" fill="#f2b544" transform="rotate(0 60 60)" />
-                <polygon points="60,4 65,26 55,26" fill="#f2b544" transform="rotate(22.5 60 60)" />
-                <polygon points="60,4 65,26 55,26" fill="#f2b544" transform="rotate(45 60 60)" />
-                <polygon points="60,4 65,26 55,26" fill="#f2b544" transform="rotate(67.5 60 60)" />
-                <polygon points="60,4 65,26 55,26" fill="#f2b544" transform="rotate(90 60 60)" />
-                <polygon points="60,4 65,26 55,26" fill="#f2b544" transform="rotate(112.5 60 60)" />
-                <polygon points="60,4 65,26 55,26" fill="#f2b544" transform="rotate(135 60 60)" />
-                <polygon points="60,4 65,26 55,26" fill="#f2b544" transform="rotate(157.5 60 60)" />
-                <polygon points="60,4 65,26 55,26" fill="#f2b544" transform="rotate(180 60 60)" />
-                <polygon points="60,4 65,26 55,26" fill="#f2b544" transform="rotate(202.5 60 60)" />
-                <polygon points="60,4 65,26 55,26" fill="#f2b544" transform="rotate(225 60 60)" />
-                <polygon points="60,4 65,26 55,26" fill="#f2b544" transform="rotate(247.5 60 60)" />
-                <polygon points="60,4 65,26 55,26" fill="#f2b544" transform="rotate(270 60 60)" />
-                <polygon points="60,4 65,26 55,26" fill="#f2b544" transform="rotate(292.5 60 60)" />
-                <polygon points="60,4 65,26 55,26" fill="#f2b544" transform="rotate(315 60 60)" />
-                <polygon points="60,4 65,26 55,26" fill="#f2b544" transform="rotate(337.5 60 60)" />
-
-                <circle cx="60" cy="60" r="28" fill="#7a3f10" />
-            </svg>
-        </div>
-
-        <div class="right">
-        </div>
-    </div>
-    </div>
     <style>
-        body {
-            margin: 0;
-            background-image: url('651710e0-2a3d-46a7-b58d-57c3d5114fd5_upscaled (1).jpg');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-            color: white;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-            font-size: 20px;
-            font-weight: 800;
-        }
-
-        .row {
-            display: flex;
-            flex-direction: row;
-            height: 100vh;
-        }
-
-        .left,
-        .center,
-        .right {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .left {
-            flex: 2.5;
-            position: relative;
-            justify-content: flex-start;
-            align-items: flex-start;
-            padding: 32px 64px;
+        * {
             box-sizing: border-box;
         }
 
-        .center {
-            flex: 0.6;
+        html {
+            scroll-behavior: smooth;
         }
 
-        .right {
-            flex: 0.6;
+        body {
+            margin: 0;
+            font-family:
+                -apple-system,
+                BlinkMacSystemFont,
+                "SF Pro Display",
+                "SF Pro Text",
+                "Segoe UI",
+                Roboto,
+                Helvetica,
+                Arial,
+                sans-serif;
+
+            background:
+                radial-gradient(circle at 75% 20%, rgba(245, 183, 77, 0.12), transparent 28%),
+                radial-gradient(circle at 30% 70%, rgba(90, 130, 255, 0.08), transparent 30%),
+                #050505;
+
+            color: #f5f5f7;
+            min-height: 100vh;
+            overflow-x: hidden;
         }
 
-        .left-top {
-            position: absolute;
-            top: 24px;
-            left: 24px;
+        /* =========================
+           NAVIGATION
+        ========================= */
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+
+            height: 64px;
+            padding: 0 32px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            z-index: 100;
+
+            background: rgba(5, 5, 5, 0.72);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            color: white;
+            text-decoration: none;
+            font-size: 17px;
+            font-weight: 600;
+            letter-spacing: -0.2px;
+        }
+
+        .brand img {
+            width: 30px;
+            height: 30px;
+            object-fit: contain;
+            border-radius: 8px;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+        }
+
+        .nav-links a {
+            color: #aaa;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.25s ease;
+        }
+
+        .nav-links a:hover {
+            color: white;
+        }
+
+        .nav-actions {
             display: flex;
             align-items: center;
             gap: 10px;
         }
 
-        .left-top img {
-            width: 40px;
-            height: 40px;
+        .nav-signin {
+            color: white;
+            text-decoration: none;
+
+            font-size: 14px;
+            font-weight: 500;
+
+            padding: 9px 16px;
+            border-radius: 999px;
+
+            transition: background 0.25s ease;
         }
 
-        .left-top p {
-            margin: 0;
-            font-size: 20px;
+        .nav-signin:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .nav-signup {
+            color: #050505;
+            background: #f5f5f7;
+
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+
+            padding: 9px 17px;
+            border-radius: 999px;
+
+            transition:
+                transform 0.25s ease,
+                background 0.25s ease;
+        }
+
+        .nav-signup:hover {
+            transform: scale(1.04);
+            background: white;
+        }
+
+        /* =========================
+           HERO
+        ========================= */
+
+        .hero {
+            min-height: 100vh;
+
+            position: relative;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding:
+                130px 32px
+                90px;
+
+            text-align: center;
         }
 
         .hero-content {
-            margin-top: 220px;
-            max-width: 100%;
-            width: 100%;
+            max-width: 1050px;
+            position: relative;
+            z-index: 2;
         }
 
-        .ttext {
-            color: turquoise;
-            font-size: 18px;
-            margin-bottom: 16px;
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+
+            margin-bottom: 28px;
+
+            font-size: 14px;
+            font-weight: 600;
+
+            color: #f2b544;
+
+            letter-spacing: 0.2px;
         }
 
-        .ttext p {
+        .eyebrow-dot {
+            width: 7px;
+            height: 7px;
+
+            border-radius: 50%;
+            background: #f2b544;
+
+            box-shadow:
+                0 0 15px rgba(242, 181, 68, 0.8);
+        }
+
+        .hero h1 {
             margin: 0;
+
+            font-size: clamp(58px, 8vw, 112px);
+            line-height: 0.98;
+
+            letter-spacing: -0.065em;
+            font-weight: 700;
         }
 
-        h1 {
-            font-size: 72px;
-            line-height: 1.1;
-            margin: 0 0 24px;
-            max-width: 900px;
+        .gradient-text {
+            background:
+                linear-gradient(
+                    100deg,
+                    #ffffff 10%,
+                    #d8d8dc 45%,
+                    #f2b544 90%
+                );
+
+            -webkit-background-clip: text;
+            background-clip: text;
+
+            color: transparent;
         }
 
-        .small {
-            font-size: 22px;
-            font-weight: 400;
-            color: gray;
-            margin-bottom: 36px;
+        .hero-description {
             max-width: 700px;
+
+            margin:
+                34px auto
+                0;
+
+            color: #9b9ba1;
+
+            font-size: clamp(18px, 2vw, 23px);
             line-height: 1.5;
+
+            font-weight: 400;
+            letter-spacing: -0.015em;
         }
 
-        .small p {
-            margin: 0;
-        }
+        /* =========================
+           BUTTONS
+        ========================= */
 
         .button-group {
             display: flex;
-            gap: 16px;
-            margin-bottom: 32px;
+            justify-content: center;
+            align-items: center;
+
+            gap: 14px;
+
+            margin-top: 38px;
+
+            flex-wrap: wrap;
         }
 
-        button {
-            background-color: white;
-            color: black;
-            border: none;
-            padding: 16px 34px;
-            border-radius: 30px;
-            cursor: pointer;
-            font-size: 22px;
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            min-height: 52px;
+
+            padding:
+                0 25px;
+
+            border-radius: 999px;
+
+            text-decoration: none;
+
+            font-size: 16px;
+            font-weight: 600;
+
+            transition:
+                transform 0.25s ease,
+                box-shadow 0.25s ease,
+                background 0.25s ease,
+                border-color 0.25s ease;
         }
 
-        button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
+        .btn-primary {
+            background: #f5f5f7;
+            color: #050505;
         }
 
-        .alsosmall {
-            font-size: 15px;
-            font-weight: 400;
-            color: gray;
+        .btn-primary:hover {
+            transform: scale(1.045);
+            box-shadow:
+                0 10px 35px rgba(255, 255, 255, 0.14);
+        }
+
+        .btn-secondary {
+            color: white;
+
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+        }
+
+        .btn-secondary:hover {
+            transform: scale(1.045);
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(255, 255, 255, 0.22);
+        }
+
+        /* =========================
+           STATS
+        ========================= */
+
+        .stats {
             display: flex;
-            gap: 20px;
+            justify-content: center;
+            align-items: center;
+
+            margin-top: 42px;
+
+            color: #7f7f85;
+
+            font-size: 13px;
+            font-weight: 500;
         }
 
-        .alsosmall p {
+        .stats span {
+            display: flex;
+            align-items: center;
+        }
+
+        .stats span:not(:last-child)::after {
+            content: "";
+
+            width: 4px;
+            height: 4px;
+
+            margin: 0 14px;
+
+            border-radius: 50%;
+
+            background: #555;
+        }
+
+        /* =========================
+           ORB
+        ========================= */
+
+        .orb {
+            position: absolute;
+
+            width: min(520px, 75vw);
+            aspect-ratio: 1;
+
+            border-radius: 50%;
+
+            left: 50%;
+            top: 50%;
+
+            transform:
+                translate(-50%, -47%);
+
+            background:
+                radial-gradient(
+                    circle at 50% 45%,
+                    rgba(242, 181, 68, 0.12),
+                    rgba(242, 181, 68, 0.035) 32%,
+                    transparent 68%
+                );
+
+            filter: blur(1px);
+
+            pointer-events: none;
+        }
+
+        .orb::before {
+            content: "";
+
+            position: absolute;
+            inset: 18%;
+
+            border-radius: 50%;
+
+            border:
+                1px solid
+                rgba(242, 181, 68, 0.15);
+
+            box-shadow:
+                0 0 80px rgba(242, 181, 68, 0.06);
+        }
+
+        /* =========================
+           FEATURES
+        ========================= */
+
+        .section {
+            padding: 110px 32px;
+        }
+
+        .section-inner {
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        .section-heading {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-heading h2 {
             margin: 0;
+
+            font-size: clamp(42px, 6vw, 70px);
+
+            letter-spacing: -0.055em;
+            line-height: 1;
+
+            font-weight: 700;
+        }
+
+        .section-heading p {
+            max-width: 650px;
+            margin: 20px auto 0;
+
+            color: #88888e;
+
+            font-size: 18px;
+            line-height: 1.5;
+            font-weight: 400;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 18px;
+        }
+
+        .card {
+            position: relative;
+
+            min-height: 280px;
+
+            padding: 32px;
+
+            border-radius: 28px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(255,255,255,0.075),
+                    rgba(255,255,255,0.025)
+                );
+
+            border:
+                1px solid
+                rgba(255, 255, 255, 0.08);
+
+            overflow: hidden;
+
+            transition:
+                transform 0.3s ease,
+                border-color 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color:
+                rgba(255, 255, 255, 0.16);
+        }
+
+        .card-icon {
+            width: 52px;
+            height: 52px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 16px;
+
+            background:
+                rgba(242, 181, 68, 0.11);
+
+            color: #f2b544;
+
+            font-size: 23px;
+
+            margin-bottom: 25px;
+        }
+
+        .card h3 {
+            margin: 0 0 12px;
+
+            font-size: 25px;
+            letter-spacing: -0.03em;
+        }
+
+        .card p {
+            margin: 0;
+
+            color: #88888e;
+
+            font-size: 15px;
+            line-height: 1.6;
+
+            font-weight: 400;
+        }
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        footer {
+            border-top:
+                1px solid
+                rgba(255, 255, 255, 0.07);
+
+            padding: 30px 32px;
+
+            color: #66666c;
+
+            font-size: 13px;
+        }
+
+        .footer-inner {
+            max-width: 1200px;
+            margin: auto;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* =========================
+           SIGNED-IN STATE
+        ========================= */
+
+        #signedInBlock {
+            display: none;
+
+            color: #88888e;
+            font-size: 13px;
+        }
+
+        .signout-button {
+            border: 0;
+            background: transparent;
+            color: #f2b544;
+
+            cursor: pointer;
+
+            padding: 0;
+            margin-left: 8px;
+
+            font: inherit;
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 850px) {
+
+            .nav-links {
+                display: none;
+            }
+
+            .navbar {
+                padding: 0 20px;
+            }
+
+            .hero {
+                padding-left: 20px;
+                padding-right: 20px;
+            }
+
+            .cards {
+                grid-template-columns: 1fr;
+            }
+
+            .section {
+                padding:
+                    80px 20px;
+            }
+
+            .footer-inner {
+                flex-direction: column;
+                gap: 10px;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 520px) {
+
+            .nav-signin {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 56px;
+            }
+
+            .hero-description {
+                font-size: 17px;
+            }
+
+            .button-group {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .btn {
+                width: min(100%, 330px);
+            }
+
+            .stats {
+                flex-wrap: wrap;
+                row-gap: 8px;
+            }
+
+            .stats span:not(:last-child)::after {
+                margin: 0 8px;
+            }
         }
     </style>
+</head>
+
+<body>
+
+    <!-- =========================
+         NAVIGATION
+    ========================== -->
+
+    <header class="navbar">
+
+        <a href="#" class="brand">
+            <img
+                src="Screenshot 2026-09-14 095212.png"
+                alt="GazStudios logo">
+            <span>GazStudios</span>
+        </a>
+
+        <nav class="nav-links">
+            <a href="https://jdug83.github.io/ai/">GazChat</a>
+            <a href="https://jdug83.github.io/GazCode/">GazCode</a>
+            <a href="Models.html">Models</a>
+            <a href="#features">Features</a>
+        </nav>
+
+        <div class="nav-actions" id="signInBlock">
+            <a
+                href="Account.html"
+                class="nav-signin">
+                Sign In
+            </a>
+
+            <a
+                href="SignUp.html"
+                class="nav-signup">
+                Sign Up
+            </a>
+        </div>
+
+        <div id="signedInBlock">
+            <span id="signedInText"></span>
+
+            <button
+                class="signout-button"
+                onclick="signOut()">
+                Sign out
+            </button>
+        </div>
+
+    </header>
+
+
+    <!-- =========================
+         HERO
+    ========================== -->
+
+    <main>
+
+        <section class="hero">
+
+            <div class="orb"></div>
+
+            <div class="hero-content">
+
+                <div class="eyebrow">
+                    <span class="eyebrow-dot"></span>
+                    MAJOR UPDATE · NANO 1
+                </div>
+
+                <h1>
+                    AI that works
+                    <br>
+                    <span class="gradient-text">
+                        for you.
+                    </span>
+                </h1>
+
+                <p class="hero-description">
+                    GazChat Nano is fast, free, and built for real work.
+                    No waitlist. No credit card. Just intelligent AI.
+                </p>
+
+                <div class="button-group">
+
+                    <a
+                        class="btn btn-primary"
+                        href="https://jdug83.github.io/ai/">
+                        Try GazChat Nano
+                    </a>
+
+                    <a
+                        class="btn btn-secondary"
+                        href="Models.html">
+                        Explore Models
+                    </a>
+
+                </div>
+
+                <div class="stats">
+                    <span>100% Free</span>
+                    <span>No Waitlist</span>
+                    <span>Built for Real Work</span>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             FEATURES
+        ========================== -->
+
+        <section
+            class="section"
+            id="features">
+
+            <div class="section-inner">
+
+                <div class="section-heading">
+
+                    <h2>
+                        Simple.
+                        <br>
+                        Powerful.
+                    </h2>
+
+                    <p>
+                        Everything you need to work with AI,
+                        without unnecessary complexity.
+                    </p>
+
+                </div>
+
+                <div class="cards">
+
+                    <article class="card">
+
+                        <div class="card-icon">
+                            ✦
+                        </div>
+
+                        <h3>
+                            GazChat Nano
+                        </h3>
+
+                        <p>
+                            A lightweight AI experience designed
+                            to respond quickly and help you get
+                            things done.
+                        </p>
+
+                    </article>
+
+
+                    <article class="card">
+
+                        <div class="card-icon">
+                            ◉
+                        </div>
+
+                        <h3>
+                            Custom Models
+                        </h3>
+
+                        <p>
+                            Explore and experiment with custom
+                            AI models built for different tasks
+                            and workflows.
+                        </p>
+
+                    </article>
+
+
+                    <article class="card">
+
+                        <div class="card-icon">
+                            ⚡
+                        </div>
+
+                        <h3>
+                            Built for Speed
+                        </h3>
+
+                        <p>
+                            No unnecessary friction. Open GazStudios,
+                            ask your question, and get straight to work.
+                        </p>
+
+                    </article>
+
+
+                    <article class="card">
+
+                        <div class="card-icon">
+                            💻
+                        </div>
+
+                        <h3>
+                            GazCode Editor
+                        </h3>
+
+                        <p>
+                            A complete browser-based code editor with live preview,
+                            project management, and integrated AI assistance.
+                            <a href="https://jdug83.github.io/GazCode/" style="color: #f2b544; text-decoration: none; font-weight: 600;">Open →</a>
+                        </p>
+
+                    </article>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =========================
+         FOOTER
+    ========================== -->
+
+    <footer>
+
+        <div class="footer-inner">
+
+            <span>
+                © 2026 GazStudios
+            </span>
+
+            <span>
+                AI made simple.
+            </span>
+
+        </div>
+
+    </footer>
+
+
+    <!-- =========================
+         SESSION SCRIPT
+    ========================== -->
+
     <script>
+
         function getActiveSession() {
-            const keys = ['gazstudios_session', 'gz.session.3'];
-            for (const k of keys) {
+
+            const keys = [
+                'gazstudios_session',
+                'gz.session.3'
+            ];
+
+            for (const key of keys) {
+
                 try {
-                    const raw = localStorage.getItem(k);
-                    if (raw) {
-                        const sess = JSON.parse(raw);
-                        if (sess && sess.username && sess.expires > Date.now()) {
-                            return sess;
-                        }
+
+                    const raw =
+                        localStorage.getItem(key);
+
+                    if (!raw) {
+                        continue;
                     }
-                } catch (e) { }
+
+                    const session =
+                        JSON.parse(raw);
+
+                    if (
+                        session &&
+                        session.username &&
+                        session.expires > Date.now()
+                    ) {
+                        return session;
+                    }
+
+                } catch (error) {
+                    console.warn(
+                        'Could not read session:',
+                        error
+                    );
+                }
+
             }
+
             return null;
         }
 
+
         function signOut() {
-            ['gazstudios_session', 'gz.session.3'].forEach(k => localStorage.removeItem(k));
+
+            [
+                'gazstudios_session',
+                'gz.session.3'
+            ].forEach(key => {
+                localStorage.removeItem(key);
+            });
+
             checkSignInStatus();
         }
 
-        function checkSignInStatus() {
-            const signInBlock = document.getElementById('signInBlock');
-            const signedInBlock = document.getElementById('signedInBlock');
-            const sess = getActiveSession();
 
-            if (sess) {
-                signInBlock.style.display = 'none';
-                signedInBlock.style.display = 'block';
-                document.getElementById('signedInText').textContent = 'Signed in as ' + sess.username;
+        function checkSignInStatus() {
+
+            const signInBlock =
+                document.getElementById(
+                    'signInBlock'
+                );
+
+            const signedInBlock =
+                document.getElementById(
+                    'signedInBlock'
+                );
+
+            const signedInText =
+                document.getElementById(
+                    'signedInText'
+                );
+
+            const session =
+                getActiveSession();
+
+
+            if (session) {
+
+                signInBlock.style.display =
+                    'none';
+
+                signedInBlock.style.display =
+                    'block';
+
+                signedInText.textContent =
+                    'Signed in as ' +
+                    session.username;
+
             } else {
-                signInBlock.style.display = 'flex';
-                signedInBlock.style.display = 'none';
+
+                signInBlock.style.display =
+                    'flex';
+
+                signedInBlock.style.display =
+                    'block';
+
+                signedInBlock.style.display =
+                    'none';
             }
         }
 
+
         checkSignInStatus();
+
     </script>
+
 </body>
 
 </html>
