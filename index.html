@@ -530,30 +530,6 @@
         }
 
         /* =========================
-           SIGNED-IN STATE
-        ========================= */
-
-        #signedInBlock {
-            display: none;
-
-            color: #88888e;
-            font-size: 13px;
-        }
-
-        .signout-button {
-            border: 0;
-            background: transparent;
-            color: #f2b544;
-
-            cursor: pointer;
-
-            padding: 0;
-            margin-left: 8px;
-
-            font: inherit;
-        }
-
-        /* =========================
            RESPONSIVE
         ========================= */
 
@@ -644,33 +620,7 @@
             <a href="Models.html">Models</a>
             <a href="#features">Features</a>
         </nav>
-
-        <div class="nav-actions" id="signInBlock">
-            <a
-                href="Account.html"
-                class="nav-signin">
-                Sign In
-            </a>
-
-            <a
-                href="SignUp.html"
-                class="nav-signup">
-                Sign Up
-            </a>
-        </div>
-
-        <div id="signedInBlock">
-            <span id="signedInText"></span>
-
-            <button
-                class="signout-button"
-                onclick="signOut()">
-                Sign out
-            </button>
-        </div>
-
-    </header>
-
+</header>
 
     <!-- =========================
          HERO
@@ -728,7 +678,6 @@
 
         </section>
 
-
         <!-- =========================
              FEATURES
         ========================== -->
@@ -774,7 +723,6 @@
 
                     </article>
 
-
                     <article class="card">
 
                         <div class="card-icon">
@@ -793,7 +741,6 @@
 
                     </article>
 
-
                     <article class="card">
 
                         <div class="card-icon">
@@ -810,7 +757,6 @@
                         </p>
 
                     </article>
-
 
                     <article class="card">
 
@@ -838,7 +784,6 @@
 
     </main>
 
-
     <!-- =========================
          FOOTER
     ========================== -->
@@ -858,7 +803,6 @@
         </div>
 
     </footer>
-
 
     <!-- =========================
          SESSION SCRIPT
@@ -907,7 +851,6 @@
             return null;
         }
 
-
         function signOut() {
 
             [
@@ -919,7 +862,6 @@
 
             checkSignInStatus();
         }
-
 
         function checkSignInStatus() {
 
@@ -940,7 +882,6 @@
 
             const session =
                 getActiveSession();
-
 
             if (session) {
 
@@ -966,7 +907,6 @@
                     'none';
             }
         }
-
 
         checkSignInStatus();
 
