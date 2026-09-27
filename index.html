@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -41,7 +42,7 @@
 
         /* =========================
            NAVIGATION
-        ========================= */
+        ========================== */
 
         .navbar {
             position: fixed;
@@ -148,7 +149,7 @@
 
         /* =========================
            HERO
-        ========================= */
+        ========================== */
 
         .hero {
             min-height: 100vh;
@@ -241,7 +242,7 @@
 
         /* =========================
            BUTTONS
-        ========================= */
+        ========================== */
 
         .button-group {
             display: flex;
@@ -305,7 +306,7 @@
 
         /* =========================
            STATS
-        ========================= */
+        ========================== */
 
         .stats {
             display: flex;
@@ -340,7 +341,7 @@
 
         /* =========================
            ORB
-        ========================= */
+        ========================== */
 
         .orb {
             position: absolute;
@@ -387,7 +388,7 @@
 
         /* =========================
            FEATURES
-        ========================= */
+        ========================== */
 
         .section {
             padding: 110px 32px;
@@ -506,7 +507,7 @@
 
         /* =========================
            FOOTER
-        ========================= */
+        ========================== */
 
         footer {
             border-top:
@@ -531,7 +532,7 @@
 
         /* =========================
            RESPONSIVE
-        ========================= */
+        ========================== */
 
         @media (max-width: 850px) {
 
@@ -616,11 +617,19 @@
 
         <nav class="nav-links">
             <a href="https://jdug83.github.io/ai/">GazChat</a>
+
             <a href="https://jdug83.github.io/GazCode/">GazCode</a>
+
+            <!-- NEW GAZCHRISTMAS BUTTON -->
+            <a href="Gazchristmas.html">🎄 GazChristmas</a>
+
             <a href="Models.html">Models</a>
+
             <a href="#features">Features</a>
         </nav>
-</header>
+
+    </header>
+
 
     <!-- =========================
          HERO
@@ -678,6 +687,7 @@
 
         </section>
 
+
         <!-- =========================
              FEATURES
         ========================== -->
@@ -703,6 +713,7 @@
 
                 </div>
 
+
                 <div class="cards">
 
                     <article class="card">
@@ -723,6 +734,7 @@
 
                     </article>
 
+
                     <article class="card">
 
                         <div class="card-icon">
@@ -741,6 +753,7 @@
 
                     </article>
 
+
                     <article class="card">
 
                         <div class="card-icon">
@@ -758,6 +771,7 @@
 
                     </article>
 
+
                     <article class="card">
 
                         <div class="card-icon">
@@ -771,7 +785,12 @@
                         <p>
                             A complete browser-based code editor with live preview,
                             project management, and integrated AI assistance.
-                            <a href="https://jdug83.github.io/GazCode/" style="color: #f2b544; text-decoration: none; font-weight: 600;">Open →</a>
+
+                            <a
+                                href="https://jdug83.github.io/GazCode/"
+                                style="color: #f2b544; text-decoration: none; font-weight: 600;">
+                                Open →
+                            </a>
                         </p>
 
                     </article>
@@ -783,6 +802,7 @@
         </section>
 
     </main>
+
 
     <!-- =========================
          FOOTER
@@ -803,6 +823,7 @@
         </div>
 
     </footer>
+
 
     <!-- =========================
          SESSION SCRIPT
@@ -840,16 +861,19 @@
                     }
 
                 } catch (error) {
+
                     console.warn(
                         'Could not read session:',
                         error
                     );
+
                 }
 
             }
 
             return null;
         }
+
 
         function signOut() {
 
@@ -862,6 +886,7 @@
 
             checkSignInStatus();
         }
+
 
         function checkSignInStatus() {
 
@@ -883,6 +908,7 @@
             const session =
                 getActiveSession();
 
+
             if (session) {
 
                 signInBlock.style.display =
@@ -901,12 +927,11 @@
                     'flex';
 
                 signedInBlock.style.display =
-                    'block';
-
-                signedInBlock.style.display =
                     'none';
             }
+
         }
+
 
         checkSignInStatus();
 
@@ -915,3 +940,4 @@
 </body>
 
 </html>
+```
