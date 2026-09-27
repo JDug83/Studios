@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>GazChristmas</title>
+</head>
+<body>
+    <div class="container">
+        <div class="left">
+            <p>xmas</p>
+        </div>
+
+        <div class="middle">
+            <h1>GazChristmas</h1>
+        </div>
+
+        <div class="right">
+            <!-- 5-Color Switcher -->
+            <div class="color-switcher">
+                <button class="color-btn" data-color="#F5624D" style="background:#F5624D;"></button>
+                <button class="color-btn active" data-color="#CC231E" style="background:#CC231E;"></button>
+                <button class="color-btn" data-color="#34A65F" style="background:#34A65F;"></button>
+                <button class="color-btn" data-color="#0F8A5F" style="background:#0F8A5F;"></button>
+                <button class="color-btn" data-color="#235E6F" style="background:#235E6F;"></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Center Display Where Santa Was -->
+    <div class="center-countdown">
+        <div class="target-picker">
+            <label for="wakeTime">Wake-Up Time:</label>
+            <select id="wakeTime">
+                <option value="0">Midnight (00:00)</option>
+                <option value="6">6:00 AM</option>
+                <option value="7" selected>7:00 AM</option>
+                <option value="8">8:00 AM</option>
+                <option value="9">9:00 AM</option>
+            </select>
+        </div>
+
+        <div class="countdown-cards" id="countdown">
+            <div class="card">
+                <span class="number" id="days">00</span>
+                <span class="label">Days</span>
+            </div>
+            <div class="separator">:</div>
+            <div class="card">
+                <span class="number" id="hours">00</span>
+                <span class="label">Hours</span>
+            </div>
+            <div class="separator">:</div>
+            <div class="card">
+                <span class="number" id="mins">00</span>
+                <span class="label">Minutes</span>
+            </div>
+            <div class="separator">:</div>
+            <div class="card">
+                <span class="number" id="secs">00</span>
+                <span class="label">Seconds</span>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        :root {
+            --bg-color: #CC231E;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: white;
+            font-family: Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .left {
+            text-align: left;
+            flex: 1;
+        }
+
+        .middle {
+            text-align: center;
+            flex: 2;
+        }
+
+        .middle h1 {
+            margin: 0;
+            letter-spacing: 1px;
+        }
+
+        .right {
+            text-align: right;
+            flex: 1;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        /* Colour Switcher */
+        .color-switcher {
+            display: flex;
+            gap: 8px;
+            background: rgba(0, 0, 0, 0.35);
+            padding: 6px 10px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .color-btn {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid rgba(255, 255, 255, 0.6);
+            cursor: pointer;
+            outline: none;
+            padding: 0;
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+
+        .color-btn.active {
+            border-color: #fff;
+            transform: scale(1.2);
+        }
+
+        /* Center Countdown Display (Replacing Santa) */
+        .center-countdown {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            z-index: 5;
+            text-align: center;
+        }
+
+        .target-picker {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(0, 0, 0, 0.35);
+            padding: 8px 16px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            font-size: 14px;
+        }
+
+        .target-picker select {
+            background: transparent;
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 6px;
+            padding: 4px 8px;
+            font-size: 13px;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .target-picker select option {
+            background: #222;
+        }
+
+        .countdown-cards {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .card {
+            background: rgba(0, 0, 0, 0.45);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 12px;
+            padding: 16px 20px;
+            min-width: 70px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+        }
+
+        .card .number {
+            font-size: clamp(32px, 6vmin, 56px);
+            font-weight: bold;
+            font-family: monospace;
+            line-height: 1;
+        }
+
+        .card .label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 6px;
+            opacity: 0.8;
+        }
+
+        .separator {
+            font-size: clamp(24px, 4vmin, 40px);
+            font-weight: bold;
+            opacity: 0.7;
+            padding-bottom: 14px;
+        }
+
+        /* Falling Snow Background */
+        @keyframes snow {
+            0% {
+                background-position: 0 0, 0 0, 0 0, 0 0;
+            }
+            40% {
+                background-position: 10px 14vmin, -20px 28vmin, 20px 20vmin, 75px 20vmin;
+            }
+            60% {
+                background-position: -10px 21vmin, -30px 42vmin, 30px 30vmin, 50px 30vmin;
+            }
+            100% {
+                background-position: 0 35vmin, 0 70vmin, 0 50vmin, 0 50vmin;
+            }
+        }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            background-color: var(--bg-color);
+            transition: background-color 0.4s ease;
+            background-image:
+                radial-gradient(circle at 50% 50%, white 2.5%, transparent 0),
+                radial-gradient(circle at 30% 90%, white 1.5%, transparent 0),
+                radial-gradient(circle at 70% 10%, white 1%, transparent 0),
+                radial-gradient(circle at 10% 40%, white 1%, transparent 0);
+            background-size: 45vmin 35vmin, 50vmin 70vmin, 60vmin 50vmin, 65vmin 50vmin;
+            background-position: 0 0, 0 0, 0 0, 0 0;
+            animation: snow 4s infinite linear;
+        }
+    </style>
+
+    <script>
+        // Color Switcher Logic
+        const colorButtons = document.querySelectorAll('.color-btn');
+        colorButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const color = btn.getAttribute('data-color');
+                document.documentElement.style.setProperty('--bg-color', color);
+                colorButtons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+            });
+        });
+
+        // Christmas Countdown Logic
+        const wakeTimeSelect = document.getElementById('wakeTime');
+        const daysEl = document.getElementById('days');
+        const hoursEl = document.getElementById('hours');
+        const minsEl = document.getElementById('mins');
+        const secsEl = document.getElementById('secs');
+
+        function updateCountdown() {
+            const now = new Date();
+            const year = now.getFullYear();
+            const hour = parseInt(wakeTimeSelect.value, 10);
+            
+            // Dec 25 at the selected wake-up hour
+            let target = new Date(year, 11, 25, hour, 0, 0);
+            if (now > target) {
+                target = new Date(year + 1, 11, 25, hour, 0, 0);
+            }
+
+            const diff = target - now;
+            if (diff <= 0) {
+                document.getElementById('countdown').innerHTML = "<div style='font-size: 32px; font-weight: bold;'>🎄 Merry Christmas! 🎅</div>";
+                return;
+            }
+
+            const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
+            const m = Math.floor((diff / 1000 / 60) % 60);
+            const s = Math.floor((diff / 1000) % 60);
+
+            daysEl.textContent = String(d).padStart(2, '0');
+            hoursEl.textContent = String(h).padStart(2, '0');
+            minsEl.textContent = String(m).padStart(2, '0');
+            secsEl.textContent = String(s).padStart(2, '0');
+        }
+
+        wakeTimeSelect.addEventListener('change', updateCountdown);
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+    </script>
+</body>
+</html>
