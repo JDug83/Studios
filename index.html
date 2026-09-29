@@ -7,6 +7,8 @@
 
     <title>GazStudios — AI for everyone</title>
 
+    <script>document.documentElement.classList.add('js');</script>
+
     <style>
         * {
             box-sizing: border-box;
@@ -14,6 +16,7 @@
 
         html {
             scroll-behavior: smooth;
+            color-scheme: light dark;
         }
 
         body {
@@ -41,13 +44,83 @@
         }
 
         /* =========================
-           NAVIGATION
+           BACKGROUND (Floating Orbs)
+        ========================== */
+
+        .bg {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(90px);
+            opacity: 0.5;
+            animation: float 16s ease-in-out infinite;
+        }
+
+        .orb-1 {
+            width: 560px;
+            height: 560px;
+            left: 6%;
+            top: 2%;
+            background: rgba(229, 169, 60, 0.40);
+        }
+
+        .orb-2 {
+            width: 480px;
+            height: 480px;
+            right: 4%;
+            top: 24%;
+            background: rgba(255, 140, 120, 0.25);
+            animation-duration: 21s;
+            animation-delay: -6s;
+        }
+
+        .orb-3 {
+            width: 520px;
+            height: 520px;
+            left: 34%;
+            top: 62%;
+            background: rgba(120, 170, 255, 0.22);
+            animation-duration: 26s;
+            animation-delay: -11s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33%      { transform: translate(40px, -50px) scale(1.12); }
+            66%      { transform: translate(-30px, 30px) scale(0.94); }
+        }
+
+        /* =========================
+           SCROLL PROGRESS BAR
+        ========================== */
+
+        .progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            z-index: 200;
+
+            background: linear-gradient(90deg, #e5a93c, #c58f1f, #f0c15a);
+            transform-origin: left;
+            transform: scaleX(0);
+        }
+
+        /* =========================
+           NAVIGATION (Normal / Clean)
         ========================== */
 
         .navbar {
             position: sticky;
             top: 0;
-
             height: 68px;
             padding: 0 32px;
 
@@ -56,12 +129,16 @@
             justify-content: space-between;
 
             z-index: 100;
-
-            background: rgba(251, 251, 250, 0.82);
+            background: rgba(251, 251, 250, 0.85);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
 
             border-bottom: 1px solid #ececea;
+            transition: box-shadow 0.3s ease;
+        }
+
+        .navbar.scrolled {
+            box-shadow: 0 4px 20px rgba(18, 18, 19, 0.05);
         }
 
         .brand {
@@ -89,16 +166,18 @@
             gap: 28px;
         }
 
+        /* Normal clean links - no heavy gold highlight */
         .nav-links a {
             color: #6b6b70;
             text-decoration: none;
             font-size: 14px;
             font-weight: 500;
-            transition: color 0.2s ease;
+            transition: color 0.2s ease, opacity 0.2s ease;
         }
 
         .nav-links a:hover {
             color: #121213;
+            opacity: 0.8;
         }
 
         /* =========================
@@ -106,77 +185,54 @@
         ========================== */
 
         .button-17 {
-            align-items: center;
             appearance: none;
-            background-color: #fff;
-            border-radius: 24px;
-            border-style: none;
-            box-shadow: rgba(0, 0, 0, .2) 0 3px 5px -1px, rgba(0, 0, 0, .14) 0 6px 10px 0, rgba(0, 0, 0, .12) 0 1px 18px 0;
-            box-sizing: border-box;
-            color: #3c4043;
-            cursor: pointer;
             display: inline-flex;
-            fill: currentcolor;
+            align-items: center;
+            justify-content: center;
+
+            height: 48px;
+            max-width: 100%;
+            padding: 2px 24px;
+
+            background-color: #ffffff;
+            color: #3c4043;
+            border: 1px solid #e3e3df;
+            border-radius: 24px;
+
+            box-sizing: border-box;
+            cursor: pointer;
+
             font-family: "Google Sans", Roboto, Arial, sans-serif;
             font-size: 14px;
             font-weight: 500;
-            height: 48px;
-            justify-content: center;
             letter-spacing: .25px;
             line-height: normal;
-            max-width: 100%;
-            overflow: visible;
-            padding: 2px 24px;
-            position: relative;
             text-align: center;
             text-decoration: none;
-            text-transform: none;
-            transition: box-shadow 280ms cubic-bezier(.4, 0, .2, 1), opacity 15ms linear 30ms, transform 270ms cubic-bezier(0, 0, .2, 1) 0ms;
+            white-space: nowrap;
+
             user-select: none;
             -webkit-user-select: none;
             touch-action: manipulation;
-            width: auto;
-            will-change: transform, opacity;
-            z-index: 0;
+            transition: background-color 0.2s ease, border-color 0.2s ease;
         }
 
         .button-17:hover {
-            background: #F6F9FE;
-            color: #174ea6;
+            background-color: #f4f6fa;
+            border-color: #d2d2cc;
         }
 
         .button-17:active {
-            box-shadow: 0 4px 4px 0 rgb(60 64 67 / 30%), 0 8px 12px 6px rgb(60 64 67 / 15%);
+            background-color: #eceff4;
+        }
+
+        .button-17:focus,
+        .button-17:focus-visible {
             outline: none;
-        }
-
-        .button-17:focus {
-            outline: none;
-            border: 2px solid #4285f4;
-        }
-
-        .button-17:not(:disabled) {
-            box-shadow: rgba(60, 64, 67, .3) 0 1px 3px 0, rgba(60, 64, 67, .15) 0 4px 8px 3px;
-        }
-
-        .button-17:not(:disabled):hover {
-            box-shadow: rgba(60, 64, 67, .3) 0 2px 3px 0, rgba(60, 64, 67, .15) 0 6px 10px 4px;
-        }
-
-        .button-17:not(:disabled):focus {
-            box-shadow: rgba(60, 64, 67, .3) 0 1px 3px 0, rgba(60, 64, 67, .15) 0 4px 8px 3px;
-        }
-
-        .button-17:not(:disabled):active {
-            box-shadow: rgba(60, 64, 67, .3) 0 4px 4px 0, rgba(60, 64, 67, .15) 0 8px 12px 6px;
-        }
-
-        .button-17:disabled {
-            box-shadow: rgba(60, 64, 67, .3) 0 1px 3px 0, rgba(60, 64, 67, .15) 0 4px 8px 3px;
         }
 
         /* =========================
-           MORE APPS PAGE
+           MORE APPS OVERLAY
         ========================== */
 
         .apps-page {
@@ -184,7 +240,9 @@
             inset: 0;
             z-index: 1000;
 
-            background: #fbfbfa;
+            background: rgba(251, 251, 250, 0.94);
+            backdrop-filter: blur(22px);
+            -webkit-backdrop-filter: blur(22px);
             overflow-y: auto;
 
             display: flex;
@@ -195,17 +253,39 @@
             display: none;
         }
 
+        .apps-page:not([hidden]) {
+            animation: overlayIn 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+        }
+
+        .apps-page:not([hidden]) .apps-inner > * {
+            animation: popIn 0.8s cubic-bezier(0.2, 1.1, 0.3, 1) both;
+            animation-delay: calc(var(--i, 0) * 110ms + 150ms);
+        }
+
+        .apps-page:not([hidden]) .apps-inner > .apps-list,
+        .apps-page:not([hidden]) .apps-inner > #closeAppsBtn {
+            animation: none;
+        }
+
+        @keyframes overlayIn {
+            from { opacity: 0; transform: scale(1.05); }
+            to   { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes popIn {
+            from { opacity: 0; transform: translateY(40px) scale(0.88); filter: blur(10px); }
+            to   { opacity: 1; transform: none; filter: none; }
+        }
+
         .apps-inner {
             width: 100%;
             max-width: 640px;
-
             padding: 96px 24px 64px;
             text-align: center;
         }
 
         .apps-inner h1 {
             margin: 0;
-
             font-size: clamp(40px, 6vw, 64px);
             line-height: 1.04;
             letter-spacing: -0.045em;
@@ -214,7 +294,6 @@
 
         .apps-inner p {
             margin: 16px auto 0;
-
             color: #6b6b70;
             font-size: 17px;
             line-height: 1.55;
@@ -225,8 +304,60 @@
             flex-direction: column;
             align-items: center;
             gap: 16px;
-
             margin: 44px 0;
+        }
+
+        /* =========================
+           REVEAL ANIMATIONS
+        ========================== */
+
+        .js .reveal {
+            opacity: 0;
+            filter: blur(12px);
+            transform: perspective(1000px) translate3d(var(--tx, 0px), var(--ty, 60px), 0) rotateX(var(--rx, 0deg)) scale(var(--s, 0.94));
+            transition:
+                opacity 0.9s cubic-bezier(0.2, 0.8, 0.2, 1),
+                filter 0.9s cubic-bezier(0.2, 0.8, 0.2, 1),
+                transform 1s cubic-bezier(0.2, 0.8, 0.2, 1);
+            transition-delay: var(--delay, 0ms);
+            will-change: opacity, transform, filter;
+        }
+
+        .js .reveal.visible {
+            opacity: 1;
+            filter: blur(0);
+            transform: none;
+        }
+
+        /* Word-by-word headline reveal */
+        .w {
+            display: inline-block;
+            overflow: hidden;
+            vertical-align: top;
+            padding: 0 0.05em 0.14em;
+            margin: 0 -0.05em -0.14em;
+        }
+
+        .wi {
+            display: inline-block;
+        }
+
+        .js .split .wi {
+            opacity: 0;
+            filter: blur(10px);
+            transform: translateY(115%) rotate(9deg);
+            transform-origin: left bottom;
+            transition:
+                transform 1s cubic-bezier(0.2, 0.9, 0.2, 1),
+                opacity 0.8s ease,
+                filter 0.8s ease;
+            transition-delay: calc(var(--base, 0ms) + var(--i, 0) * 75ms);
+        }
+
+        .js .split.in .wi {
+            opacity: 1;
+            filter: blur(0);
+            transform: none;
         }
 
         /* =========================
@@ -236,9 +367,7 @@
         .hero {
             max-width: 1040px;
             margin: 0 auto;
-
             padding: 110px 32px 70px;
-
             text-align: center;
         }
 
@@ -246,38 +375,28 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
-
             margin-bottom: 26px;
-
             padding: 7px 15px;
-
             border: 1px solid #e6e6e2;
             border-radius: 999px;
-
             background: #ffffff;
-
             font-size: 13px;
             font-weight: 600;
-
             color: #8a6a1f;
-
             letter-spacing: 0.2px;
         }
 
         .eyebrow-dot {
             width: 7px;
             height: 7px;
-
             border-radius: 50%;
             background: #e5a93c;
         }
 
         .hero h1 {
             margin: 0;
-
             font-size: clamp(52px, 7.5vw, 96px);
             line-height: 1.02;
-
             letter-spacing: -0.055em;
             font-weight: 700;
         }
@@ -286,16 +405,26 @@
             color: #c58f1f;
         }
 
+        .accent .wi {
+            background: linear-gradient(100deg, #c58f1f 0%, #f3c65f 30%, #c58f1f 55%, #e5a93c 80%, #c58f1f 100%);
+            background-size: 220% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: transparent;
+            animation: shimmer 5s linear infinite;
+        }
+
+        @keyframes shimmer {
+            to { background-position: 220% center; }
+        }
+
         .hero-description {
             max-width: 620px;
-
             margin: 28px auto 0;
-
             color: #6b6b70;
-
             font-size: clamp(17px, 1.9vw, 21px);
             line-height: 1.55;
-
             font-weight: 400;
             letter-spacing: -0.012em;
         }
@@ -308,11 +437,8 @@
             display: flex;
             justify-content: center;
             align-items: center;
-
             gap: 12px;
-
             margin-top: 36px;
-
             flex-wrap: wrap;
         }
 
@@ -320,22 +446,17 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-
             min-height: 50px;
-
             padding: 0 26px;
-
             border-radius: 999px;
-
             text-decoration: none;
-
             font-size: 15px;
             font-weight: 600;
-
             transition:
-                transform 0.2s ease,
+                transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1),
                 background 0.2s ease,
-                border-color 0.2s ease;
+                border-color 0.2s ease,
+                box-shadow 0.3s ease;
         }
 
         .btn-primary {
@@ -346,6 +467,7 @@
         .btn-primary:hover {
             transform: translateY(-2px);
             background: #2a2a2c;
+            box-shadow: 0 14px 30px rgba(18, 18, 19, 0.25);
         }
 
         .btn-secondary {
@@ -357,6 +479,14 @@
         .btn-secondary:hover {
             transform: translateY(-2px);
             border-color: #cfcfc9;
+            box-shadow: 0 14px 30px rgba(18, 18, 19, 0.08);
+        }
+
+        .btn:focus,
+        .btn:focus-visible,
+        .nav-links a:focus,
+        .nav-links a:focus-visible {
+            outline: none;
         }
 
         /* =========================
@@ -367,11 +497,8 @@
             display: flex;
             justify-content: center;
             align-items: center;
-
             margin-top: 34px;
-
             color: #9a9a9e;
-
             font-size: 13px;
             font-weight: 500;
         }
@@ -383,14 +510,10 @@
 
         .stats span:not(:last-child)::after {
             content: "";
-
             width: 4px;
             height: 4px;
-
             margin: 0 12px;
-
             border-radius: 50%;
-
             background: #d0d0cc;
         }
 
@@ -401,8 +524,7 @@
         .section {
             max-width: 1160px;
             margin: 0 auto;
-
-            padding: 80px 32px 110px;
+            padding: 90px 32px 110px;
         }
 
         .section-heading {
@@ -412,21 +534,16 @@
 
         .section-heading h2 {
             margin: 0;
-
             font-size: clamp(36px, 5vw, 58px);
-
             letter-spacing: -0.045em;
             line-height: 1.04;
-
             font-weight: 700;
         }
 
         .section-heading p {
             max-width: 560px;
             margin: 18px auto 0;
-
             color: #6b6b70;
-
             font-size: 17px;
             line-height: 1.55;
             font-weight: 400;
@@ -435,63 +552,81 @@
         .cards {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-
             gap: 16px;
         }
 
         .card {
+            position: relative;
+            overflow: hidden;
             padding: 30px;
-
             border-radius: 20px;
-
             background: #ffffff;
             border: 1px solid #ececea;
-
             transition:
-                transform 0.22s ease,
+                transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1),
                 border-color 0.22s ease,
-                box-shadow 0.22s ease;
+                box-shadow 0.3s ease;
+        }
+
+        /* Interactive cursor glare */
+        .card::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(420px circle at var(--gx, 50%) var(--gy, 50%), rgba(229, 169, 60, 0.18), transparent 45%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
         }
 
         .card:hover {
             transform: translateY(-4px);
-            border-color: #dedad0;
-            box-shadow: 0 14px 34px rgba(18, 18, 19, 0.05);
+            border-color: #e3cf9f;
+            box-shadow: 0 22px 50px rgba(197, 143, 31, 0.14);
+        }
+
+        .card:hover::before {
+            opacity: 1;
         }
 
         .card-icon {
             width: 46px;
             height: 46px;
-
             display: flex;
             align-items: center;
             justify-content: center;
-
             border-radius: 13px;
-
             background: #fdf6e6;
             color: #c58f1f;
-
             font-size: 20px;
-
             margin-bottom: 22px;
+        }
+
+        .js .card .card-icon {
+            transform: scale(0) rotate(-180deg);
+        }
+
+        .js .card.in .card-icon {
+            animation: iconPop 0.9s cubic-bezier(0.2, 1.3, 0.3, 1) var(--icon, 300ms) forwards;
+        }
+
+        @keyframes iconPop {
+            0%   { transform: scale(0) rotate(-180deg); }
+            60%  { transform: scale(1.25) rotate(14deg); }
+            100% { transform: scale(1) rotate(0deg); }
         }
 
         .card h3 {
             margin: 0 0 10px;
-
             font-size: 22px;
             letter-spacing: -0.025em;
         }
 
         .card p {
             margin: 0;
-
             color: #6b6b70;
-
             font-size: 15px;
             line-height: 1.6;
-
             font-weight: 400;
         }
 
@@ -507,18 +642,14 @@
 
         footer {
             border-top: 1px solid #ececea;
-
             padding: 28px 32px;
-
             color: #8f8f93;
-
             font-size: 13px;
         }
 
         .footer-inner {
             max-width: 1160px;
             margin: auto;
-
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -529,7 +660,6 @@
         ========================== */
 
         @media (max-width: 850px) {
-
             .nav-links {
                 display: none;
             }
@@ -558,7 +688,6 @@
         }
 
         @media (max-width: 520px) {
-
             .hero h1 {
                 font-size: 50px;
             }
@@ -581,16 +710,156 @@
                 margin: 0 8px;
             }
         }
+
+        /* =========================
+           DARK MODE
+        ========================== */
+
+        @media (prefers-color-scheme: dark) {
+            body {
+                background: #0d0d0f;
+                color: #f2f2f0;
+            }
+
+            .navbar {
+                background: rgba(13, 13, 15, 0.72);
+                border-bottom-color: #232329;
+            }
+
+            .navbar.scrolled {
+                box-shadow: 0 8px 28px rgba(0, 0, 0, 0.5);
+            }
+
+            .brand {
+                color: #f2f2f0;
+            }
+
+            .nav-links a {
+                color: #a3a3a9;
+            }
+
+            .nav-links a:hover {
+                color: #f2f2f0;
+            }
+
+            .button-17 {
+                background-color: #1a1a1f;
+                color: #eaeaec;
+                border-color: #2c2c34;
+            }
+
+            .button-17:hover {
+                background-color: #232329;
+                border-color: #3a3a44;
+            }
+
+            .button-17:active {
+                background-color: #2b2b33;
+            }
+
+            .apps-page {
+                background: rgba(13, 13, 15, 0.92);
+            }
+
+            .apps-inner p {
+                color: #a3a3a9;
+            }
+
+            .eyebrow {
+                background: #17171b;
+                border-color: #2a2a31;
+                color: #e5b455;
+            }
+
+            .hero-description {
+                color: #a3a3a9;
+            }
+
+            .hero h1 .accent {
+                color: #f0c15a;
+            }
+
+            .btn-primary {
+                background: #f2f2f0;
+                color: #0d0d0f;
+            }
+
+            .btn-primary:hover {
+                background: #dcdcda;
+                box-shadow: 0 14px 30px rgba(0, 0, 0, 0.5);
+            }
+
+            .btn-secondary {
+                background: #17171b;
+                color: #f2f2f0;
+                border-color: #2c2c34;
+            }
+
+            .btn-secondary:hover {
+                border-color: #3a3a44;
+                box-shadow: 0 14px 30px rgba(0, 0, 0, 0.4);
+            }
+
+            .stats {
+                color: #7c7c82;
+            }
+
+            .stats span:not(:last-child)::after {
+                background: #33333a;
+            }
+
+            .section-heading p {
+                color: #a3a3a9;
+            }
+
+            .card {
+                background: #15151a;
+                border-color: #232329;
+            }
+
+            .card:hover {
+                border-color: #6a5a2a;
+                box-shadow: 0 22px 50px rgba(0, 0, 0, 0.5);
+            }
+
+            .card p {
+                color: #a3a3a9;
+            }
+
+            .card-icon {
+                background: #221d10;
+                color: #e5b455;
+            }
+
+            footer {
+                border-top-color: #232329;
+                color: #7c7c82;
+            }
+
+            .orb {
+                opacity: 0.35;
+            }
+        }
     </style>
 </head>
 
 <body>
 
+    <!-- Scroll progress bar -->
+    <div class="progress" id="progress"></div>
+
+    <!-- Floating ambient background -->
+    <div class="bg" aria-hidden="true">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
+
     <!-- =========================
          NAVIGATION
     ========================== -->
 
-    <header class="navbar">
+    <header class="navbar" id="navbar">
 
         <a href="#" class="brand">
             <img
@@ -601,14 +870,9 @@
 
         <nav class="nav-links">
             <a href="https://jdug83.github.io/ai/">GazChat</a>
-
             <a href="https://jdug83.github.io/GazCode/">GazCode</a>
-
-            <!-- GAZCHRISTMAS BUTTON -->
             <a href="Gazchristmas.html">🎄 GazChristmas</a>
-
             <a href="Models.html">Models</a>
-
             <a href="#features">Features</a>
         </nav>
 
@@ -634,12 +898,10 @@
 
         <div class="apps-inner">
 
-            <h1>More Apps</h1>
+            <h1 style="--i:0">More Apps</h1>
+            <p style="--i:1">Other things we've built at GazStudios.</p>
 
-            <p>Other things we've built at GazStudios.</p>
-
-            <div class="apps-list">
-
+            <div class="apps-list" style="--i:2">
                 <a
                     class="button-17"
                     role="button"
@@ -648,16 +910,14 @@
                     rel="noopener">
                     Gaz Invaders
                 </a>
-
-                <!-- Add more apps here by copying the block above -->
-
             </div>
 
             <button
                 class="button-17"
                 role="button"
                 id="closeAppsBtn"
-                type="button">
+                type="button"
+                style="--i:3">
                 Back
             </button>
 
@@ -672,25 +932,25 @@
 
     <main>
 
-        <section class="hero">
+        <section class="hero" id="hero">
 
-            <div class="eyebrow">
+            <div class="eyebrow reveal" style="--delay:0ms; --ty:-30px; --s:0.8">
                 <span class="eyebrow-dot"></span>
                 MAJOR UPDATE · NANO 1
             </div>
 
-            <h1>
+            <h1 class="split" style="--base:150ms">
                 AI that works
                 <br>
                 <span class="accent">for you.</span>
             </h1>
 
-            <p class="hero-description">
+            <p class="hero-description reveal" style="--delay:750ms">
                 GazChat Nano is fast, free, and built for real work.
                 No waitlist. No credit card. Just intelligent AI.
             </p>
 
-            <div class="button-group">
+            <div class="button-group reveal" style="--delay:950ms; --s:0.85">
 
                 <a
                     class="btn btn-primary"
@@ -706,8 +966,8 @@
 
             </div>
 
-            <div class="stats">
-                <span>100% Free</span>
+            <div class="stats reveal" style="--delay:1150ms">
+                <span><span class="count" data-to="100">100</span>% Free</span>
                 <span>No Waitlist</span>
                 <span>Built for Real Work</span>
             </div>
@@ -725,13 +985,13 @@
 
             <div class="section-heading">
 
-                <h2>
+                <h2 class="split">
                     Simple.
                     <br>
                     Powerful.
                 </h2>
 
-                <p>
+                <p class="reveal" style="--delay:450ms">
                     Everything you need to work with AI,
                     without unnecessary complexity.
                 </p>
@@ -740,81 +1000,43 @@
 
             <div class="cards">
 
-                <article class="card">
-
-                    <div class="card-icon">
-                        ✦
-                    </div>
-
-                    <h3>
-                        GazChat Nano
-                    </h3>
-
+                <article class="card reveal" style="--delay:0ms; --icon:500ms; --tx:-90px; --ty:70px; --rx:22deg">
+                    <div class="card-icon">✦</div>
+                    <h3>GazChat Nano</h3>
                     <p>
                         A lightweight AI experience designed
                         to respond quickly and help you get
                         things done.
                     </p>
-
                 </article>
 
-
-                <article class="card">
-
-                    <div class="card-icon">
-                        ◉
-                    </div>
-
-                    <h3>
-                        Custom Models
-                    </h3>
-
+                <article class="card reveal" style="--delay:140ms; --icon:640ms; --tx:90px; --ty:70px; --rx:22deg">
+                    <div class="card-icon">◉</div>
+                    <h3>Custom Models</h3>
                     <p>
                         Explore and experiment with custom
                         AI models built for different tasks
                         and workflows.
                     </p>
-
                 </article>
 
-
-                <article class="card">
-
-                    <div class="card-icon">
-                        ⚡
-                    </div>
-
-                    <h3>
-                        Built for Speed
-                    </h3>
-
+                <article class="card reveal" style="--delay:0ms; --icon:500ms; --tx:-90px; --ty:70px; --rx:22deg">
+                    <div class="card-icon">⚡</div>
+                    <h3>Built for Speed</h3>
                     <p>
                         No unnecessary friction. Open GazStudios,
                         ask your question, and get straight to work.
                     </p>
-
                 </article>
 
-
-                <article class="card">
-
-                    <div class="card-icon">
-                        💻
-                    </div>
-
-                    <h3>
-                        GazCode Editor
-                    </h3>
-
+                <article class="card reveal" style="--delay:140ms; --icon:640ms; --tx:90px; --ty:70px; --rx:22deg">
+                    <div class="card-icon">💻</div>
+                    <h3>GazCode Editor</h3>
                     <p>
                         A complete browser-based code editor with live preview,
                         project management, and integrated AI assistance.
-
-                        <a href="https://jdug83.github.io/GazCode/">
-                            Open →
-                        </a>
+                        <a href="https://jdug83.github.io/GazCode/">Open →</a>
                     </p>
-
                 </article>
 
             </div>
@@ -828,21 +1050,209 @@
          FOOTER
     ========================== -->
 
-    <footer>
-
+    <footer class="reveal" style="--ty:30px">
         <div class="footer-inner">
-
-            <span>
-                © 2026 GazStudios
-            </span>
-
-            <span>
-                AI made simple.
-            </span>
-
+            <span>© 2026 GazStudios</span>
+            <span>AI made simple.</span>
         </div>
-
     </footer>
+
+
+    <!-- =========================
+         ANIMATION SCRIPT
+    ========================== -->
+
+    <script>
+        (function () {
+            const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+            const navbar = document.getElementById('navbar');
+            const hero = document.getElementById('hero');
+            const progress = document.getElementById('progress');
+            const orbs = Array.from(document.querySelectorAll('.orb'));
+
+            /* ---------- Split headlines into words ---------- */
+            function splitWords(el) {
+                el.setAttribute('aria-label', el.textContent.replace(/\s+/g, ' ').trim());
+                let index = 0;
+
+                (function walk(node) {
+                    Array.from(node.childNodes).forEach(function (child) {
+                        if (child.nodeType === 3) {
+                            const frag = document.createDocumentFragment();
+                            child.textContent.split(/(\s+)/).forEach(function (token) {
+                                if (!token) return;
+                                if (/^\s+$/.test(token)) {
+                                    frag.appendChild(document.createTextNode(' '));
+                                    return;
+                                }
+
+                                const outer = document.createElement('span');
+                                outer.className = 'w';
+                                outer.setAttribute('aria-hidden', 'true');
+
+                                const inner = document.createElement('span');
+                                inner.className = 'wi';
+                                inner.style.setProperty('--i', index++);
+                                inner.textContent = token;
+
+                                outer.appendChild(inner);
+                                frag.appendChild(outer);
+                            });
+                            node.replaceChild(frag, child);
+                        } else if (child.nodeType === 1 && child.tagName !== 'BR') {
+                            walk(child);
+                        }
+                    });
+                })(el);
+            }
+
+            document.querySelectorAll('.split').forEach(splitWords);
+
+            /* ---------- Count-up numbers ---------- */
+            const counters = Array.from(document.querySelectorAll('.count'));
+
+            function countUp(el) {
+                const to = parseInt(el.dataset.to, 10) || 0;
+                const start = performance.now();
+
+                (function step(now) {
+                    const k = Math.min((now - start) / 1600, 1);
+                    const eased = 1 - Math.pow(1 - k, 4);
+
+                    el.textContent = Math.round(to * eased);
+
+                    if (k < 1) {
+                        requestAnimationFrame(step);
+                    }
+                })(start);
+            }
+
+            if (!reduceMotion) {
+                counters.forEach(function (el) {
+                    el.textContent = '0';
+                });
+            }
+
+            /* ---------- Reveal on scroll ---------- */
+            const targets = document.querySelectorAll('.reveal, .split');
+
+            function finish(el) {
+                const delay = parseInt(el.style.getPropertyValue('--delay') || '0', 10) || 0;
+                setTimeout(function () {
+                    el.classList.remove('reveal', 'visible');
+                    el.style.removeProperty('--delay');
+                }, 1200 + delay);
+            }
+
+            function reveal(el) {
+                el.classList.add('in');
+
+                if (el.classList.contains('reveal')) {
+                    el.classList.add('visible');
+                    finish(el);
+                }
+
+                if (!reduceMotion) {
+                    el.querySelectorAll('.count').forEach(countUp);
+                }
+            }
+
+            if (reduceMotion || !('IntersectionObserver' in window)) {
+                targets.forEach(function (el) {
+                    el.classList.add('in', 'visible');
+                });
+            } else {
+                const observer = new IntersectionObserver(function (entries) {
+                    entries.forEach(function (entry) {
+                        if (entry.isIntersecting) {
+                            reveal(entry.target);
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, {
+                    threshold: 0.15,
+                    rootMargin: '0px 0px -6% 0px'
+                });
+
+                targets.forEach(function (el) {
+                    observer.observe(el);
+                });
+            }
+
+            /* ---------- 3D tilt + glare on cards ---------- */
+            if (finePointer && !reduceMotion) {
+                document.querySelectorAll('.card').forEach(function (card) {
+                    card.addEventListener('mousemove', function (e) {
+                        if (card.classList.contains('reveal')) return;
+
+                        const r = card.getBoundingClientRect();
+                        const px = (e.clientX - r.left) / r.width;
+                        const py = (e.clientY - r.top) / r.height;
+
+                        const rotY = (px - 0.5) * 14;
+                        const rotX = -(py - 0.5) * 14;
+
+                        card.style.setProperty('--gx', (px * 100) + '%');
+                        card.style.setProperty('--gy', (py * 100) + '%');
+
+                        card.style.transform =
+                            'perspective(900px) rotateX(' + rotX + 'deg) rotateY(' + rotY + 'deg) translateY(-6px) scale(1.015)';
+                    });
+
+                    card.addEventListener('mouseleave', function () {
+                        card.style.transform = '';
+                    });
+                });
+            }
+
+            /* ---------- Main Animation Loop (Hero parallax + Orbs) ---------- */
+            let mouseX = window.innerWidth / 2;
+            let mouseY = window.innerHeight / 2;
+            let smoothX = mouseX;
+            let smoothY = mouseY;
+
+            window.addEventListener('mousemove', function (e) {
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+            }, { passive: true });
+
+            function tick() {
+                const y = window.scrollY;
+
+                smoothX += (mouseX - smoothX) * 0.1;
+                smoothY += (mouseY - smoothY) * 0.1;
+
+                // Ambient orbs drift with parallax
+                const nx = smoothX / window.innerWidth - 0.5;
+                const ny = smoothY / window.innerHeight - 0.5;
+
+                orbs.forEach(function (orb, i) {
+                    const depth = (i + 1) * 36;
+                    orb.style.translate =
+                        (-nx * depth) + 'px ' + (-ny * depth - y * 0.05 * (i + 1)) + 'px';
+                });
+
+                // Scroll progress
+                const max = document.documentElement.scrollHeight - window.innerHeight;
+                progress.style.transform = 'scaleX(' + (max > 0 ? y / max : 0) + ')';
+
+                // Navbar shadow
+                navbar.classList.toggle('scrolled', y > 10);
+
+                // Hero smooth parallax
+                const p = Math.min(y / 700, 1);
+                hero.style.translate = '0 ' + (y * 0.28) + 'px';
+                hero.style.scale = String(1 - p * 0.1);
+                hero.style.opacity = String(1 - p * 0.9);
+
+                requestAnimationFrame(tick);
+            }
+
+            requestAnimationFrame(tick);
+        })();
+    </script>
 
 
     <!-- =========================
@@ -850,7 +1260,6 @@
     ========================== -->
 
     <script>
-
         const appsPage = document.getElementById('moreAppsPage');
         const openAppsBtn = document.getElementById('moreAppsBtn');
         const closeAppsBtn = document.getElementById('closeAppsBtn');
@@ -873,124 +1282,6 @@
                 closeApps();
             }
         });
-
-    </script>
-
-
-    <!-- =========================
-         SESSION SCRIPT
-    ========================== -->
-
-    <script>
-
-        function getActiveSession() {
-
-            const keys = [
-                'gazstudios_session',
-                'gz.session.3'
-            ];
-
-            for (const key of keys) {
-
-                try {
-
-                    const raw =
-                        localStorage.getItem(key);
-
-                    if (!raw) {
-                        continue;
-                    }
-
-                    const session =
-                        JSON.parse(raw);
-
-                    if (
-                        session &&
-                        session.username &&
-                        session.expires > Date.now()
-                    ) {
-                        return session;
-                    }
-
-                } catch (error) {
-
-                    console.warn(
-                        'Could not read session:',
-                        error
-                    );
-
-                }
-
-            }
-
-            return null;
-        }
-
-
-        function signOut() {
-
-            [
-                'gazstudios_session',
-                'gz.session.3'
-            ].forEach(key => {
-                localStorage.removeItem(key);
-            });
-
-            checkSignInStatus();
-        }
-
-
-        function checkSignInStatus() {
-
-            const signInBlock =
-                document.getElementById(
-                    'signInBlock'
-                );
-
-            const signedInBlock =
-                document.getElementById(
-                    'signedInBlock'
-                );
-
-            const signedInText =
-                document.getElementById(
-                    'signedInText'
-                );
-
-            const session =
-                getActiveSession();
-
-
-            if (!signInBlock || !signedInBlock || !signedInText) {
-                return;
-            }
-
-            if (session) {
-
-                signInBlock.style.display =
-                    'none';
-
-                signedInBlock.style.display =
-                    'block';
-
-                signedInText.textContent =
-                    'Signed in as ' +
-                    session.username;
-
-            } else {
-
-                signInBlock.style.display =
-                    'flex';
-
-                signedInBlock.style.display =
-                    'none';
-            }
-
-        }
-
-
-        checkSignInStatus();
-
     </script>
 
 </body>
