@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -35,6 +34,10 @@
             min-height: 100vh;
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
+        }
+
+        body.apps-open {
+            overflow: hidden;
         }
 
         /* =========================
@@ -98,22 +101,132 @@
             color: #121213;
         }
 
-        .nav-signup {
-            color: #fbfbfa;
-            background: #121213;
+        /* =========================
+           BUTTON 17 (Google-style)
+        ========================== */
 
-            text-decoration: none;
+        .button-17 {
+            align-items: center;
+            appearance: none;
+            background-color: #fff;
+            border-radius: 24px;
+            border-style: none;
+            box-shadow: rgba(0, 0, 0, .2) 0 3px 5px -1px, rgba(0, 0, 0, .14) 0 6px 10px 0, rgba(0, 0, 0, .12) 0 1px 18px 0;
+            box-sizing: border-box;
+            color: #3c4043;
+            cursor: pointer;
+            display: inline-flex;
+            fill: currentcolor;
+            font-family: "Google Sans", Roboto, Arial, sans-serif;
             font-size: 14px;
-            font-weight: 600;
-
-            padding: 9px 18px;
-            border-radius: 999px;
-
-            transition: opacity 0.2s ease;
+            font-weight: 500;
+            height: 48px;
+            justify-content: center;
+            letter-spacing: .25px;
+            line-height: normal;
+            max-width: 100%;
+            overflow: visible;
+            padding: 2px 24px;
+            position: relative;
+            text-align: center;
+            text-decoration: none;
+            text-transform: none;
+            transition: box-shadow 280ms cubic-bezier(.4, 0, .2, 1), opacity 15ms linear 30ms, transform 270ms cubic-bezier(0, 0, .2, 1) 0ms;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: manipulation;
+            width: auto;
+            will-change: transform, opacity;
+            z-index: 0;
         }
 
-        .nav-signup:hover {
-            opacity: 0.82;
+        .button-17:hover {
+            background: #F6F9FE;
+            color: #174ea6;
+        }
+
+        .button-17:active {
+            box-shadow: 0 4px 4px 0 rgb(60 64 67 / 30%), 0 8px 12px 6px rgb(60 64 67 / 15%);
+            outline: none;
+        }
+
+        .button-17:focus {
+            outline: none;
+            border: 2px solid #4285f4;
+        }
+
+        .button-17:not(:disabled) {
+            box-shadow: rgba(60, 64, 67, .3) 0 1px 3px 0, rgba(60, 64, 67, .15) 0 4px 8px 3px;
+        }
+
+        .button-17:not(:disabled):hover {
+            box-shadow: rgba(60, 64, 67, .3) 0 2px 3px 0, rgba(60, 64, 67, .15) 0 6px 10px 4px;
+        }
+
+        .button-17:not(:disabled):focus {
+            box-shadow: rgba(60, 64, 67, .3) 0 1px 3px 0, rgba(60, 64, 67, .15) 0 4px 8px 3px;
+        }
+
+        .button-17:not(:disabled):active {
+            box-shadow: rgba(60, 64, 67, .3) 0 4px 4px 0, rgba(60, 64, 67, .15) 0 8px 12px 6px;
+        }
+
+        .button-17:disabled {
+            box-shadow: rgba(60, 64, 67, .3) 0 1px 3px 0, rgba(60, 64, 67, .15) 0 4px 8px 3px;
+        }
+
+        /* =========================
+           MORE APPS PAGE
+        ========================== */
+
+        .apps-page {
+            position: fixed;
+            inset: 0;
+            z-index: 1000;
+
+            background: #fbfbfa;
+            overflow-y: auto;
+
+            display: flex;
+            justify-content: center;
+        }
+
+        .apps-page[hidden] {
+            display: none;
+        }
+
+        .apps-inner {
+            width: 100%;
+            max-width: 640px;
+
+            padding: 96px 24px 64px;
+            text-align: center;
+        }
+
+        .apps-inner h1 {
+            margin: 0;
+
+            font-size: clamp(40px, 6vw, 64px);
+            line-height: 1.04;
+            letter-spacing: -0.045em;
+            font-weight: 700;
+        }
+
+        .apps-inner p {
+            margin: 16px auto 0;
+
+            color: #6b6b70;
+            font-size: 17px;
+            line-height: 1.55;
+        }
+
+        .apps-list {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+
+            margin: 44px 0;
         }
 
         /* =========================
@@ -499,11 +612,58 @@
             <a href="#features">Features</a>
         </nav>
 
-        <a class="nav-signup" href="Models.html">
-            Get started
-        </a>
+        <button
+            class="button-17"
+            role="button"
+            id="moreAppsBtn"
+            type="button">
+            More Apps
+        </button>
 
     </header>
+
+
+    <!-- =========================
+         MORE APPS PAGE
+    ========================== -->
+
+    <div
+        class="apps-page"
+        id="moreAppsPage"
+        hidden>
+
+        <div class="apps-inner">
+
+            <h1>More Apps</h1>
+
+            <p>Other things we've built at GazStudios.</p>
+
+            <div class="apps-list">
+
+                <a
+                    class="button-17"
+                    role="button"
+                    href="https://jdug83.github.io/GazInvaders/"
+                    target="_blank"
+                    rel="noopener">
+                    Gaz Invaders
+                </a>
+
+                <!-- Add more apps here by copying the block above -->
+
+            </div>
+
+            <button
+                class="button-17"
+                role="button"
+                id="closeAppsBtn"
+                type="button">
+                Back
+            </button>
+
+        </div>
+
+    </div>
 
 
     <!-- =========================
@@ -683,6 +843,38 @@
         </div>
 
     </footer>
+
+
+    <!-- =========================
+         MORE APPS SCRIPT
+    ========================== -->
+
+    <script>
+
+        const appsPage = document.getElementById('moreAppsPage');
+        const openAppsBtn = document.getElementById('moreAppsBtn');
+        const closeAppsBtn = document.getElementById('closeAppsBtn');
+
+        function openApps() {
+            appsPage.hidden = false;
+            document.body.classList.add('apps-open');
+        }
+
+        function closeApps() {
+            appsPage.hidden = true;
+            document.body.classList.remove('apps-open');
+        }
+
+        openAppsBtn.addEventListener('click', openApps);
+        closeAppsBtn.addEventListener('click', closeApps);
+
+        document.addEventListener('keydown', function (event) {
+            if (event.key === 'Escape' && !appsPage.hidden) {
+                closeApps();
+            }
+        });
+
+    </script>
 
 
     <!-- =========================
