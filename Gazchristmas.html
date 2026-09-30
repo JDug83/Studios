@@ -1,36 +1,33 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>GazChristmas</title>
 </head>
 <body>
-    <div class="container">
-        <div class="left">
-            <p>xmas</p>
-        </div>
-
-        <div class="middle">
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
             <h1>GazChristmas</h1>
-        </div>
+        </header>
 
-        <div class="right">
-            <!-- 5-Color Switcher -->
-            <div class="color-switcher">
-                <button class="color-btn" data-color="#F5624D" style="background:#F5624D;"></button>
-                <button class="color-btn active" data-color="#CC231E" style="background:#CC231E;"></button>
-                <button class="color-btn" data-color="#34A65F" style="background:#34A65F;"></button>
-                <button class="color-btn" data-color="#0F8A5F" style="background:#0F8A5F;"></button>
-                <button class="color-btn" data-color="#235E6F" style="background:#235E6F;"></button>
+        <!-- Color Picker -->
+        <div class="color-picker-wrap">
+            <div class="color-picker">
+                <button class="color-btn" data-color="#F5624D" style="background:#F5624D;" aria-label="Coral"></button>
+                <button class="color-btn active" data-color="#CC231E" style="background:#CC231E;" aria-label="Red"></button>
+                <button class="color-btn" data-color="#34A65F" style="background:#34A65F;" aria-label="Green"></button>
+                <button class="color-btn" data-color="#0F8A5F" style="background:#0F8A5F;" aria-label="Teal"></button>
+                <button class="color-btn" data-color="#235E6F" style="background:#235E6F;" aria-label="Navy"></button>
             </div>
         </div>
-    </div>
 
-    <!-- Center Display Where Santa Was -->
-    <div class="center-countdown">
-        <div class="target-picker">
-            <label for="wakeTime">Wake-Up Time:</label>
+        <!-- Wake Time Picker -->
+        <div class="control-panel">
+            <label for="wakeTime">Wake up at</label>
             <select id="wakeTime">
-                <option value="0">Midnight (00:00)</option>
+                <option value="0">Midnight</option>
                 <option value="6">6:00 AM</option>
                 <option value="7" selected>7:00 AM</option>
                 <option value="8">8:00 AM</option>
@@ -38,180 +35,72 @@
             </select>
         </div>
 
-        <div class="countdown-cards" id="countdown">
-            <div class="card">
-                <span class="number" id="days">00</span>
-                <span class="label">Days</span>
+        <!-- Main Countdown -->
+        <main class="countdown-container">
+            <div class="countdown" id="countdown">
+                <div class="unit">
+                    <div class="value" id="days">00</div>
+                    <div class="unit-label">Days</div>
+                </div>
+                <div class="divider"></div>
+                <div class="unit">
+                    <div class="value" id="hours">00</div>
+                    <div class="unit-label">Hours</div>
+                </div>
+                <div class="divider"></div>
+                <div class="unit">
+                    <div class="value" id="mins">00</div>
+                    <div class="unit-label">Mins</div>
+                </div>
+                <div class="divider"></div>
+                <div class="unit">
+                    <div class="value" id="secs">00</div>
+                    <div class="unit-label">Secs</div>
+                </div>
             </div>
-            <div class="separator">:</div>
-            <div class="card">
-                <span class="number" id="hours">00</span>
-                <span class="label">Hours</span>
-            </div>
-            <div class="separator">:</div>
-            <div class="card">
-                <span class="number" id="mins">00</span>
-                <span class="label">Minutes</span>
-            </div>
-            <div class="separator">:</div>
-            <div class="card">
-                <span class="number" id="secs">00</span>
-                <span class="label">Seconds</span>
-            </div>
-        </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>🎄 See you on December 25th 🎅</p>
+        </footer>
     </div>
 
     <style>
         :root {
             --bg-color: #CC231E;
+            --text-color: #ffffff;
+            --card-bg: rgba(0, 0, 0, 0.25);
+            --card-border: rgba(255, 255, 255, 0.15);
+            --accent-light: rgba(255, 255, 255, 0.08);
+            --safe-top: env(safe-area-inset-top, 0);
+            --safe-bottom: env(safe-area-inset-bottom, 0);
         }
 
-        body {
+        * {
+            box-sizing: border-box;
+        }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             background-color: var(--bg-color);
-            color: white;
-            font-family: Verdana, sans-serif;
-            margin: 0;
-            padding: 0;
+            color: var(--text-color);
+            transition: background-color 0.3s ease;
+            overflow: hidden;
+            background-image:
+                radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.9) 2.5%, transparent 0),
+                radial-gradient(circle at 30% 90%, rgba(255, 255, 255, 0.8) 1.5%, transparent 0),
+                radial-gradient(circle at 70% 10%, rgba(255, 255, 255, 0.7) 1%, transparent 0),
+                radial-gradient(circle at 10% 40%, rgba(255, 255, 255, 0.6) 1%, transparent 0);
+            background-size: 45vmin 35vmin, 50vmin 70vmin, 60vmin 50vmin, 65vmin 50vmin;
+            background-position: 0 0, 0 0, 0 0, 0 0;
+            animation: snow 5s infinite linear;
         }
 
-        .container {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 10px 20px;
-            position: relative;
-            z-index: 10;
-        }
-
-        .left {
-            text-align: left;
-            flex: 1;
-        }
-
-        .middle {
-            text-align: center;
-            flex: 2;
-        }
-
-        .middle h1 {
-            margin: 0;
-            letter-spacing: 1px;
-        }
-
-        .right {
-            text-align: right;
-            flex: 1;
-            display: flex;
-            justify-content: flex-end;
-        }
-
-        /* Colour Switcher */
-        .color-switcher {
-            display: flex;
-            gap: 8px;
-            background: rgba(0, 0, 0, 0.35);
-            padding: 6px 10px;
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .color-btn {
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            border: 2px solid rgba(255, 255, 255, 0.6);
-            cursor: pointer;
-            outline: none;
-            padding: 0;
-            transition: transform 0.2s ease, border-color 0.2s ease;
-        }
-
-        .color-btn.active {
-            border-color: #fff;
-            transform: scale(1.2);
-        }
-
-        /* Center Countdown Display (Replacing Santa) */
-        .center-countdown {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 20px;
-            z-index: 5;
-            text-align: center;
-        }
-
-        .target-picker {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            background: rgba(0, 0, 0, 0.35);
-            padding: 8px 16px;
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            font-size: 14px;
-        }
-
-        .target-picker select {
-            background: transparent;
-            color: white;
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            border-radius: 6px;
-            padding: 4px 8px;
-            font-size: 13px;
-            outline: none;
-            cursor: pointer;
-        }
-
-        .target-picker select option {
-            background: #222;
-        }
-
-        .countdown-cards {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .card {
-            background: rgba(0, 0, 0, 0.45);
-            border: 1px solid rgba(255, 255, 255, 0.25);
-            border-radius: 12px;
-            padding: 16px 20px;
-            min-width: 70px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
-        }
-
-        .card .number {
-            font-size: clamp(32px, 6vmin, 56px);
-            font-weight: bold;
-            font-family: monospace;
-            line-height: 1;
-        }
-
-        .card .label {
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-top: 6px;
-            opacity: 0.8;
-        }
-
-        .separator {
-            font-size: clamp(24px, 4vmin, 40px);
-            font-weight: bold;
-            opacity: 0.7;
-            padding-bottom: 14px;
-        }
-
-        /* Falling Snow Background */
         @keyframes snow {
             0% {
                 background-position: 0 0, 0 0, 0 0, 0 0;
@@ -227,27 +116,222 @@
             }
         }
 
-        html, body {
-            margin: 0;
-            padding: 0;
-            width: 100vw;
+        .app-container {
+            display: flex;
+            flex-direction: column;
             height: 100vh;
+            width: 100vw;
+            padding-top: var(--safe-top);
+            padding-bottom: var(--safe-bottom);
             overflow: hidden;
-            background-color: var(--bg-color);
-            transition: background-color 0.4s ease;
-            background-image:
-                radial-gradient(circle at 50% 50%, white 2.5%, transparent 0),
-                radial-gradient(circle at 30% 90%, white 1.5%, transparent 0),
-                radial-gradient(circle at 70% 10%, white 1%, transparent 0),
-                radial-gradient(circle at 10% 40%, white 1%, transparent 0);
-            background-size: 45vmin 35vmin, 50vmin 70vmin, 60vmin 50vmin, 65vmin 50vmin;
-            background-position: 0 0, 0 0, 0 0, 0 0;
-            animation: snow 4s infinite linear;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 12px 16px;
+            flex-shrink: 0;
+            border-bottom: 1px solid var(--card-border);
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: clamp(20px, 6vw, 28px);
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        /* Color Picker */
+        .color-picker-wrap {
+            flex-shrink: 0;
+            display: flex;
+            justify-content: center;
+            padding: 12px 16px;
+        }
+
+        .color-picker {
+            display: flex;
+            gap: 10px;
+            background: var(--card-bg);
+            backdrop-filter: blur(8px);
+            padding: 8px 12px;
+            border-radius: 24px;
+            border: 1px solid var(--card-border);
+        }
+
+        .color-btn {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            padding: 0;
+            cursor: pointer;
+            transition: transform 0.2s ease, border-color 0.2s ease;
+            flex-shrink: 0;
+        }
+
+        .color-btn:active {
+            transform: scale(1.15);
+        }
+
+        .color-btn.active {
+            border-color: #fff;
+            transform: scale(1.2);
+        }
+
+        /* Control Panel */
+        .control-panel {
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 12px 16px;
+            background: var(--accent-light);
+        }
+
+        .control-panel label {
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .control-panel select {
+            background: var(--card-bg);
+            color: var(--text-color);
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            padding: 6px 10px;
+            font-size: 14px;
+            cursor: pointer;
+            outline: none;
+            transition: border-color 0.2s ease;
+        }
+
+        .control-panel select:active {
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
+        .control-panel select option {
+            background: #1a1a1a;
+            color: #fff;
+        }
+
+        /* Main Countdown */
+        .countdown-container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px 16px;
+            min-height: 0;
+        }
+
+        .countdown {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .unit {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            background: var(--card-bg);
+            backdrop-filter: blur(8px);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 16px 14px;
+            min-width: 70px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        }
+
+        .unit .value {
+            font-size: clamp(32px, 10vw, 52px);
+            font-weight: 700;
+            font-family: 'Courier New', monospace;
+            line-height: 1;
+            letter-spacing: -1px;
+        }
+
+        .unit-label {
+            font-size: clamp(10px, 2.5vw, 12px);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.85;
+            font-weight: 500;
+        }
+
+        .divider {
+            font-size: clamp(28px, 8vw, 44px);
+            font-weight: 700;
+            opacity: 0.6;
+            padding: 0 2px;
+            line-height: 1;
+            margin: 0 -2px;
+        }
+
+        .divider::before {
+            content: ':';
+        }
+
+        /* Footer */
+        .footer {
+            flex-shrink: 0;
+            text-align: center;
+            padding: 12px 16px;
+            border-top: 1px solid var(--card-border);
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .footer p {
+            margin: 0;
+        }
+
+        /* Responsive: Small phones */
+        @media (max-width: 320px) {
+            .countdown {
+                gap: 6px;
+            }
+
+            .unit {
+                padding: 12px 10px;
+                min-width: 60px;
+            }
+
+            .divider {
+                display: none;
+            }
+        }
+
+        /* Landscape mode */
+        @media (max-aspect-ratio: 9 / 16) {
+            .countdown-container {
+                padding: 16px;
+            }
+
+            .unit .value {
+                font-size: clamp(28px, 8vw, 40px);
+            }
+        }
+
+        /* Reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+            html, body {
+                animation: none;
+            }
+
+            .color-btn {
+                transition: none;
+            }
         }
     </style>
 
     <script>
-        // Color Switcher Logic
+        // Theme switching
         const colorButtons = document.querySelectorAll('.color-btn');
         colorButtons.forEach(btn => {
             btn.addEventListener('click', () => {
@@ -258,27 +342,28 @@
             });
         });
 
-        // Christmas Countdown Logic
+        // Countdown logic
         const wakeTimeSelect = document.getElementById('wakeTime');
         const daysEl = document.getElementById('days');
         const hoursEl = document.getElementById('hours');
         const minsEl = document.getElementById('mins');
         const secsEl = document.getElementById('secs');
+        const countdownEl = document.getElementById('countdown');
 
         function updateCountdown() {
             const now = new Date();
             const year = now.getFullYear();
             const hour = parseInt(wakeTimeSelect.value, 10);
             
-            // Dec 25 at the selected wake-up hour
             let target = new Date(year, 11, 25, hour, 0, 0);
             if (now > target) {
                 target = new Date(year + 1, 11, 25, hour, 0, 0);
             }
 
             const diff = target - now;
+            
             if (diff <= 0) {
-                document.getElementById('countdown').innerHTML = "<div style='font-size: 32px; font-weight: bold;'>🎄 Merry Christmas! 🎅</div>";
+                countdownEl.innerHTML = "<div style='text-align: center; font-size: clamp(24px, 6vw, 40px); font-weight: bold; letter-spacing: 1px;'>🎄 Merry Christmas! 🎅</div>";
                 return;
             }
 
