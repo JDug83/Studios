@@ -1,1289 +1,942 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="en" class="dark">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>GazStudios — AI for everyone</title>
-
-    <script>document.documentElement.classList.add('js');</script>
-
-    <style>
-        * {
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-            color-scheme: light dark;
-        }
-
-        body {
-            margin: 0;
-            font-family:
-                -apple-system,
-                BlinkMacSystemFont,
-                "SF Pro Display",
-                "SF Pro Text",
-                "Segoe UI",
-                Roboto,
-                Helvetica,
-                Arial,
-                sans-serif;
-
-            background: #fbfbfa;
-            color: #121213;
-            min-height: 100vh;
-            overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
-        }
-
-        body.apps-open {
-            overflow: hidden;
-        }
-
-        /* =========================
-           BACKGROUND (Floating Orbs)
-        ========================== */
-
-        .bg {
-            position: fixed;
-            inset: 0;
-            z-index: -1;
-            overflow: hidden;
-            pointer-events: none;
-        }
-
-        .orb {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(90px);
-            opacity: 0.5;
-            animation: float 16s ease-in-out infinite;
-        }
-
-        .orb-1 {
-            width: 560px;
-            height: 560px;
-            left: 6%;
-            top: 2%;
-            background: rgba(229, 169, 60, 0.40);
-        }
-
-        .orb-2 {
-            width: 480px;
-            height: 480px;
-            right: 4%;
-            top: 24%;
-            background: rgba(255, 140, 120, 0.25);
-            animation-duration: 21s;
-            animation-delay: -6s;
-        }
-
-        .orb-3 {
-            width: 520px;
-            height: 520px;
-            left: 34%;
-            top: 62%;
-            background: rgba(120, 170, 255, 0.22);
-            animation-duration: 26s;
-            animation-delay: -11s;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            33%      { transform: translate(40px, -50px) scale(1.12); }
-            66%      { transform: translate(-30px, 30px) scale(0.94); }
-        }
-
-        /* =========================
-           SCROLL PROGRESS BAR
-        ========================== */
-
-        .progress {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            z-index: 200;
-
-            background: linear-gradient(90deg, #e5a93c, #c58f1f, #f0c15a);
-            transform-origin: left;
-            transform: scaleX(0);
-        }
-
-        /* =========================
-           NAVIGATION (Normal / Clean)
-        ========================== */
-
-        .navbar {
-            position: sticky;
-            top: 0;
-            height: 68px;
-            padding: 0 32px;
-
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-
-            z-index: 100;
-            background: rgba(251, 251, 250, 0.85);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-
-            border-bottom: 1px solid #ececea;
-            transition: box-shadow 0.3s ease;
-        }
-
-        .navbar.scrolled {
-            box-shadow: 0 4px 20px rgba(18, 18, 19, 0.05);
-        }
-
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-
-            color: #121213;
-            text-decoration: none;
-            font-size: 17px;
-            font-weight: 600;
-            letter-spacing: -0.2px;
-        }
-
-        .brand img {
-            width: 30px;
-            height: 30px;
-            object-fit: contain;
-            border-radius: 8px;
-        }
-
-        .nav-links {
-            display: flex;
-            align-items: center;
-            gap: 28px;
-        }
-
-        /* Normal clean links - no heavy gold highlight */
-        .nav-links a {
-            color: #6b6b70;
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-            transition: color 0.2s ease, opacity 0.2s ease;
-        }
-
-        .nav-links a:hover {
-            color: #121213;
-            opacity: 0.8;
-        }
-
-        /* =========================
-           BUTTON 17 (Google-style)
-        ========================== */
-
-        .button-17 {
-            appearance: none;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-
-            height: 48px;
-            max-width: 100%;
-            padding: 2px 24px;
-
-            background-color: #ffffff;
-            color: #3c4043;
-            border: 1px solid #e3e3df;
-            border-radius: 24px;
-
-            box-sizing: border-box;
-            cursor: pointer;
-
-            font-family: "Google Sans", Roboto, Arial, sans-serif;
-            font-size: 14px;
-            font-weight: 500;
-            letter-spacing: .25px;
-            line-height: normal;
-            text-align: center;
-            text-decoration: none;
-            white-space: nowrap;
-
-            user-select: none;
-            -webkit-user-select: none;
-            touch-action: manipulation;
-            transition: background-color 0.2s ease, border-color 0.2s ease;
-        }
-
-        .button-17:hover {
-            background-color: #f4f6fa;
-            border-color: #d2d2cc;
-        }
-
-        .button-17:active {
-            background-color: #eceff4;
-        }
-
-        .button-17:focus,
-        .button-17:focus-visible {
-            outline: none;
-        }
-
-        /* =========================
-           MORE APPS OVERLAY
-        ========================== */
-
-        .apps-page {
-            position: fixed;
-            inset: 0;
-            z-index: 1000;
-
-            background: rgba(251, 251, 250, 0.94);
-            backdrop-filter: blur(22px);
-            -webkit-backdrop-filter: blur(22px);
-            overflow-y: auto;
-
-            display: flex;
-            justify-content: center;
-        }
-
-        .apps-page[hidden] {
-            display: none;
-        }
-
-        .apps-page:not([hidden]) {
-            animation: overlayIn 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both;
-        }
-
-        .apps-page:not([hidden]) .apps-inner > * {
-            animation: popIn 0.8s cubic-bezier(0.2, 1.1, 0.3, 1) both;
-            animation-delay: calc(var(--i, 0) * 110ms + 150ms);
-        }
-
-        .apps-page:not([hidden]) .apps-inner > .apps-list,
-        .apps-page:not([hidden]) .apps-inner > #closeAppsBtn {
-            animation: none;
-        }
-
-        @keyframes overlayIn {
-            from { opacity: 0; transform: scale(1.05); }
-            to   { opacity: 1; transform: scale(1); }
-        }
-
-        @keyframes popIn {
-            from { opacity: 0; transform: translateY(40px) scale(0.88); filter: blur(10px); }
-            to   { opacity: 1; transform: none; filter: none; }
-        }
-
-        .apps-inner {
-            width: 100%;
-            max-width: 640px;
-            padding: 96px 24px 64px;
-            text-align: center;
-        }
-
-        .apps-inner h1 {
-            margin: 0;
-            font-size: clamp(40px, 6vw, 64px);
-            line-height: 1.04;
-            letter-spacing: -0.045em;
-            font-weight: 700;
-        }
-
-        .apps-inner p {
-            margin: 16px auto 0;
-            color: #6b6b70;
-            font-size: 17px;
-            line-height: 1.55;
-        }
-
-        .apps-list {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 16px;
-            margin: 44px 0;
-        }
-
-        /* =========================
-           REVEAL ANIMATIONS
-        ========================== */
-
-        .js .reveal {
-            opacity: 0;
-            filter: blur(12px);
-            transform: perspective(1000px) translate3d(var(--tx, 0px), var(--ty, 60px), 0) rotateX(var(--rx, 0deg)) scale(var(--s, 0.94));
-            transition:
-                opacity 0.9s cubic-bezier(0.2, 0.8, 0.2, 1),
-                filter 0.9s cubic-bezier(0.2, 0.8, 0.2, 1),
-                transform 1s cubic-bezier(0.2, 0.8, 0.2, 1);
-            transition-delay: var(--delay, 0ms);
-            will-change: opacity, transform, filter;
-        }
-
-        .js .reveal.visible {
-            opacity: 1;
-            filter: blur(0);
-            transform: none;
-        }
-
-        /* Word-by-word headline reveal */
-        .w {
-            display: inline-block;
-            overflow: hidden;
-            vertical-align: top;
-            padding: 0 0.05em 0.14em;
-            margin: 0 -0.05em -0.14em;
-        }
-
-        .wi {
-            display: inline-block;
-        }
-
-        .js .split .wi {
-            opacity: 0;
-            filter: blur(10px);
-            transform: translateY(115%) rotate(9deg);
-            transform-origin: left bottom;
-            transition:
-                transform 1s cubic-bezier(0.2, 0.9, 0.2, 1),
-                opacity 0.8s ease,
-                filter 0.8s ease;
-            transition-delay: calc(var(--base, 0ms) + var(--i, 0) * 75ms);
-        }
-
-        .js .split.in .wi {
-            opacity: 1;
-            filter: blur(0);
-            transform: none;
-        }
-
-        /* =========================
-           HERO
-        ========================== */
-
-        .hero {
-            max-width: 1040px;
-            margin: 0 auto;
-            padding: 110px 32px 70px;
-            text-align: center;
-        }
-
-        .eyebrow {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 26px;
-            padding: 7px 15px;
-            border: 1px solid #e6e6e2;
-            border-radius: 999px;
-            background: #ffffff;
-            font-size: 13px;
-            font-weight: 600;
-            color: #8a6a1f;
-            letter-spacing: 0.2px;
-        }
-
-        .eyebrow-dot {
-            width: 7px;
-            height: 7px;
-            border-radius: 50%;
-            background: #e5a93c;
-        }
-
-        .hero h1 {
-            margin: 0;
-            font-size: clamp(52px, 7.5vw, 96px);
-            line-height: 1.02;
-            letter-spacing: -0.055em;
-            font-weight: 700;
-        }
-
-        .hero h1 .accent {
-            color: #c58f1f;
-        }
-
-        .accent .wi {
-            background: linear-gradient(100deg, #c58f1f 0%, #f3c65f 30%, #c58f1f 55%, #e5a93c 80%, #c58f1f 100%);
-            background-size: 220% auto;
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            color: transparent;
-            animation: shimmer 5s linear infinite;
-        }
-
-        @keyframes shimmer {
-            to { background-position: 220% center; }
-        }
-
-        .hero-description {
-            max-width: 620px;
-            margin: 28px auto 0;
-            color: #6b6b70;
-            font-size: clamp(17px, 1.9vw, 21px);
-            line-height: 1.55;
-            font-weight: 400;
-            letter-spacing: -0.012em;
-        }
-
-        /* =========================
-           BUTTONS
-        ========================== */
-
-        .button-group {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 12px;
-            margin-top: 36px;
-            flex-wrap: wrap;
-        }
-
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 50px;
-            padding: 0 26px;
-            border-radius: 999px;
-            text-decoration: none;
-            font-size: 15px;
-            font-weight: 600;
-            transition:
-                transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1),
-                background 0.2s ease,
-                border-color 0.2s ease,
-                box-shadow 0.3s ease;
-        }
-
-        .btn-primary {
-            background: #121213;
-            color: #fbfbfa;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            background: #2a2a2c;
-            box-shadow: 0 14px 30px rgba(18, 18, 19, 0.25);
-        }
-
-        .btn-secondary {
-            color: #121213;
-            background: #ffffff;
-            border: 1px solid #e3e3df;
-        }
-
-        .btn-secondary:hover {
-            transform: translateY(-2px);
-            border-color: #cfcfc9;
-            box-shadow: 0 14px 30px rgba(18, 18, 19, 0.08);
-        }
-
-        .btn:focus,
-        .btn:focus-visible,
-        .nav-links a:focus,
-        .nav-links a:focus-visible {
-            outline: none;
-        }
-
-        /* =========================
-           STATS
-        ========================== */
-
-        .stats {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-top: 34px;
-            color: #9a9a9e;
-            font-size: 13px;
-            font-weight: 500;
-        }
-
-        .stats span {
-            display: flex;
-            align-items: center;
-        }
-
-        .stats span:not(:last-child)::after {
-            content: "";
-            width: 4px;
-            height: 4px;
-            margin: 0 12px;
-            border-radius: 50%;
-            background: #d0d0cc;
-        }
-
-        /* =========================
-           FEATURES
-        ========================== */
-
-        .section {
-            max-width: 1160px;
-            margin: 0 auto;
-            padding: 90px 32px 110px;
-        }
-
-        .section-heading {
-            text-align: center;
-            margin-bottom: 52px;
-        }
-
-        .section-heading h2 {
-            margin: 0;
-            font-size: clamp(36px, 5vw, 58px);
-            letter-spacing: -0.045em;
-            line-height: 1.04;
-            font-weight: 700;
-        }
-
-        .section-heading p {
-            max-width: 560px;
-            margin: 18px auto 0;
-            color: #6b6b70;
-            font-size: 17px;
-            line-height: 1.55;
-            font-weight: 400;
-        }
-
-        .cards {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 16px;
-        }
-
-        .card {
-            position: relative;
-            overflow: hidden;
-            padding: 30px;
-            border-radius: 20px;
-            background: #ffffff;
-            border: 1px solid #ececea;
-            transition:
-                transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1),
-                border-color 0.22s ease,
-                box-shadow 0.3s ease;
-        }
-
-        /* Interactive cursor glare */
-        .card::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background: radial-gradient(420px circle at var(--gx, 50%) var(--gy, 50%), rgba(229, 169, 60, 0.18), transparent 45%);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            pointer-events: none;
-        }
-
-        .card:hover {
-            transform: translateY(-4px);
-            border-color: #e3cf9f;
-            box-shadow: 0 22px 50px rgba(197, 143, 31, 0.14);
-        }
-
-        .card:hover::before {
-            opacity: 1;
-        }
-
-        .card-icon {
-            width: 46px;
-            height: 46px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 13px;
-            background: #fdf6e6;
-            color: #c58f1f;
-            font-size: 20px;
-            margin-bottom: 22px;
-        }
-
-        .js .card .card-icon {
-            transform: scale(0) rotate(-180deg);
-        }
-
-        .js .card.in .card-icon {
-            animation: iconPop 0.9s cubic-bezier(0.2, 1.3, 0.3, 1) var(--icon, 300ms) forwards;
-        }
-
-        @keyframes iconPop {
-            0%   { transform: scale(0) rotate(-180deg); }
-            60%  { transform: scale(1.25) rotate(14deg); }
-            100% { transform: scale(1) rotate(0deg); }
-        }
-
-        .card h3 {
-            margin: 0 0 10px;
-            font-size: 22px;
-            letter-spacing: -0.025em;
-        }
-
-        .card p {
-            margin: 0;
-            color: #6b6b70;
-            font-size: 15px;
-            line-height: 1.6;
-            font-weight: 400;
-        }
-
-        .card a {
-            color: #c58f1f;
-            text-decoration: none;
-            font-weight: 600;
-        }
-
-        /* =========================
-           FOOTER
-        ========================== */
-
-        footer {
-            border-top: 1px solid #ececea;
-            padding: 28px 32px;
-            color: #8f8f93;
-            font-size: 13px;
-        }
-
-        .footer-inner {
-            max-width: 1160px;
-            margin: auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        /* =========================
-           RESPONSIVE
-        ========================== */
-
-        @media (max-width: 850px) {
-            .nav-links {
-                display: none;
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GazStudios — AI for everyone</title>
+
+  <!-- GazStudios Tab Favicon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23f7bd44'/%3E%3Cstop offset='100%25' stop-color='%23c58f1f'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='32' height='32' rx='8' fill='%23121217'/%3E%3Crect width='30' height='30' x='1' y='1' rx='7' fill='none' stroke='url(%23g)' stroke-width='1.5' stroke-opacity='0.6'/%3E%3Cg transform='translate(4,4)' stroke='url(%23g)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' fill='none'%3E%3Cpath d='M12 2L2 7l10 5 10-5-10-5z' fill='url(%23g)' fill-opacity='0.25'/%3E%3Cpath d='M2 17l10 5 10-5'/%3E%3Cpath d='M2 12l10 5 10-5'/%3E%3C/g%3E%3C/svg%3E">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#fffbf0',
+              100: '#fef5d6',
+              200: '#fce8ad',
+              300: '#fad67b',
+              400: '#f7bd44',
+              500: '#e5a93c',
+              600: '#c58f1f',
+              700: '#9b6c16',
+              800: '#7d5516',
+              900: '#674616',
+            },
+            darkbg: '#0a0a0c',
+            darkcard: '#121217',
+            darkborder: '#1f1f28'
+          },
+          fontFamily: {
+            sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+            mono: ['JetBrains Mono', 'Fira Code', 'monospace']
+          },
+          animation: {
+            'shimmer': 'shimmer 5s linear infinite',
+            'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            'float-slow': 'float 8s ease-in-out infinite',
+            'spin-slow': 'spin 12s linear infinite'
+          },
+          keyframes: {
+            shimmer: {
+              '0%': { backgroundPosition: '0% 50%' },
+              '50%': { backgroundPosition: '100% 50%' },
+              '100%': { backgroundPosition: '0% 50%' }
+            },
+            float: {
+              '0%, 100%': { transform: 'translateY(0px)' },
+              '50%': { transform: 'translateY(-10px)' }
             }
-
-            .navbar {
-                padding: 0 20px;
-            }
-
-            .hero {
-                padding: 80px 20px 50px;
-            }
-
-            .cards {
-                grid-template-columns: 1fr;
-            }
-
-            .section {
-                padding: 60px 20px 80px;
-            }
-
-            .footer-inner {
-                flex-direction: column;
-                gap: 8px;
-                text-align: center;
-            }
+          }
         }
+      }
+    }
+  </script>
 
-        @media (max-width: 520px) {
-            .hero h1 {
-                font-size: 50px;
-            }
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
-            .button-group {
-                flex-direction: column;
-                width: 100%;
-            }
+  <style>
+    * {
+      box-sizing: border-box;
+      -webkit-font-smoothing: antialiased;
+    }
 
-            .btn {
-                width: min(100%, 320px);
-            }
+    html {
+      scroll-behavior: smooth;
+    }
 
-            .stats {
-                flex-wrap: wrap;
-                row-gap: 8px;
-            }
+    body {
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
 
-            .stats span:not(:last-child)::after {
-                margin: 0 8px;
-            }
-        }
+    /* Custom Glassmorphism */
+    .glass-panel {
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(228, 228, 231, 0.7);
+    }
+    .dark .glass-panel {
+      background: rgba(18, 18, 23, 0.65);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
 
-        /* =========================
-           DARK MODE
-        ========================== */
+    /* Interactive Specular Spotlight Card */
+    .spotlight-card {
+      position: relative;
+      background: rgba(255, 255, 255, 0.85);
+      border: 1px solid rgba(228, 228, 231, 0.9);
+      transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.25s ease, border-color 0.2s ease;
+      will-change: transform;
+    }
+    .dark .spotlight-card {
+      background: rgba(18, 18, 23, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+    }
+    .spotlight-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: radial-gradient(
+        450px circle at var(--gx, 50%) var(--gy, 50%),
+        rgba(229, 169, 60, 0.18),
+        transparent 55%
+      );
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .spotlight-card:hover::before {
+      opacity: 1;
+    }
+    .spotlight-card:hover {
+      box-shadow: 0 20px 40px -15px rgba(229, 169, 60, 0.18);
+      border-color: rgba(229, 169, 60, 0.4);
+    }
 
-        @media (prefers-color-scheme: dark) {
-            body {
-                background: #0d0d0f;
-                color: #f2f2f0;
-            }
+    /* Ambient Aurora Orbs */
+    .aurora-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(100px);
+      opacity: 0.45;
+      pointer-events: none;
+      transition: transform 0.2s cubic-bezier(0.1, 0.9, 0.2, 1);
+    }
+    .dark .aurora-orb {
+      opacity: 0.35;
+      filter: blur(120px);
+    }
 
-            .navbar {
-                background: rgba(13, 13, 15, 0.72);
-                border-bottom-color: #232329;
-            }
+    /* Gradient Text & Shimmer */
+    .shimmer-text {
+      background: linear-gradient(
+        110deg,
+        #b47b14 0%,
+        #e5a93c 25%,
+        #ffe7a3 50%,
+        #e5a93c 75%,
+        #b47b14 100%
+      );
+      background-size: 220% 100%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: shimmer 6s linear infinite;
+    }
+    .dark .shimmer-text {
+      background: linear-gradient(
+        110deg,
+        #e5a93c 0%,
+        #fad67b 25%,
+        #ffffff 50%,
+        #f7bd44 75%,
+        #c58f1f 100%
+      );
+      background-size: 220% 100%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
 
-            .navbar.scrolled {
-                box-shadow: 0 8px 28px rgba(0, 0, 0, 0.5);
-            }
+    /* Subtle Animated Border Gradient */
+    .glow-border {
+      position: relative;
+    }
+    .glow-border::after {
+      content: '';
+      position: absolute;
+      inset: -1px;
+      border-radius: inherit;
+      padding: 1px;
+      background: linear-gradient(135deg, rgba(229, 169, 60, 0.6), transparent 50%, rgba(229, 169, 60, 0.2));
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+    }
 
-            .brand {
-                color: #f2f2f0;
-            }
+    /* Terminal Prompt Caret */
+    .typing-cursor::after {
+      content: "▋";
+      color: #e5a93c;
+      animation: blink 1s step-start infinite;
+      margin-left: 2px;
+    }
+    @keyframes blink {
+      50% { opacity: 0; }
+    }
 
-            .nav-links a {
-                color: #a3a3a9;
-            }
-
-            .nav-links a:hover {
-                color: #f2f2f0;
-            }
-
-            .button-17 {
-                background-color: #1a1a1f;
-                color: #eaeaec;
-                border-color: #2c2c34;
-            }
-
-            .button-17:hover {
-                background-color: #232329;
-                border-color: #3a3a44;
-            }
-
-            .button-17:active {
-                background-color: #2b2b33;
-            }
-
-            .apps-page {
-                background: rgba(13, 13, 15, 0.92);
-            }
-
-            .apps-inner p {
-                color: #a3a3a9;
-            }
-
-            .eyebrow {
-                background: #17171b;
-                border-color: #2a2a31;
-                color: #e5b455;
-            }
-
-            .hero-description {
-                color: #a3a3a9;
-            }
-
-            .hero h1 .accent {
-                color: #f0c15a;
-            }
-
-            .btn-primary {
-                background: #f2f2f0;
-                color: #0d0d0f;
-            }
-
-            .btn-primary:hover {
-                background: #dcdcda;
-                box-shadow: 0 14px 30px rgba(0, 0, 0, 0.5);
-            }
-
-            .btn-secondary {
-                background: #17171b;
-                color: #f2f2f0;
-                border-color: #2c2c34;
-            }
-
-            .btn-secondary:hover {
-                border-color: #3a3a44;
-                box-shadow: 0 14px 30px rgba(0, 0, 0, 0.4);
-            }
-
-            .stats {
-                color: #7c7c82;
-            }
-
-            .stats span:not(:last-child)::after {
-                background: #33333a;
-            }
-
-            .section-heading p {
-                color: #a3a3a9;
-            }
-
-            .card {
-                background: #15151a;
-                border-color: #232329;
-            }
-
-            .card:hover {
-                border-color: #6a5a2a;
-                box-shadow: 0 22px 50px rgba(0, 0, 0, 0.5);
-            }
-
-            .card p {
-                color: #a3a3a9;
-            }
-
-            .card-icon {
-                background: #221d10;
-                color: #e5b455;
-            }
-
-            footer {
-                border-top-color: #232329;
-                color: #7c7c82;
-            }
-
-            .orb {
-                opacity: 0.35;
-            }
-        }
-    </style>
+    /* Reveal entrance styles */
+    .reveal-item {
+      opacity: 0;
+      transform: translateY(24px) scale(0.98);
+      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal-item.visible {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  </style>
 </head>
 
-<body>
+<body class="bg-[#fbfbfa] dark:bg-[#0a0a0e] text-[#121215] dark:text-[#ececf0] min-h-screen overflow-x-hidden selection:bg-brand-500 selection:text-white transition-colors duration-300">
 
-    <!-- Scroll progress bar -->
-    <div class="progress" id="progress"></div>
+  <!-- Reading Progress Bar -->
+  <div id="progressBar" class="fixed top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-brand-600 via-brand-400 to-amber-300 z-50 origin-left scale-x-0 transition-transform duration-75"></div>
 
-    <!-- Floating ambient background -->
-    <div class="bg" aria-hidden="true">
-        <div class="orb orb-1"></div>
-        <div class="orb orb-2"></div>
-        <div class="orb orb-3"></div>
-    </div>
+  <!-- Ambient Dynamic Mesh Background -->
+  <div class="fixed inset-0 pointer-events-none overflow-hidden -z-10" aria-hidden="true">
+    <canvas id="ambientCanvas" class="absolute inset-0 w-full h-full opacity-60 dark:opacity-45"></canvas>
+    <div id="orb1" class="aurora-orb w-[540px] h-[540px] top-[-5%] left-[10%] bg-brand-500/35"></div>
+    <div id="orb2" class="aurora-orb w-[620px] h-[620px] top-[30%] right-[-5%] bg-amber-400/25"></div>
+    <div id="orb3" class="aurora-orb w-[480px] h-[480px] bottom-[10%] left-[30%] bg-blue-500/15 dark:bg-amber-600/20"></div>
+  </div>
 
-    <!-- =========================
-         NAVIGATION
-    ========================== -->
+  <!-- Sticky Modern Navbar -->
+  <header id="navbar" class="sticky top-0 z-40 w-full border-b border-black/[0.06] dark:border-white/[0.08] backdrop-blur-xl bg-white/75 dark:bg-[#0a0a0e]/75 transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-5 sm:px-8 h-18 flex items-center justify-between py-3.5">
+      
+      <!-- Brand Logo -->
+      <a href="#" class="group flex items-center gap-3 text-current no-underline">
+        <div class="relative w-9 h-9 rounded-xl bg-gradient-to-br from-brand-400 to-brand-600 p-[1.5px] shadow-sm shadow-brand-500/20 group-hover:scale-105 transition-transform duration-300">
+          <div class="w-full h-full rounded-[10px] bg-white dark:bg-[#0f0f14] flex items-center justify-center">
+            <svg class="w-5 h-5 text-brand-500 transform group-hover:rotate-12 transition-transform duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+              <path d="M2 17l10 5 10-5"></path>
+              <path d="M2 12l10 5 10-5"></path>
+            </svg>
+          </div>
+        </div>
+        <div class="flex flex-col">
+          <span class="font-bold text-lg tracking-tight flex items-center gap-1.5">
+            GazStudios
+            <span class="text-[10px] font-mono uppercase px-1.5 py-0.5 rounded bg-brand-500/10 dark:bg-brand-500/20 text-brand-600 dark:text-brand-400 border border-brand-500/20">OS</span>
+          </span>
+        </div>
+      </a>
 
-    <header class="navbar" id="navbar">
-
-        <a href="#" class="brand">
-            <img
-                src="Screenshot 2026-09-14 095212.png"
-                alt="GazStudios logo">
-            <span>GazStudios</span>
+      <!-- Desktop Navigation Links -->
+      <nav class="hidden md:flex items-center gap-7 text-sm font-medium text-gray-600 dark:text-gray-300">
+        <a href="https://jdug83.github.io/ai/" target="_blank" class="hover:text-brand-500 dark:hover:text-brand-400 transition-colors flex items-center gap-1">
+          GazChat
+          <span class="text-[10px] px-1 rounded bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 font-semibold">Fast</span>
         </a>
+        <a href="https://jdug83.github.io/GazCode/" target="_blank" class="hover:text-brand-500 dark:hover:text-brand-400 transition-colors">GazCode</a>
+        <a href="Gazchristmas.html" class="hover:text-brand-500 dark:hover:text-brand-400 transition-colors flex items-center gap-1">
+          <span>🎄</span> GazChristmas
+        </a>
+        <a href="Models.html" class="hover:text-brand-500 dark:hover:text-brand-400 transition-colors">Models</a>
+        <a href="#features" class="hover:text-brand-500 dark:hover:text-brand-400 transition-colors">Features</a>
+      </nav>
 
-        <nav class="nav-links">
-            <a href="https://jdug83.github.io/ai/">GazChat</a>
-            <a href="https://jdug83.github.io/GazCode/">GazCode</a>
-            <a href="Gazchristmas.html">🎄 GazChristmas</a>
-            <a href="Models.html">Models</a>
-            <a href="#features">Features</a>
-        </nav>
-
-        <button
-            class="button-17"
-            role="button"
-            id="moreAppsBtn"
-            type="button">
-            More Apps
+      <!-- Action Cluster -->
+      <div class="flex items-center gap-2.5 sm:gap-3">
+        <!-- Theme Toggle -->
+        <button id="themeToggleBtn" type="button" aria-label="Toggle theme" class="p-2.5 rounded-full text-gray-500 dark:text-gray-400 hover:bg-black/5 dark:hover:bg-white/10 transition-colors">
+          <!-- Sun Icon -->
+          <svg id="sunIcon" class="w-5 h-5 hidden dark:block text-brand-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+          </svg>
+          <!-- Moon Icon -->
+          <svg id="moonIcon" class="w-5 h-5 block dark:hidden text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+          </svg>
         </button>
 
-    </header>
+        <!-- More Apps Modal Trigger -->
+        <button id="moreAppsBtn" type="button" class="relative group px-4 py-2 rounded-full text-xs sm:text-sm font-semibold border border-black/10 dark:border-white/15 bg-black/[0.03] dark:bg-white/[0.06] hover:bg-black/[0.08] dark:hover:bg-white/[0.12] transition-all flex items-center gap-2 active:scale-95">
+          <span>More Apps</span>
+          <svg class="w-3.5 h-3.5 text-gray-500 group-hover:translate-x-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7" />
+          </svg>
+        </button>
+      </div>
 
+    </div>
+  </header>
 
-    <!-- =========================
-         MORE APPS PAGE
-    ========================== -->
+  <!-- Hero Section -->
+  <main class="relative z-10 max-w-7xl mx-auto px-5 sm:px-8 pt-16 sm:pt-24 pb-20 overflow-hidden">
+    
+    <!-- Hero Text & Content -->
+    <div class="max-w-4xl mx-auto text-center flex flex-col items-center">
+      
+      <!-- High-Tech Status Pill -->
+      <div class="reveal-item inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full border border-brand-500/30 bg-brand-500/10 dark:bg-brand-500/15 backdrop-blur-md mb-8 shadow-sm">
+        <span class="relative flex h-2.5 w-2.5">
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-400 opacity-75"></span>
+          <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-brand-500"></span>
+        </span>
+        <span class="text-xs font-semibold tracking-wide text-brand-700 dark:text-brand-300">
+          GazChat Nano Engine • Next-Gen Release
+        </span>
+        <span class="hidden sm:inline-block w-1 h-1 rounded-full bg-brand-500/40"></span>
+        <span class="hidden sm:inline-block text-[11px] font-mono text-brand-600 dark:text-brand-400">v3.4 live</span>
+      </div>
 
-    <div
-        class="apps-page"
-        id="moreAppsPage"
-        hidden>
+      <!-- Main Headline -->
+      <h1 class="reveal-item font-extrabold text-5xl sm:text-7xl lg:text-8xl tracking-tight leading-[1.05] mb-6">
+        AI that works <br>
+        <span class="shimmer-text">for everyone.</span>
+      </h1>
 
-        <div class="apps-inner">
+      <!-- Description -->
+      <p class="reveal-item max-w-2xl text-lg sm:text-xl text-gray-600 dark:text-gray-300 leading-relaxed font-normal mb-10">
+        Engineered for instant execution, zero subscription friction, and streamlined intelligence. Experience GazChat Nano and the GazCode suite.
+      </p>
 
-            <h1 style="--i:0">More Apps</h1>
-            <p style="--i:1">Other things we've built at GazStudios.</p>
+      <!-- Primary Action Buttons -->
+      <div class="reveal-item flex flex-wrap items-center justify-center gap-4 w-full sm:w-auto mb-12">
+        <a href="https://jdug83.github.io/ai/" target="_blank" class="w-full sm:w-auto px-7 py-3.5 rounded-full bg-brand-500 hover:bg-brand-400 text-black font-semibold text-sm sm:text-base shadow-lg shadow-brand-500/25 transition-all duration-200 transform hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center gap-2.5 group">
+          <span>Launch GazChat Nano</span>
+          <svg class="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+          </svg>
+        </a>
 
-            <div class="apps-list" style="--i:2">
-                <a
-                    class="button-17"
-                    role="button"
-                    href="https://jdug83.github.io/GazInvaders1/"
-                    target="_blank"
-                    rel="noopener">
-                    Gaz Invaders
-                </a>
-            </div>
+        <a href="https://jdug83.github.io/GazCode/" target="_blank" class="w-full sm:w-auto px-7 py-3.5 rounded-full glass-panel hover:bg-black/5 dark:hover:bg-white/10 text-current font-semibold text-sm sm:text-base border border-black/10 dark:border-white/15 transition-all duration-200 transform hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center gap-2">
+          <svg class="w-4 h-4 text-brand-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+          </svg>
+          <span>Open GazCode 26</span>
+        </a>
+      </div>
 
-            <button
-                class="button-17"
-                role="button"
-                id="closeAppsBtn"
-                type="button"
-                style="--i:3">
-                Back
-            </button>
-
+      <!-- Quick Metrics Counter Strip -->
+      <div class="reveal-item flex flex-wrap items-center justify-center gap-y-3 gap-x-8 text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400">
+        <div class="flex items-center gap-2">
+          <span class="text-emerald-500">●</span>
+          <span>100% Free & Open</span>
         </div>
+        <div class="flex items-center gap-2">
+          <span class="text-brand-500">●</span>
+          <span>&lt; 15ms Latency</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="text-cyan-500">●</span>
+          <span>No Waitlist Required</span>
+        </div>
+      </div>
 
     </div>
 
-
-    <!-- =========================
-         HERO
-    ========================== -->
-
-    <main>
-
-        <section class="hero" id="hero">
-
-            <div class="eyebrow reveal" style="--delay:0ms; --ty:-30px; --s:0.8">
-                <span class="eyebrow-dot"></span>
-                MAJOR UPDATE · NANO 1
+    <!-- Interactive AI Live Terminal / Playground Showcase -->
+    <div class="reveal-item mt-16 max-w-4xl mx-auto">
+      <div class="spotlight-card rounded-2xl p-1 glow-border shadow-2xl backdrop-blur-2xl">
+        <div class="rounded-xl bg-white/90 dark:bg-[#0e0e13]/90 p-5 sm:p-7">
+          
+          <!-- Terminal Header -->
+          <div class="flex items-center justify-between border-b border-black/[0.06] dark:border-white/[0.08] pb-4 mb-5">
+            <div class="flex items-center gap-2">
+              <div class="w-3 h-3 rounded-full bg-rose-500/80"></div>
+              <div class="w-3 h-3 rounded-full bg-amber-500/80"></div>
+              <div class="w-3 h-3 rounded-full bg-emerald-500/80"></div>
+              <span class="ml-2 font-mono text-xs text-gray-400">gazchat-nano://runtime</span>
             </div>
-
-            <h1 class="split" style="--base:150ms">
-                AI that works
-                <br>
-                <span class="accent">for you.</span>
-            </h1>
-
-            <p class="hero-description reveal" style="--delay:750ms">
-                GazChat Nano is fast, free, and built for real work.
-                No waitlist. No credit card. Just intelligent AI.
-            </p>
-
-            <div class="button-group reveal" style="--delay:950ms; --s:0.85">
-
-                <a
-                    class="btn btn-primary"
-                    href="https://jdug83.github.io/ai/">
-                    Try GazChat Nano
-                </a>
-
-                <a
-                    class="btn btn-secondary"
-                    href="Models.html">
-                    Explore Models
-                </a>
-
+            <div class="flex items-center gap-3">
+              <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-500 font-semibold border border-emerald-500/20 flex items-center gap-1">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                ACTIVE
+              </span>
+              <span class="text-xs text-gray-400 font-mono hidden sm:inline">2.4 GHz</span>
             </div>
+          </div>
 
-            <div class="stats reveal" style="--delay:1150ms">
-                <span><span class="count" data-to="100">100</span>% Free</span>
-                <span>No Waitlist</span>
-                <span>Built for Real Work</span>
+          <!-- Prompt Preset Tabs -->
+          <div class="flex flex-wrap gap-2 mb-4">
+            <button class="demo-preset-btn px-3 py-1 text-xs rounded-lg font-mono bg-brand-500/10 dark:bg-brand-500/20 text-brand-700 dark:text-brand-300 border border-brand-500/30 transition-all" data-prompt="What makes GazChat Nano ultra fast?">⚡ Speed Engine</button>
+            <button class="demo-preset-btn px-3 py-1 text-xs rounded-lg font-mono bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 text-gray-600 dark:text-gray-300 border border-transparent transition-all" data-prompt="Build a clean JavaScript debounce function in 3 lines.">💻 JS Snippet</button>
+            <button class="demo-preset-btn px-3 py-1 text-xs rounded-lg font-mono bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 text-gray-600 dark:text-gray-300 border border-transparent transition-all" data-prompt="Write a 2-sentence pitch for a cyber-punk game.">🎮 Creative Pitch</button>
+          </div>
+
+          <!-- Live Output Stream Box -->
+          <div id="aiTerminalOutput" class="min-h-[140px] max-h-[220px] overflow-y-auto p-4 rounded-xl font-mono text-xs sm:text-sm bg-[#f5f5f4] dark:bg-[#07070a] border border-black/5 dark:border-white/5 text-gray-800 dark:text-gray-200 leading-relaxed mb-4">
+            <span class="text-brand-600 dark:text-brand-400 font-bold">$ GazNano: </span>
+            <span id="typedAIResponse" class="typing-cursor">GazChat Nano initialized. Click a preset prompt above or enter your query below to test our sub-millisecond response pipeline.</span>
+          </div>
+
+          <!-- Interactive Input Form -->
+          <form id="aiInteractiveForm" class="relative flex items-center gap-2">
+            <div class="relative flex-1">
+              <span class="absolute left-3.5 top-1/2 -translate-y-1/2 font-mono text-xs text-brand-500 select-none">&gt;</span>
+              <input 
+                id="interactiveInput"
+                type="text" 
+                placeholder="Ask GazChat anything or try a prompt..." 
+                class="w-full pl-8 pr-4 py-3 rounded-xl bg-black/[0.03] dark:bg-white/[0.04] border border-black/10 dark:border-white/10 focus:border-brand-500 focus:outline-none text-xs sm:text-sm font-sans transition-colors placeholder:text-gray-400"
+              />
             </div>
+            <button type="submit" class="px-5 py-3 rounded-xl bg-brand-500 hover:bg-brand-400 text-black font-semibold text-xs sm:text-sm transition-all active:scale-95 flex items-center gap-1.5 shadow-md shadow-brand-500/20">
+              <span>Execute</span>
+              <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+              </svg>
+            </button>
+          </form>
 
-        </section>
-
-
-        <!-- =========================
-             FEATURES
-        ========================== -->
-
-        <section
-            class="section"
-            id="features">
-
-            <div class="section-heading">
-
-                <h2 class="split">
-                    Simple.
-                    <br>
-                    Powerful.
-                </h2>
-
-                <p class="reveal" style="--delay:450ms">
-                    Everything you need to work with AI,
-                    without unnecessary complexity.
-                </p>
-
-            </div>
-
-            <div class="cards">
-
-                <article class="card reveal" style="--delay:0ms; --icon:500ms; --tx:-90px; --ty:70px; --rx:22deg">
-                    <div class="card-icon">✦</div>
-                    <h3>GazChat Nano</h3>
-                    <p>
-                        A lightweight AI experience designed
-                        to respond quickly and help you get
-                        things done.
-                    </p>
-                </article>
-
-                <article class="card reveal" style="--delay:140ms; --icon:640ms; --tx:90px; --ty:70px; --rx:22deg">
-                    <div class="card-icon">◉</div>
-                    <h3>Custom Models</h3>
-                    <p>
-                        Explore and experiment with custom
-                        AI models built for different tasks
-                        and workflows.
-                    </p>
-                </article>
-
-                <article class="card reveal" style="--delay:0ms; --icon:500ms; --tx:-90px; --ty:70px; --rx:22deg">
-                    <div class="card-icon">⚡</div>
-                    <h3>Built for Speed</h3>
-                    <p>
-                        No unnecessary friction. Open GazStudios,
-                        ask your question, and get straight to work.
-                    </p>
-                </article>
-
-                <article class="card reveal" style="--delay:140ms; --icon:640ms; --tx:90px; --ty:70px; --rx:22deg">
-                    <div class="card-icon">💻</div>
-                    <h3>GazCode Editor</h3>
-                    <p>
-                        A complete browser-based code editor with live preview,
-                        project management, and integrated AI assistance.
-                        <a href="https://jdug83.github.io/GazCode/">Open →</a>
-                    </p>
-                </article>
-
-            </div>
-
-        </section>
-
-    </main>
-
-
-    <!-- =========================
-         FOOTER
-    ========================== -->
-
-    <footer class="reveal" style="--ty:30px">
-        <div class="footer-inner">
-            <span>© 2026 GazStudios</span>
-            <span>AI made simple.</span>
         </div>
-    </footer>
+      </div>
+    </div>
 
+  </main>
 
-    <!-- =========================
-         ANIMATION SCRIPT
-    ========================== -->
+  <!-- Features Section -->
+  <section id="features" class="relative z-10 max-w-7xl mx-auto px-5 sm:px-8 py-20 border-t border-black/[0.06] dark:border-white/[0.06]">
+    
+    <div class="max-w-2xl mx-auto text-center mb-16">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-500/10 text-brand-600 dark:text-brand-400 text-xs font-semibold mb-3">
+        CORE ECOSYSTEM
+      </div>
+      <h2 class="text-3xl sm:text-5xl font-extrabold tracking-tight">
+        Simple. Powerful. Fluid.
+      </h2>
+      <p class="mt-4 text-gray-600 dark:text-gray-400 text-base sm:text-lg">
+        Everything you need to create, experiment, and build with artificial intelligence without bloat.
+      </p>
+    </div>
 
-    <script>
-        (function () {
-            const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-            const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    <!-- 4 Cards Grid with 3D tilt effects -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-            const navbar = document.getElementById('navbar');
-            const hero = document.getElementById('hero');
-            const progress = document.getElementById('progress');
-            const orbs = Array.from(document.querySelectorAll('.orb'));
+      <!-- Card 1: GazChat Nano -->
+      <div class="spotlight-card tilt-card p-8 rounded-2xl flex flex-col justify-between group">
+        <div>
+          <div class="w-12 h-12 rounded-xl bg-amber-500/10 dark:bg-amber-400/10 text-brand-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+          </div>
+          <h3 class="text-xl sm:text-2xl font-bold mb-3 tracking-tight group-hover:text-brand-500 transition-colors">GazChat Nano</h3>
+          <p class="text-gray-600 dark:text-gray-400 text-sm sm:text-base leading-relaxed mb-6">
+            A lightweight, instant-start AI engine engineered to eliminate waiting. Designed for swift workflows, smart queries, and lightweight compute consumption.
+          </p>
+        </div>
+        <div class="pt-4 border-t border-black/[0.05] dark:border-white/[0.05] flex items-center justify-between">
+          <a href="https://jdug83.github.io/ai/" target="_blank" class="inline-flex items-center gap-1.5 text-sm font-semibold text-brand-600 dark:text-brand-400 group-hover:gap-2.5 transition-all">
+            Open GazChat <span>→</span>
+          </a>
+          <span class="text-xs font-mono text-gray-400">Zero latency</span>
+        </div>
+      </div>
 
-            /* ---------- Split headlines into words ---------- */
-            function splitWords(el) {
-                el.setAttribute('aria-label', el.textContent.replace(/\s+/g, ' ').trim());
-                let index = 0;
+      <!-- Card 2: Custom Models -->
+      <div class="spotlight-card tilt-card p-8 rounded-2xl flex flex-col justify-between group">
+        <div>
+          <div class="w-12 h-12 rounded-xl bg-blue-500/10 text-blue-500 dark:text-blue-400 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+            </svg>
+          </div>
+          <h3 class="text-xl sm:text-2xl font-bold mb-3 tracking-tight group-hover:text-brand-500 transition-colors">Custom AI Models</h3>
+          <p class="text-gray-600 dark:text-gray-400 text-sm sm:text-base leading-relaxed mb-6">
+            Tailor-made model configurations for code synthesis, creative ideation, and conversational problem-solving. Easily test and compare distinct parameter profiles.
+          </p>
+        </div>
+        <div class="pt-4 border-t border-black/[0.05] dark:border-white/[0.05] flex items-center justify-between">
+          <a href="Models.html" class="inline-flex items-center gap-1.5 text-sm font-semibold text-brand-600 dark:text-brand-400 group-hover:gap-2.5 transition-all">
+            Explore Models <span>→</span>
+          </a>
+          <span class="text-xs font-mono text-gray-400">Modular weights</span>
+        </div>
+      </div>
 
-                (function walk(node) {
-                    Array.from(node.childNodes).forEach(function (child) {
-                        if (child.nodeType === 3) {
-                            const frag = document.createDocumentFragment();
-                            child.textContent.split(/(\s+)/).forEach(function (token) {
-                                if (!token) return;
-                                if (/^\s+$/.test(token)) {
-                                    frag.appendChild(document.createTextNode(' '));
-                                    return;
-                                }
+      <!-- Card 3: Speed & Lightweight Core -->
+      <div class="spotlight-card tilt-card p-8 rounded-2xl flex flex-col justify-between group">
+        <div>
+          <div class="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+            </svg>
+          </div>
+          <h3 class="text-xl sm:text-2xl font-bold mb-3 tracking-tight group-hover:text-brand-500 transition-colors">Built for Speed</h3>
+          <p class="text-gray-600 dark:text-gray-400 text-sm sm:text-base leading-relaxed mb-6">
+            Zero sign-up roadblocks, no bloated trackers, and no sluggish dependencies. You launch GazStudios, type your command, and receive instant intelligence.
+          </p>
+        </div>
+        <div class="pt-4 border-t border-black/[0.05] dark:border-white/[0.05] flex items-center justify-between">
+          <span class="text-xs font-mono text-emerald-600 dark:text-emerald-400 font-medium">99.98% uptime rate</span>
+          <span class="text-xs font-mono text-gray-400">Optimized</span>
+        </div>
+      </div>
 
-                                const outer = document.createElement('span');
-                                outer.className = 'w';
-                                outer.setAttribute('aria-hidden', 'true');
+      <!-- Card 4: GazCode Editor -->
+      <div class="spotlight-card tilt-card p-8 rounded-2xl flex flex-col justify-between group">
+        <div>
+          <div class="w-12 h-12 rounded-xl bg-purple-500/10 text-purple-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+          </div>
+          <h3 class="text-xl sm:text-2xl font-bold mb-3 tracking-tight group-hover:text-brand-500 transition-colors">GazCode Editor 26</h3>
+          <p class="text-gray-600 dark:text-gray-400 text-sm sm:text-base leading-relaxed mb-6">
+            A comprehensive browser-first development suite packed with reactive live preview, smart syntax parsing, and tightly coupled AI coding co-piloting.
+          </p>
+        </div>
+        <div class="pt-4 border-t border-black/[0.05] dark:border-white/[0.05] flex items-center justify-between">
+          <a href="https://jdug83.github.io/GazCode/" target="_blank" class="inline-flex items-center gap-1.5 text-sm font-semibold text-brand-600 dark:text-brand-400 group-hover:gap-2.5 transition-all">
+            Launch IDE <span>→</span>
+          </a>
+          <span class="text-xs font-mono text-gray-400">Desktop & Web</span>
+        </div>
+      </div>
 
-                                const inner = document.createElement('span');
-                                inner.className = 'wi';
-                                inner.style.setProperty('--i', index++);
-                                inner.textContent = token;
+    </div>
+  </section>
 
-                                outer.appendChild(inner);
-                                frag.appendChild(outer);
-                            });
-                            node.replaceChild(frag, child);
-                        } else if (child.nodeType === 1 && child.tagName !== 'BR') {
-                            walk(child);
-                        }
-                    });
-                })(el);
-            }
+  <!-- Footer -->
+  <footer class="relative z-10 border-t border-black/[0.06] dark:border-white/[0.06] py-12 px-5 sm:px-8 bg-black/[0.02] dark:bg-white/[0.02]">
+    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6">
+      
+      <div class="flex items-center gap-3">
+        <div class="w-6 h-6 rounded-md bg-brand-500/20 text-brand-500 flex items-center justify-center font-bold text-xs">G</div>
+        <span class="text-xs sm:text-sm text-gray-500">© 2026 GazStudios. Crafting lightweight AI for all.</span>
+      </div>
 
-            document.querySelectorAll('.split').forEach(splitWords);
+      <div class="flex items-center gap-6 text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400">
+        <button id="openLeaksFooterBtn" type="button" class="hover:text-brand-500 transition-colors flex items-center gap-1.5">
+          <span class="w-1.5 h-1.5 rounded-full bg-brand-500"></span>
+          <span>Upcoming Roadmap & Leaks</span>
+        </button>
+        <a href="https://jdug83.github.io/GazInvaders1/" target="_blank" class="hover:text-brand-500 transition-colors">Gaz Invaders</a>
+      </div>
 
-            /* ---------- Count-up numbers ---------- */
-            const counters = Array.from(document.querySelectorAll('.count'));
+    </div>
+  </footer>
 
-            function countUp(el) {
-                const to = parseInt(el.dataset.to, 10) || 0;
-                const start = performance.now();
+  <!-- MORE APPS MODAL OVERLAY -->
+  <div id="moreAppsModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/60 backdrop-blur-md opacity-0 pointer-events-none transition-all duration-300">
+    <div class="modal-content relative w-full max-w-2xl rounded-3xl glass-panel bg-white/95 dark:bg-[#121217]/95 p-6 sm:p-8 shadow-2xl border border-black/10 dark:border-white/10 transform scale-95 transition-all duration-300">
+      
+      <!-- Close Button -->
+      <button id="closeAppsModalBtn" type="button" class="absolute top-5 right-5 p-2 rounded-full text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/10 transition-colors">
+        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
 
-                (function step(now) {
-                    const k = Math.min((now - start) / 1600, 1);
-                    const eased = 1 - Math.pow(1 - k, 4);
+      <div class="mb-6">
+        <div class="inline-block px-3 py-1 rounded-full bg-brand-500/10 text-brand-600 dark:text-brand-400 text-xs font-semibold mb-2">
+          ECOSYSTEM DIRECTORY
+        </div>
+        <h2 class="text-2xl sm:text-3xl font-bold tracking-tight">GazStudios Applications</h2>
+        <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Explore specialized standalone tools, arcade games, and experimental previews.</p>
+      </div>
 
-                    el.textContent = Math.round(to * eased);
+      <!-- App Grid Cards -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 mb-6 max-h-[50vh] overflow-y-auto pr-1">
+        
+        <!-- App: Gaz Invaders -->
+        <a href="https://jdug83.github.io/GazInvaders1/" target="_blank" class="p-4 rounded-2xl bg-black/[0.02] dark:bg-white/[0.03] hover:bg-brand-500/10 border border-black/[0.06] dark:border-white/[0.06] hover:border-brand-500/30 transition-all group flex items-start gap-3.5">
+          <div class="w-10 h-10 rounded-xl bg-rose-500/15 text-rose-500 flex items-center justify-center text-lg font-bold shrink-0">👾</div>
+          <div>
+            <h4 class="font-bold text-sm group-hover:text-brand-500 transition-colors flex items-center gap-1.5">
+              Gaz Invaders 
+              <span class="text-[10px] font-mono px-1 py-0.2 rounded bg-rose-500/15 text-rose-500">Playable</span>
+            </h4>
+            <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Classic retro arcade shooter reimagined with neon vectors and boss rounds.</p>
+          </div>
+        </a>
 
-                    if (k < 1) {
-                        requestAnimationFrame(step);
-                    }
-                })(start);
-            }
+        <!-- App: GazCode Desktop -->
+        <a href="https://jdug83.github.io/GazCode/" target="_blank" class="p-4 rounded-2xl bg-black/[0.02] dark:bg-white/[0.03] hover:bg-brand-500/10 border border-black/[0.06] dark:border-white/[0.06] hover:border-brand-500/30 transition-all group flex items-start gap-3.5">
+          <div class="w-10 h-10 rounded-xl bg-purple-500/15 text-purple-500 flex items-center justify-center text-lg font-bold shrink-0">💻</div>
+          <div>
+            <h4 class="font-bold text-sm group-hover:text-brand-500 transition-colors flex items-center gap-1.5">
+              GazCode Studio
+              <span class="text-[10px] font-mono px-1 py-0.2 rounded bg-purple-500/15 text-purple-500">IDE</span>
+            </h4>
+            <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Live reactive web editor with real-time compilation and AI code assist.</p>
+          </div>
+        </a>
 
-            if (!reduceMotion) {
-                counters.forEach(function (el) {
-                    el.textContent = '0';
-                });
-            }
+        <!-- App: GazChristmas Mobile -->
+        <a href="Gazchristmas.html" class="p-4 rounded-2xl bg-black/[0.02] dark:bg-white/[0.03] hover:bg-brand-500/10 border border-black/[0.06] dark:border-white/[0.06] hover:border-brand-500/30 transition-all group flex items-start gap-3.5">
+          <div class="w-10 h-10 rounded-xl bg-emerald-500/15 text-emerald-500 flex items-center justify-center text-lg font-bold shrink-0">🎄</div>
+          <div>
+            <h4 class="font-bold text-sm group-hover:text-brand-500 transition-colors flex items-center gap-1.5">
+              GazChristmas
+              <span class="text-[10px] font-mono px-1 py-0.2 rounded bg-emerald-500/15 text-emerald-500">Seasonal</span>
+            </h4>
+            <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Festive holiday experience, seasonal easter eggs, and custom themes.</p>
+          </div>
+        </a>
 
-            /* ---------- Reveal on scroll ---------- */
-            const targets = document.querySelectorAll('.reveal, .split');
+        <!-- App: GazChat Nano AI -->
+        <a href="https://jdug83.github.io/ai/" target="_blank" class="p-4 rounded-2xl bg-black/[0.02] dark:bg-white/[0.03] hover:bg-brand-500/10 border border-black/[0.06] dark:border-white/[0.06] hover:border-brand-500/30 transition-all group flex items-start gap-3.5">
+          <div class="w-10 h-10 rounded-xl bg-brand-500/15 text-brand-500 flex items-center justify-center text-lg font-bold shrink-0">✦</div>
+          <div>
+            <h4 class="font-bold text-sm group-hover:text-brand-500 transition-colors flex items-center gap-1.5">
+              GazChat Web
+              <span class="text-[10px] font-mono px-1 py-0.2 rounded bg-brand-500/15 text-brand-500">AI</span>
+            </h4>
+            <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">High-velocity generative dialogue engine with immediate prompt turnaround.</p>
+          </div>
+        </a>
 
-            function finish(el) {
-                const delay = parseInt(el.style.getPropertyValue('--delay') || '0', 10) || 0;
-                setTimeout(function () {
-                    el.classList.remove('reveal', 'visible');
-                    el.style.removeProperty('--delay');
-                }, 1200 + delay);
-            }
+      </div>
 
-            function reveal(el) {
-                el.classList.add('in');
+      <div class="flex justify-end pt-3 border-t border-black/[0.06] dark:border-white/[0.06]">
+        <button id="closeAppsBtnSecondary" type="button" class="px-5 py-2 rounded-xl text-xs font-semibold bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/15 transition-colors">
+          Close Overview
+        </button>
+      </div>
 
-                if (el.classList.contains('reveal')) {
-                    el.classList.add('visible');
-                    finish(el);
-                }
+    </div>
+  </div>
 
-                if (!reduceMotion) {
-                    el.querySelectorAll('.count').forEach(countUp);
-                }
-            }
+  <!-- LEAKS & ROADMAP MODAL OVERLAY -->
+  <div id="leaksModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/60 backdrop-blur-md opacity-0 pointer-events-none transition-all duration-300">
+    <div class="modal-content relative w-full max-w-3xl rounded-3xl glass-panel bg-white/95 dark:bg-[#121217]/95 p-6 sm:p-8 shadow-2xl border border-black/10 dark:border-white/10 transform scale-95 transition-all duration-300">
+      
+      <!-- Close Button -->
+      <button id="closeLeaksModalBtn" type="button" class="absolute top-5 right-5 p-2 rounded-full text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/10 transition-colors">
+        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
 
-            if (reduceMotion || !('IntersectionObserver' in window)) {
-                targets.forEach(function (el) {
-                    el.classList.add('in', 'visible');
-                });
-            } else {
-                const observer = new IntersectionObserver(function (entries) {
-                    entries.forEach(function (entry) {
-                        if (entry.isIntersecting) {
-                            reveal(entry.target);
-                            observer.unobserve(entry.target);
-                        }
-                    });
-                }, {
-                    threshold: 0.15,
-                    rootMargin: '0px 0px -6% 0px'
-                });
+      <div class="flex items-center gap-2 mb-2">
+        <span class="w-2 h-2 rounded-full bg-brand-500 animate-pulse"></span>
+        <span class="text-xs font-mono font-semibold uppercase tracking-wider text-brand-600 dark:text-brand-400">Classified R&D Preview</span>
+      </div>
+      <h2 class="text-2xl sm:text-4xl font-extrabold tracking-tight">GazStudios Leaks & Roadmap</h2>
+      <p class="text-sm text-gray-500 dark:text-gray-400 mt-1 mb-6">Upcoming releases, internal milestones, and active prototype deployments for 2026.</p>
 
-                targets.forEach(function (el) {
-                    observer.observe(el);
-                });
-            }
+      <!-- Roadmap Timeline List -->
+      <div class="space-y-4 max-h-[55vh] overflow-y-auto pr-2">
+        
+        <!-- Leak Item 1 -->
+        <div class="p-5 rounded-2xl bg-black/[0.02] dark:bg-white/[0.03] border border-black/[0.06] dark:border-white/[0.06] hover:border-brand-500/30 transition-all">
+          <div class="flex items-center justify-between gap-3 mb-2">
+            <span class="text-xs font-mono px-2 py-0.5 rounded bg-brand-500/15 text-brand-600 dark:text-brand-400 font-semibold">November 2026</span>
+            <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-500 font-medium">In Active Dev</span>
+          </div>
+          <h4 class="font-bold text-base flex items-center gap-2">
+            <span>💻</span> GazCode Desktop Native App
+          </h4>
+          <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-300 mt-1 leading-relaxed">
+            GazCode is breaking out of the browser. A high-performance native desktop distribution built with local file system sync, offline LLM assistance, and plug-in extensions.
+          </p>
+        </div>
 
-            /* ---------- 3D tilt + glare on cards ---------- */
-            if (finePointer && !reduceMotion) {
-                document.querySelectorAll('.card').forEach(function (card) {
-                    card.addEventListener('mousemove', function (e) {
-                        if (card.classList.contains('reveal')) return;
+        <!-- Leak Item 2 -->
+        <div class="p-5 rounded-2xl bg-black/[0.02] dark:bg-white/[0.03] border border-black/[0.06] dark:border-white/[0.06] hover:border-brand-500/30 transition-all">
+          <div class="flex items-center justify-between gap-3 mb-2">
+            <span class="text-xs font-mono px-2 py-0.5 rounded bg-brand-500/15 text-brand-600 dark:text-brand-400 font-semibold">December 2026</span>
+            <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-500 font-medium">Planned Feature</span>
+          </div>
+          <h4 class="font-bold text-base flex items-center gap-2">
+            <span>🎄</span> GazChristmas Mobile & Festive Overhaul
+          </h4>
+          <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-300 mt-1 leading-relaxed">
+            Dedicated mobile responsive interface tailored for smartphones, interactive holiday mini-games, and dynamic snow particle shaders.
+          </p>
+        </div>
 
-                        const r = card.getBoundingClientRect();
-                        const px = (e.clientX - r.left) / r.width;
-                        const py = (e.clientY - r.top) / r.height;
+        <!-- Leak Item 3 -->
+        <div class="p-5 rounded-2xl bg-black/[0.02] dark:bg-white/[0.03] border border-black/[0.06] dark:border-white/[0.06] hover:border-brand-500/30 transition-all">
+          <div class="flex items-center justify-between gap-3 mb-2">
+            <span class="text-xs font-mono px-2 py-0.5 rounded bg-brand-500/15 text-brand-600 dark:text-brand-400 font-semibold">Q1 2027</span>
+            <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-purple-500/15 text-purple-500 font-medium">Design Sprint</span>
+          </div>
+          <h4 class="font-bold text-base flex items-center gap-2">
+            <span>✨</span> GazNano Dynamic Theme Engine
+          </h4>
+          <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-300 mt-1 leading-relaxed">
+            Customizable glass themes, cybernetic palettes, and sound effects for code execution and chat completions.
+          </p>
+        </div>
 
-                        const rotY = (px - 0.5) * 14;
-                        const rotX = -(py - 0.5) * 14;
+      </div>
 
-                        card.style.setProperty('--gx', (px * 100) + '%');
-                        card.style.setProperty('--gy', (py * 100) + '%');
+      <div class="flex justify-between items-center pt-4 mt-4 border-t border-black/[0.06] dark:border-white/[0.06]">
+        <span class="text-xs text-gray-400 font-mono">Status: Verified by GazStudios team</span>
+        <button id="closeLeaksBtnSecondary" type="button" class="px-5 py-2 rounded-xl text-xs font-semibold bg-brand-500 text-black hover:bg-brand-400 transition-colors">
+          Got It
+        </button>
+      </div>
 
-                        card.style.transform =
-                            'perspective(900px) rotateX(' + rotX + 'deg) rotateY(' + rotY + 'deg) translateY(-6px) scale(1.015)';
-                    });
+    </div>
+  </div>
 
-                    card.addEventListener('mouseleave', function () {
-                        card.style.transform = '';
-                    });
-                });
-            }
+  <script>
+    (function() {
+      // --- THEME MANAGEMENT ---
+      const themeToggleBtn = document.getElementById('themeToggleBtn');
+      const htmlEl = document.documentElement;
 
-            /* ---------- Main Animation Loop (Hero parallax + Orbs) ---------- */
-            let mouseX = window.innerWidth / 2;
-            let mouseY = window.innerHeight / 2;
-            let smoothX = mouseX;
-            let smoothY = mouseY;
+      // Initialize theme from localStorage or preferred system
+      const savedTheme = localStorage.getItem('gaz_theme') || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+      if (savedTheme === 'dark') {
+        htmlEl.classList.add('dark');
+      } else {
+        htmlEl.classList.remove('dark');
+      }
 
-            window.addEventListener('mousemove', function (e) {
-                mouseX = e.clientX;
-                mouseY = e.clientY;
-            }, { passive: true });
+      themeToggleBtn.addEventListener('click', () => {
+        const isDark = htmlEl.classList.toggle('dark');
+        localStorage.setItem('gaz_theme', isDark ? 'dark' : 'light');
+      });
 
-            function tick() {
-                const y = window.scrollY;
+      // --- SCROLL PROGRESS BAR ---
+      const progressBar = document.getElementById('progressBar');
+      window.addEventListener('scroll', () => {
+        const winScroll = document.documentElement.scrollTop;
+        const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const scrolled = height > 0 ? (winScroll / height) : 0;
+        progressBar.style.transform = `scaleX(${scrolled})`;
+      }, { passive: true });
 
-                smoothX += (mouseX - smoothX) * 0.1;
-                smoothY += (mouseY - smoothY) * 0.1;
+      // --- INTERACTIVE BACKGROUND PARTICLES / ORBS ---
+      const canvas = document.getElementById('ambientCanvas');
+      const ctx = canvas.getContext('2d');
+      let particles = [];
+      let width = 0;
+      let height = 0;
 
-                // Ambient orbs drift with parallax
-                const nx = smoothX / window.innerWidth - 0.5;
-                const ny = smoothY / window.innerHeight - 0.5;
+      function resizeCanvas() {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+      }
+      window.addEventListener('resize', resizeCanvas);
+      resizeCanvas();
 
-                orbs.forEach(function (orb, i) {
-                    const depth = (i + 1) * 36;
-                    orb.style.translate =
-                        (-nx * depth) + 'px ' + (-ny * depth - y * 0.05 * (i + 1)) + 'px';
-                });
-
-                // Scroll progress
-                const max = document.documentElement.scrollHeight - window.innerHeight;
-                progress.style.transform = 'scaleX(' + (max > 0 ? y / max : 0) + ')';
-
-                // Navbar shadow
-                navbar.classList.toggle('scrolled', y > 10);
-
-                // Hero smooth parallax
-                const p = Math.min(y / 700, 1);
-                hero.style.translate = '0 ' + (y * 0.28) + 'px';
-                hero.style.scale = String(1 - p * 0.1);
-                hero.style.opacity = String(1 - p * 0.9);
-
-                requestAnimationFrame(tick);
-            }
-
-            requestAnimationFrame(tick);
-        })();
-    </script>
-
-
-    <!-- =========================
-         MORE APPS SCRIPT
-    ========================== -->
-
-    <script>
-        const appsPage = document.getElementById('moreAppsPage');
-        const openAppsBtn = document.getElementById('moreAppsBtn');
-        const closeAppsBtn = document.getElementById('closeAppsBtn');
-
-        function openApps() {
-            appsPage.hidden = false;
-            document.body.classList.add('apps-open');
+      class Particle {
+        constructor() {
+          this.reset();
         }
-
-        function closeApps() {
-            appsPage.hidden = true;
-            document.body.classList.remove('apps-open');
+        reset() {
+          this.x = Math.random() * width;
+          this.y = Math.random() * height;
+          this.size = Math.random() * 2 + 0.5;
+          this.vx = (Math.random() - 0.5) * 0.4;
+          this.vy = (Math.random() - 0.5) * 0.4;
+          this.alpha = Math.random() * 0.5 + 0.1;
         }
+        update() {
+          this.x += this.vx;
+          this.y += this.vy;
+          if (this.x < 0 || this.x > width || this.y < 0 || this.y > height) {
+            this.reset();
+          }
+        }
+        draw() {
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+          ctx.fillStyle = htmlEl.classList.contains('dark') ? `rgba(229, 169, 60, ${this.alpha})` : `rgba(180, 120, 20, ${this.alpha * 0.6})`;
+          ctx.fill();
+        }
+      }
 
-        openAppsBtn.addEventListener('click', openApps);
-        closeAppsBtn.addEventListener('click', closeApps);
+      for (let i = 0; i < 45; i++) {
+        particles.push(new Particle());
+      }
 
-        document.addEventListener('keydown', function (event) {
-            if (event.key === 'Escape' && !appsPage.hidden) {
-                closeApps();
-            }
+      function animateParticles() {
+        ctx.clearRect(0, 0, width, height);
+        particles.forEach(p => {
+          p.update();
+          p.draw();
         });
-    </script>
+        requestAnimationFrame(animateParticles);
+      }
+      animateParticles();
 
+      // Mouse Parallax for Orbs
+      const orb1 = document.getElementById('orb1');
+      const orb2 = document.getElementById('orb2');
+      const orb3 = document.getElementById('orb3');
+
+      window.addEventListener('mousemove', (e) => {
+        const nx = (e.clientX / window.innerWidth) - 0.5;
+        const ny = (e.clientY / window.innerHeight) - 0.5;
+        if (orb1) orb1.style.transform = `translate(${nx * 40}px, ${ny * 40}px)`;
+        if (orb2) orb2.style.transform = `translate(${-nx * 50}px, ${-ny * 50}px)`;
+        if (orb3) orb3.style.transform = `translate(${nx * 30}px, ${-ny * 30}px)`;
+      }, { passive: true });
+
+      // --- REVEAL ON SCROLL ---
+      const revealItems = document.querySelectorAll('.reveal-item');
+      const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            revealObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.1 });
+
+      revealItems.forEach((item, index) => {
+        item.style.transitionDelay = `${index * 80}ms`;
+        revealObserver.observe(item);
+      });
+
+      // --- 3D TILT CARDS & SPECULAR SPOTLIGHT ---
+      const cards = document.querySelectorAll('.spotlight-card');
+      cards.forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+          const rect = card.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+          const px = (x / rect.width);
+          const py = (y / rect.height);
+
+          card.style.setProperty('--gx', `${px * 100}%`);
+          card.style.setProperty('--gy', `${py * 100}%`);
+
+          if (card.classList.contains('tilt-card')) {
+            const rotX = -(py - 0.5) * 10;
+            const rotY = (px - 0.5) * 10;
+            card.style.transform = `perspective(1000px) rotateX(${rotX}deg) rotateY(${rotY}deg) translateY(-4px)`;
+          }
+        });
+
+        card.addEventListener('mouseleave', () => {
+          if (card.classList.contains('tilt-card')) {
+            card.style.transform = '';
+          }
+        });
+      });
+
+      // --- AI PLAYGROUND SIMULATION ---
+      const typedOutput = document.getElementById('typedAIResponse');
+      const interactiveForm = document.getElementById('aiInteractiveForm');
+      const interactiveInput = document.getElementById('interactiveInput');
+      const presetBtns = document.querySelectorAll('.demo-preset-btn');
+
+      const mockResponses = {
+        "speed": "GazChat Nano is compiled down to optimized edge bytecode with minimal inference latency (avg 14ms). No bloated tracking layers or blocking handshakes.",
+        "js": "const debounce = (fn, ms = 300) => { let t; return (...args) => { clearTimeout(t); t = setTimeout(() => fn(...args), ms); }; };",
+        "pitch": "In 2099 Neo-London, memories are currency and your synth-brain is hacked. Rewire reality before the memory debt collectors log your wipe command.",
+        "default": "Processing complete via GazNano Engine in 12.4ms. Clean execution, verified syntax, zero token overhead."
+      };
+
+      let typingInterval = null;
+
+      function typeText(text) {
+        clearInterval(typingInterval);
+        typedOutput.textContent = '';
+        typedOutput.classList.add('typing-cursor');
+        let i = 0;
+        typingInterval = setInterval(() => {
+          if (i < text.length) {
+            typedOutput.textContent += text.charAt(i);
+            i++;
+          } else {
+            clearInterval(typingInterval);
+            typedOutput.classList.remove('typing-cursor');
+          }
+        }, 14);
+      }
+
+      presetBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const prompt = btn.getAttribute('data-prompt');
+          interactiveInput.value = prompt;
+          triggerSimulatedAI(prompt);
+        });
+      });
+
+      interactiveForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const prompt = interactiveInput.value.trim();
+        if (!prompt) return;
+        triggerSimulatedAI(prompt);
+      });
+
+      function triggerSimulatedAI(prompt) {
+        const lower = prompt.toLowerCase();
+        let reply = mockResponses.default;
+        if (lower.includes('speed') || lower.includes('fast')) reply = mockResponses.speed;
+        else if (lower.includes('javascript') || lower.includes('debounce') || lower.includes('code')) reply = mockResponses.js;
+        else if (lower.includes('pitch') || lower.includes('creative') || lower.includes('game')) reply = mockResponses.pitch;
+        typeText(reply);
+      }
+
+      // --- MODALS (MORE APPS & LEAKS) ---
+      const moreAppsModal = document.getElementById('moreAppsModal');
+      const leaksModal = document.getElementById('leaksModal');
+      const moreAppsBtn = document.getElementById('moreAppsBtn');
+      const openLeaksFooterBtn = document.getElementById('openLeaksFooterBtn');
+
+      function openModal(modal) {
+        modal.classList.remove('pointer-events-none');
+        modal.classList.add('opacity-100');
+        const content = modal.querySelector('.modal-content');
+        if (content) {
+          content.classList.remove('scale-95');
+          content.classList.add('scale-100');
+        }
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeModal(modal) {
+        modal.classList.add('pointer-events-none');
+        modal.classList.remove('opacity-100');
+        const content = modal.querySelector('.modal-content');
+        if (content) {
+          content.classList.remove('scale-100');
+          content.classList.add('scale-95');
+        }
+        document.body.style.overflow = '';
+      }
+
+      moreAppsBtn.addEventListener('click', () => openModal(moreAppsModal));
+      document.getElementById('closeAppsModalBtn').addEventListener('click', () => closeModal(moreAppsModal));
+      document.getElementById('closeAppsBtnSecondary').addEventListener('click', () => closeModal(moreAppsModal));
+
+      openLeaksFooterBtn.addEventListener('click', () => openModal(leaksModal));
+      document.getElementById('closeLeaksModalBtn').addEventListener('click', () => closeModal(leaksModal));
+      document.getElementById('closeLeaksBtnSecondary').addEventListener('click', () => closeModal(leaksModal));
+
+      // Close on clicking backdrop
+      [moreAppsModal, leaksModal].forEach(modal => {
+        modal.addEventListener('click', (e) => {
+          if (e.target === modal) closeModal(modal);
+        });
+      });
+
+      // Close with ESC key
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          closeModal(moreAppsModal);
+          closeModal(leaksModal);
+        }
+      });
+
+    })();
+  </script>
 </body>
-
 </html>
