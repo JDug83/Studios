@@ -258,6 +258,9 @@
           <span>🎄</span> GazChristmas
         </a>
         <a href="Models.html" class="hover:text-brand-500 dark:hover:text-brand-400 transition-colors">Models</a>
+        <a href="Leaks.html" class="hover:text-brand-500 dark:hover:text-brand-400 transition-colors flex items-center gap-1">
+          Upcoming Updates
+        </a>
         <a href="#features" class="hover:text-brand-500 dark:hover:text-brand-400 transition-colors">Features</a>
       </nav>
 
@@ -525,10 +528,11 @@
       </div>
 
       <div class="flex items-center gap-6 text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400">
-        <button id="openLeaksFooterBtn" type="button" class="hover:text-brand-500 transition-colors flex items-center gap-1.5">
+        <!-- Direct link to Leaks.html -->
+        <a href="Leaks.html" class="hover:text-brand-500 transition-colors flex items-center gap-1.5">
           <span class="w-1.5 h-1.5 rounded-full bg-brand-500"></span>
           <span>Upcoming Roadmap & Leaks</span>
-        </button>
+        </a>
         <a href="https://jdug83.github.io/GazInvaders1/" target="_blank" class="hover:text-brand-500 transition-colors">Gaz Invaders</a>
       </div>
 
@@ -616,88 +620,12 @@
     </div>
   </div>
 
-  <!-- LEAKS & ROADMAP MODAL OVERLAY -->
-  <div id="leaksModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/60 backdrop-blur-md opacity-0 pointer-events-none transition-all duration-300">
-    <div class="modal-content relative w-full max-w-3xl rounded-3xl glass-panel bg-white/95 dark:bg-[#121217]/95 p-6 sm:p-8 shadow-2xl border border-black/10 dark:border-white/10 transform scale-95 transition-all duration-300">
-      
-      <!-- Close Button -->
-      <button id="closeLeaksModalBtn" type="button" class="absolute top-5 right-5 p-2 rounded-full text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/10 transition-colors">
-        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-        </svg>
-      </button>
-
-      <div class="flex items-center gap-2 mb-2">
-        <span class="w-2 h-2 rounded-full bg-brand-500 animate-pulse"></span>
-        <span class="text-xs font-mono font-semibold uppercase tracking-wider text-brand-600 dark:text-brand-400">Classified R&D Preview</span>
-      </div>
-      <h2 class="text-2xl sm:text-4xl font-extrabold tracking-tight">GazStudios Leaks & Roadmap</h2>
-      <p class="text-sm text-gray-500 dark:text-gray-400 mt-1 mb-6">Upcoming releases, internal milestones, and active prototype deployments for 2026.</p>
-
-      <!-- Roadmap Timeline List -->
-      <div class="space-y-4 max-h-[55vh] overflow-y-auto pr-2">
-        
-        <!-- Leak Item 1 -->
-        <div class="p-5 rounded-2xl bg-black/[0.02] dark:bg-white/[0.03] border border-black/[0.06] dark:border-white/[0.06] hover:border-brand-500/30 transition-all">
-          <div class="flex items-center justify-between gap-3 mb-2">
-            <span class="text-xs font-mono px-2 py-0.5 rounded bg-brand-500/15 text-brand-600 dark:text-brand-400 font-semibold">November 2026</span>
-            <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-500 font-medium">In Active Dev</span>
-          </div>
-          <h4 class="font-bold text-base flex items-center gap-2">
-            <span>💻</span> GazCode Desktop Native App
-          </h4>
-          <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-300 mt-1 leading-relaxed">
-            GazCode is breaking out of the browser. A high-performance native desktop distribution built with local file system sync, offline LLM assistance, and plug-in extensions.
-          </p>
-        </div>
-
-        <!-- Leak Item 2 -->
-        <div class="p-5 rounded-2xl bg-black/[0.02] dark:bg-white/[0.03] border border-black/[0.06] dark:border-white/[0.06] hover:border-brand-500/30 transition-all">
-          <div class="flex items-center justify-between gap-3 mb-2">
-            <span class="text-xs font-mono px-2 py-0.5 rounded bg-brand-500/15 text-brand-600 dark:text-brand-400 font-semibold">December 2026</span>
-            <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-blue-500/15 text-blue-500 font-medium">Planned Feature</span>
-          </div>
-          <h4 class="font-bold text-base flex items-center gap-2">
-            <span>🎄</span> GazChristmas Mobile & Festive Overhaul
-          </h4>
-          <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-300 mt-1 leading-relaxed">
-            Dedicated mobile responsive interface tailored for smartphones, interactive holiday mini-games, and dynamic snow particle shaders.
-          </p>
-        </div>
-
-        <!-- Leak Item 3 -->
-        <div class="p-5 rounded-2xl bg-black/[0.02] dark:bg-white/[0.03] border border-black/[0.06] dark:border-white/[0.06] hover:border-brand-500/30 transition-all">
-          <div class="flex items-center justify-between gap-3 mb-2">
-            <span class="text-xs font-mono px-2 py-0.5 rounded bg-brand-500/15 text-brand-600 dark:text-brand-400 font-semibold">Q1 2027</span>
-            <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-purple-500/15 text-purple-500 font-medium">Design Sprint</span>
-          </div>
-          <h4 class="font-bold text-base flex items-center gap-2">
-            <span>✨</span> GazNano Dynamic Theme Engine
-          </h4>
-          <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-300 mt-1 leading-relaxed">
-            Customizable glass themes, cybernetic palettes, and sound effects for code execution and chat completions.
-          </p>
-        </div>
-
-      </div>
-
-      <div class="flex justify-between items-center pt-4 mt-4 border-t border-black/[0.06] dark:border-white/[0.06]">
-        <span class="text-xs text-gray-400 font-mono">Status: Verified by GazStudios team</span>
-        <button id="closeLeaksBtnSecondary" type="button" class="px-5 py-2 rounded-xl text-xs font-semibold bg-brand-500 text-black hover:bg-brand-400 transition-colors">
-          Got It
-        </button>
-      </div>
-
-    </div>
-  </div>
-
   <script>
     (function() {
       // --- THEME MANAGEMENT ---
       const themeToggleBtn = document.getElementById('themeToggleBtn');
       const htmlEl = document.documentElement;
 
-      // Initialize theme from localStorage or preferred system
       const savedTheme = localStorage.getItem('gaz_theme') || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
       if (savedTheme === 'dark') {
         htmlEl.classList.add('dark');
@@ -885,11 +813,9 @@
         typeText(reply);
       }
 
-      // --- MODALS (MORE APPS & LEAKS) ---
+      // --- MORE APPS MODAL ---
       const moreAppsModal = document.getElementById('moreAppsModal');
-      const leaksModal = document.getElementById('leaksModal');
       const moreAppsBtn = document.getElementById('moreAppsBtn');
-      const openLeaksFooterBtn = document.getElementById('openLeaksFooterBtn');
 
       function openModal(modal) {
         modal.classList.remove('pointer-events-none');
@@ -917,22 +843,15 @@
       document.getElementById('closeAppsModalBtn').addEventListener('click', () => closeModal(moreAppsModal));
       document.getElementById('closeAppsBtnSecondary').addEventListener('click', () => closeModal(moreAppsModal));
 
-      openLeaksFooterBtn.addEventListener('click', () => openModal(leaksModal));
-      document.getElementById('closeLeaksModalBtn').addEventListener('click', () => closeModal(leaksModal));
-      document.getElementById('closeLeaksBtnSecondary').addEventListener('click', () => closeModal(leaksModal));
-
       // Close on clicking backdrop
-      [moreAppsModal, leaksModal].forEach(modal => {
-        modal.addEventListener('click', (e) => {
-          if (e.target === modal) closeModal(modal);
-        });
+      moreAppsModal.addEventListener('click', (e) => {
+        if (e.target === moreAppsModal) closeModal(moreAppsModal);
       });
 
       // Close with ESC key
       document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
           closeModal(moreAppsModal);
-          closeModal(leaksModal);
         }
       });
 
