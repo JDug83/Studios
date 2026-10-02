@@ -2545,5 +2545,241 @@
     })();
   </script>
 
+  <!-- =========================================
+       MOBILE IN-SITE APP VIEWER
+       Apps open inside the site on phones,
+       with the bottom dock always visible.
+       ========================================= -->
+
+  <style>
+    .gz-viewer {
+      position: fixed;
+      left: 0; right: 0; top: 0;
+      bottom: calc(72px + env(safe-area-inset-bottom));
+      z-index: 55;
+      display: flex;
+      flex-direction: column;
+      background: #fbfbfa;
+      transform: translateY(16px);
+      opacity: 0;
+      visibility: hidden;
+      transition: transform .3s cubic-bezier(.16,1,.3,1), opacity .25s ease, visibility 0s linear .3s;
+    }
+    .dark .gz-viewer { background: #0a0a0e; }
+    .gz-viewer.open {
+      transform: none; opacity: 1; visibility: visible;
+      transition: transform .3s cubic-bezier(.16,1,.3,1), opacity .25s ease;
+    }
+    .gz-viewer-bar {
+      display: flex; align-items: center; gap: 2px;
+      height: calc(52px + env(safe-area-inset-top, 0px));
+      min-height: 52px;
+      flex-shrink: 0;
+      box-sizing: border-box;
+      padding: env(safe-area-inset-top, 0px) 6px 0 14px;
+      background: rgba(255,255,255,.92);
+      border-bottom: 1px solid rgba(0,0,0,.08);
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+    }
+    .dark .gz-viewer-bar { background: rgba(13,13,18,.92); border-bottom-color: rgba(255,255,255,.1); }
+    .gz-viewer-title {
+      flex: 1; min-width: 0;
+      display: flex; align-items: center; gap: 10px;
+      font-weight: 700; font-size: 15px;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .gz-viewer-title .gz-dot {
+      width: 26px; height: 26px; border-radius: 8px; flex-shrink: 0;
+      display: grid; place-items: center;
+      background: rgba(229,169,60,.15); color: #e5a93c;
+    }
+    .gz-vbtn {
+      width: 44px; height: 44px; border-radius: 999px;
+      display: grid; place-items: center;
+      border: 0; background: transparent; color: #6b7280; cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .gz-vbtn:active { background: rgba(0,0,0,.06); }
+    .dark .gz-vbtn { color: #9ca3af; }
+    .dark .gz-vbtn:active { background: rgba(255,255,255,.08); }
+    .gz-frame-wrap { position: relative; flex: 1; }
+    .gz-frame-wrap iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; background: transparent; }
+    .gz-loading {
+      position: absolute; inset: 0; display: grid; place-items: center;
+      background: inherit; color: #9ca3af;
+      font: 12px 'JetBrains Mono', monospace;
+      transition: opacity .2s;
+    }
+    .gz-loading.hide { opacity: 0; pointer-events: none; }
+    .gz-spinner {
+      width: 28px; height: 28px; margin: 0 auto 12px; border-radius: 50%;
+      border: 3px solid rgba(229,169,60,.2); border-top-color: #e5a93c;
+      animation: gzspin .8s linear infinite;
+    }
+    @keyframes gzspin { to { transform: rotate(360deg); } }
+
+    /* Dock highlight follows the open app */
+    .mobile-bottom-nav.gz-app-open a[href="#"] { color: #6b7280 !important; }
+    .dark .mobile-bottom-nav.gz-app-open a[href="#"] { color: #9ca3af !important; }
+    .mobile-bottom-nav.gz-app-open a[href="#"] > div { background: transparent !important; }
+    .mobile-bottom-nav .gz-active { color: #e5a93c !important; }
+    .mobile-bottom-nav .gz-active > div { background: rgba(229,169,60,.15); }
+
+    body.gz-viewer-open { overflow: hidden; }
+    @media (min-width: 768px) { .gz-viewer { display: none !important; } }
+  </style>
+
+  <div class="gz-viewer" id="gzViewer" role="region" aria-label="App viewer" aria-hidden="true">
+    <div class="gz-viewer-bar">
+      <div class="gz-viewer-title">
+        <span class="gz-dot" aria-hidden="true">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"></path><path d="M2 17l10 5 10-5"></path><path d="M2 12l10 5 10-5"></path></svg>
+        </span>
+        <span id="gzViewerTitle">App</span>
+      </div>
+      <button type="button" class="gz-vbtn" id="gzReload" aria-label="Reload app">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11a8 8 0 1 0-2.3 5.7M20 4v7h-7"/></svg>
+      </button>
+      <a class="gz-vbtn" id="gzExternal" href="#" target="_blank" rel="noopener noreferrer" aria-label="Open in a new tab">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg>
+      </a>
+      <button type="button" class="gz-vbtn" id="gzClose" aria-label="Close app">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+    <div class="gz-frame-wrap">
+      <iframe id="gzFrame" title="App" allow="clipboard-read; clipboard-write; fullscreen; gamepad; microphone" allowfullscreen></iframe>
+      <div class="gz-loading" id="gzLoading"><div><div class="gz-spinner"></div>Loading…</div></div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      'use strict';
+
+      // Which links open inside the site on phones
+      var APPS = [
+        { key: 'chat',   name: 'GazChat Nano',    match: 'jdug83.github.io/ai/',          url: 'https://jdug83.github.io/ai/' },
+        { key: 'code',   name: 'GazCode 26',      match: 'jdug83.github.io/GazCode/',     url: 'https://jdug83.github.io/GazCode/' },
+        { key: 'game',   name: 'Gaz Invaders',    match: 'jdug83.github.io/GazInvaders1/', url: 'https://jdug83.github.io/GazInvaders1/' },
+        { key: 'xmas',   name: 'GazChristmas',    match: 'Gazchristmas.html',             url: 'Gazchristmas.html' },
+        { key: 'models', name: 'Models',          match: 'Models.html',                   url: 'Models.html' },
+        { key: 'leaks',  name: 'Roadmap & Leaks', match: 'Leaks.html',                    url: 'Leaks.html' }
+      ];
+
+      var mobile  = window.matchMedia('(max-width: 767px)');
+      var viewer  = document.getElementById('gzViewer');
+      var frame   = document.getElementById('gzFrame');
+      var title   = document.getElementById('gzViewerTitle');
+      var extLink = document.getElementById('gzExternal');
+      var loading = document.getElementById('gzLoading');
+      var dock    = document.querySelector('.mobile-bottom-nav');
+      var modal   = document.getElementById('moreAppsModal');
+      var current = null;
+
+      function appFor(href) {
+        if (!href) return null;
+        for (var i = 0; i < APPS.length; i++) {
+          if (href.indexOf(APPS[i].match) !== -1) return APPS[i];
+        }
+        return null;
+      }
+      function byKey(key) {
+        for (var i = 0; i < APPS.length; i++) if (APPS[i].key === key) return APPS[i];
+        return null;
+      }
+
+      function closeMoreApps() {
+        if (!modal || modal.classList.contains('pointer-events-none')) return;
+        modal.classList.add('pointer-events-none');
+        modal.classList.remove('opacity-100');
+        var c = modal.querySelector('.modal-content');
+        if (c) { c.classList.remove('scale-100'); c.classList.add('scale-95'); }
+        document.body.style.overflow = '';
+      }
+
+      function markDock(app) {
+        if (!dock) return;
+        dock.classList.toggle('gz-app-open', !!app);
+        dock.querySelectorAll('a').forEach(function (a) {
+          var match = app && appFor(a.getAttribute('href'));
+          a.classList.toggle('gz-active', !!(match && match.key === app.key));
+        });
+      }
+
+      function openApp(app, push) {
+        closeMoreApps();
+        if (current !== app.key) {
+          loading.classList.remove('hide');
+          frame.src = app.url;
+          frame.title = app.name;
+        }
+        current = app.key;
+        title.textContent = app.name;
+        extLink.href = app.url;
+        viewer.classList.add('open');
+        viewer.setAttribute('aria-hidden', 'false');
+        document.body.classList.add('gz-viewer-open');
+        markDock(app);
+        if (push !== false) history.pushState({ gzApp: app.key }, '', '#app=' + app.key);
+      }
+
+      function closeApp(push) {
+        viewer.classList.remove('open');
+        viewer.setAttribute('aria-hidden', 'true');
+        document.body.classList.remove('gz-viewer-open');
+        markDock(null);
+        if (push !== false && location.hash.indexOf('#app=') === 0) {
+          history.pushState({}, '', location.pathname + location.search);
+        }
+      }
+
+      frame.addEventListener('load', function () {
+        if (frame.getAttribute('src')) loading.classList.add('hide');
+      });
+
+      // Intercept app links on phones (capture phase, so it runs before anything else)
+      document.addEventListener('click', function (e) {
+        if (!mobile.matches || e.metaKey || e.ctrlKey || e.shiftKey) return;
+        var a = e.target.closest('a');
+        if (!a || a.id === 'gzExternal') return;
+
+        // Home in the dock closes the app
+        if (a.getAttribute('href') === '#' && a.closest('.mobile-bottom-nav')) {
+          if (viewer.classList.contains('open')) { e.preventDefault(); closeApp(); }
+          return;
+        }
+
+        var app = appFor(a.getAttribute('href'));
+        if (!app) return;
+        e.preventDefault();
+        openApp(app);
+      }, true);
+
+      document.getElementById('gzClose').addEventListener('click', function () { closeApp(); });
+      document.getElementById('gzReload').addEventListener('click', function () {
+        var app = byKey(current);
+        if (!app) return;
+        loading.classList.remove('hide');
+        frame.src = app.url;
+      });
+
+      // Phone back button closes / switches apps
+      window.addEventListener('popstate', function () {
+        var m = location.hash.match(/^#app=(\w+)/);
+        var app = m && byKey(m[1]);
+        if (app && mobile.matches) openApp(app, false); else closeApp(false);
+      });
+
+      // Deep link: yoursite/#app=chat opens straight into the app on phones
+      var start = location.hash.match(/^#app=(\w+)/);
+      if (start && byKey(start[1]) && mobile.matches) openApp(byKey(start[1]), false);
+
+      // Going wider than phone size closes the viewer
+      var onChange = function (ev) { if (!ev.matches && viewer.classList.contains('open')) closeApp(); };
+      if (mobile.addEventListener) mobile.addEventListener('change', onChange); else mobile.addListener(onChange);
+    })();
+  </script>
+
 </body>
 </html>
