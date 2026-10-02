@@ -1,9 +1,27 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en-GB" class="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>GazStudios — AI for everyone</title>
+  <meta name="description" content="GazStudios — free AI chat and coding tools that open instantly in your browser. GazChat Nano, GazCode 26 and more. No sign-up, no subscription.">
+  <meta name="theme-color" content="#0a0a0e">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="GazStudios — AI for everyone">
+  <meta property="og:description" content="Free AI chat and coding tools that open instantly in your browser. No sign-up, no subscription.">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <!-- Set the theme before anything draws, so light-mode users don't see a dark flash.
+       Also marks that JavaScript is running, so fade-in content is only hidden when it can be revealed. -->
+  <script>
+    (function () {
+      var t = null;
+      try { t = localStorage.getItem('gaz_theme'); } catch (e) {}
+      if (!t) t = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+      document.documentElement.classList.toggle('dark', t === 'dark');
+      document.documentElement.classList.add('js');
+    })();
+  </script>
 
   <!-- GazStudios Tab Favicon -->
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23f7bd44'/%3E%3Cstop offset='100%25' stop-color='%23c58f1f'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='32' height='32' rx='8' fill='%23121217'/%3E%3Crect width='30' height='30' x='1' y='1' rx='7' fill='none' stroke='url(%23g)' stroke-width='1.5' stroke-opacity='0.6'/%3E%3Cg transform='translate(4,4)' stroke='url(%23g)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' fill='none'%3E%3Cpath d='M12 2L2 7l10 5 10-5-10-5z' fill='url(%23g)' fill-opacity='0.25'/%3E%3Cpath d='M2 17l10 5 10-5'/%3E%3Cpath d='M2 12l10 5 10-5'/%3E%3C/g%3E%3C/svg%3E">
@@ -317,7 +335,8 @@
        REVEAL ANIMATION
        ========================================= */
 
-    .reveal-item {
+    /* Only hidden when JS is running — if the script fails, content still shows */
+    .js .reveal-item {
       opacity: 0;
 
       transform:
@@ -329,7 +348,7 @@
         transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    .reveal-item.visible {
+    .js .reveal-item.visible {
       opacity: 1;
 
       transform:
@@ -372,6 +391,38 @@
     .mobile-christmas-item {
       position: relative;
       z-index: 2;
+    }
+
+    /* =========================================
+       WHOLE-CARD LINKS
+       The card's "Open →" link stretches over the whole card,
+       so clicking anywhere on the card works.
+       ========================================= */
+
+    .card-link::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      z-index: 2;
+    }
+
+    /* Clear keyboard focus ring */
+    :focus-visible {
+      outline: 2px solid #e5a93c;
+      outline-offset: 3px;
+      border-radius: 8px;
+    }
+
+    /* Respect the "reduce motion" setting */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation: none !important;
+        transition: none !important;
+        scroll-behavior: auto !important;
+      }
+      .js .reveal-item { opacity: 1; transform: none; }
+      .aurora-orb, #ambientCanvas { display: none; }
     }
   </style>
 </head>
@@ -430,7 +481,7 @@
   >
 
     <div
-      class="max-w-7xl mx-auto px-5 sm:px-8 h-18 flex items-center justify-between py-3.5"
+      class="max-w-7xl mx-auto px-5 sm:px-8 h-[72px] flex items-center justify-between"
     >
 
       <!-- Brand -->
@@ -690,7 +741,7 @@
       <p
         class="reveal-item max-w-2xl text-lg sm:text-xl text-gray-600 dark:text-gray-300 leading-relaxed font-normal mb-10"
       >
-        Engineered for instant execution, zero subscription friction, and streamlined intelligence. Experience GazChat Nano and the GazCode suite.
+        Free AI chat and coding tools that open instantly in your browser. No sign-up, no subscription — just try GazChat Nano and GazCode.
       </p>
 
       <!-- Primary Actions -->
@@ -772,12 +823,12 @@
 
         <div class="flex items-center gap-2">
           <span class="text-brand-500">●</span>
-          <span>&lt; 15ms Latency</span>
+          <span>Runs in your browser</span>
         </div>
 
         <div class="flex items-center gap-2">
           <span class="text-cyan-500">●</span>
-          <span>No Waitlist Required</span>
+          <span>No sign-up needed</span>
         </div>
 
       </div>
@@ -828,14 +879,14 @@
                   class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"
                 ></span>
 
-                ACTIVE
+                PREVIEW
 
               </span>
 
               <span
                 class="text-xs text-gray-400 font-mono hidden sm:inline"
               >
-                2.4 GHz
+                sample replies
               </span>
 
             </div>
@@ -886,7 +937,7 @@
               id="typedAIResponse"
               class="typing-cursor"
             >
-              GazChat Nano initialized. Click a preset prompt above or enter your query below to test our sub-millisecond response pipeline.
+              This is a quick preview with sample replies. Try a preset above, then open GazChat Nano for real answers.
             </span>
 
           </div>
@@ -943,6 +994,12 @@
             </button>
 
           </form>
+
+          <p class="mt-3 text-xs text-gray-500 dark:text-gray-400">
+            Preview only —
+            <a href="https://jdug83.github.io/ai/" target="_blank" rel="noopener noreferrer" class="font-semibold text-brand-600 dark:text-brand-400 hover:underline">open GazChat Nano</a>
+            to ask anything for real.
+          </p>
 
         </div>
 
@@ -1028,7 +1085,7 @@
           <p
             class="text-gray-600 dark:text-gray-400 text-sm sm:text-base leading-relaxed mb-6"
           >
-            A lightweight, instant-start AI engine engineered to eliminate waiting. Designed for swift workflows, smart queries, and lightweight compute consumption.
+            A lightweight AI chat that starts instantly. Ask questions, brainstorm ideas and get help with writing and code.
           </p>
 
         </div>
@@ -1041,7 +1098,7 @@
             href="https://jdug83.github.io/ai/"
             target="_blank"
             rel="noopener noreferrer"
-            class="inline-flex items-center gap-1.5 text-sm font-semibold text-brand-600 dark:text-brand-400 group-hover:gap-2.5 transition-all"
+            class="card-link inline-flex items-center gap-1.5 text-sm font-semibold text-brand-600 dark:text-brand-400 group-hover:gap-2.5 transition-all"
           >
             Open GazChat
             <span>→</span>
@@ -1050,7 +1107,7 @@
           <span
             class="text-xs font-mono text-gray-400"
           >
-            Zero latency
+            No sign-up
           </span>
 
         </div>
@@ -1090,13 +1147,13 @@
           <h3
             class="text-xl sm:text-2xl font-bold mb-3 tracking-tight group-hover:text-brand-500 transition-colors"
           >
-            Custom AI Models
+            AI Models
           </h3>
 
           <p
             class="text-gray-600 dark:text-gray-400 text-sm sm:text-base leading-relaxed mb-6"
           >
-            Tailor-made model configurations for code synthesis, creative ideation, and conversational problem-solving. Easily test and compare distinct parameter profiles.
+            See the models behind GazChat, what each one is good at, and compare them side by side.
           </p>
 
         </div>
@@ -1107,7 +1164,7 @@
 
           <a
             href="Models.html"
-            class="inline-flex items-center gap-1.5 text-sm font-semibold text-brand-600 dark:text-brand-400 group-hover:gap-2.5 transition-all"
+            class="card-link inline-flex items-center gap-1.5 text-sm font-semibold text-brand-600 dark:text-brand-400 group-hover:gap-2.5 transition-all"
           >
             Explore Models
             <span>→</span>
@@ -1116,7 +1173,7 @@
           <span
             class="text-xs font-mono text-gray-400"
           >
-            Modular weights
+            Compare &amp; choose
           </span>
 
         </div>
@@ -1126,7 +1183,7 @@
       <!-- Speed -->
 
       <div
-        class="spotlight-card tilt-card p-8 rounded-2xl flex flex-col justify-between group"
+        class="spotlight-card p-8 rounded-2xl flex flex-col justify-between group"
       >
 
         <div>
@@ -1162,7 +1219,7 @@
           <p
             class="text-gray-600 dark:text-gray-400 text-sm sm:text-base leading-relaxed mb-6"
           >
-            Zero sign-up roadblocks, no bloated trackers, and no sluggish dependencies. You launch GazStudios, type your command, and receive instant intelligence.
+            No sign-up, no trackers and nothing to install. Open any GazStudios tool and start straight away.
           </p>
 
         </div>
@@ -1174,13 +1231,13 @@
           <span
             class="text-xs font-mono text-emerald-600 dark:text-emerald-400 font-medium"
           >
-            99.98% uptime rate
+            No accounts needed
           </span>
 
           <span
             class="text-xs font-mono text-gray-400"
           >
-            Optimized
+            Privacy-friendly
           </span>
 
         </div>
@@ -1226,7 +1283,7 @@
           <p
             class="text-gray-600 dark:text-gray-400 text-sm sm:text-base leading-relaxed mb-6"
           >
-            A comprehensive browser-first development suite packed with reactive live preview, smart syntax parsing, and tightly coupled AI coding co-piloting.
+            A browser code editor with live preview, syntax highlighting and AI help for writing and fixing code.
           </p>
 
         </div>
@@ -1239,7 +1296,7 @@
             href="https://jdug83.github.io/GazCode/"
             target="_blank"
             rel="noopener noreferrer"
-            class="inline-flex items-center gap-1.5 text-sm font-semibold text-brand-600 dark:text-brand-400 group-hover:gap-2.5 transition-all"
+            class="card-link inline-flex items-center gap-1.5 text-sm font-semibold text-brand-600 dark:text-brand-400 group-hover:gap-2.5 transition-all"
           >
             Launch IDE
             <span>→</span>
@@ -1280,7 +1337,7 @@
         </div>
 
         <span class="text-xs sm:text-sm text-gray-500">
-          © 2026 GazStudios. Crafting lightweight AI for all.
+          © <span id="year">2026</span> GazStudios. Crafting lightweight AI for all.
         </span>
 
       </div>
@@ -1324,7 +1381,8 @@
        MOBILE ONLY
 
        Order:
-       Home | GazCode | 🎄 GazChristmas | Invaders | More
+       Home | GazChat | 🎄 GazChristmas | GazCode | More
+       (Gaz Invaders lives in the "More" menu)
        ========================================= -->
 
   <nav
@@ -1371,6 +1429,67 @@
 
       </a>
 
+      <!-- GAZCHAT -->
+
+      <a
+        href="https://jdug83.github.io/ai/"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="mobile-nav-item flex flex-col items-center justify-center gap-1 h-full text-gray-500 dark:text-gray-400 hover:text-brand-500"
+      >
+
+        <div
+          class="w-9 h-9 rounded-xl flex items-center justify-center"
+        >
+
+          <svg
+            class="w-5 h-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+          >
+
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"
+            />
+
+          </svg>
+
+        </div>
+
+        <span class="text-[10px] font-semibold">
+          GazChat
+        </span>
+
+      </a>
+
+      <!-- =====================================
+           GAZCHRISTMAS — EXACT CENTER
+           ===================================== -->
+
+      <a
+        href="Gazchristmas.html"
+        class="mobile-nav-item mobile-christmas-item flex flex-col items-center justify-center gap-1 h-full text-gray-500 dark:text-gray-400 hover:text-brand-500"
+      >
+
+        <div
+          class="w-9 h-9 rounded-xl flex items-center justify-center text-lg"
+        >
+          🎄
+        </div>
+
+        <span
+          class="text-[10px] font-semibold whitespace-nowrap"
+        >
+          Christmas
+        </span>
+
+      </a>
+
       <!-- GAZCODE -->
 
       <a
@@ -1404,50 +1523,6 @@
 
         <span class="text-[10px] font-semibold">
           GazCode
-        </span>
-
-      </a>
-
-      <!-- =====================================
-           GAZCHRISTMAS — EXACT CENTER
-           ===================================== -->
-
-      <a
-        href="Gazchristmas.html"
-        class="mobile-nav-item mobile-christmas-item flex flex-col items-center justify-center gap-1 h-full text-brand-500"
-      >
-
-        <div
-          class="w-11 h-11 -mt-2 rounded-2xl bg-brand-500/15 border border-brand-500/25 flex items-center justify-center text-xl shadow-lg shadow-brand-500/10"
-        >
-          🎄
-        </div>
-
-        <span
-          class="text-[10px] font-bold whitespace-nowrap"
-        >
-          GazChristmas
-        </span>
-
-      </a>
-
-      <!-- GAZ INVADERS -->
-
-      <a
-        href="https://jdug83.github.io/GazInvaders1/"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="mobile-nav-item flex flex-col items-center justify-center gap-1 h-full text-gray-500 dark:text-gray-400 hover:text-brand-500"
-      >
-
-        <div
-          class="w-9 h-9 rounded-xl flex items-center justify-center text-lg"
-        >
-          👾
-        </div>
-
-        <span class="text-[10px] font-semibold">
-          Invaders
         </span>
 
       </a>
@@ -1511,6 +1586,10 @@
 
   <div
     id="moreAppsModal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="moreAppsTitle"
+    aria-hidden="true"
     class="fixed inset-0 z-[70] flex items-center justify-center p-4 sm:p-6 bg-black/60 backdrop-blur-md opacity-0 pointer-events-none transition-all duration-300"
   >
 
@@ -1523,6 +1602,7 @@
       <button
         id="closeAppsModalBtn"
         type="button"
+        aria-label="Close"
         class="absolute top-5 right-5 p-2 rounded-full text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/10 transition-colors"
       >
 
@@ -1553,6 +1633,7 @@
         </div>
 
         <h2
+          id="moreAppsTitle"
           class="text-2xl sm:text-3xl font-bold tracking-tight"
         >
           GazStudios Applications
@@ -1730,6 +1811,82 @@
 
         </a>
 
+        <!-- Models -->
+
+        <a
+          href="Models.html"
+          class="p-4 rounded-2xl bg-black/[0.02] dark:bg-white/[0.03] hover:bg-brand-500/10 border border-black/[0.06] dark:border-white/[0.06] hover:border-brand-500/30 transition-all group flex items-start gap-3.5"
+        >
+
+          <div
+            class="w-10 h-10 rounded-xl bg-blue-500/15 text-blue-500 flex items-center justify-center text-lg font-bold shrink-0"
+          >
+            ◈
+          </div>
+
+          <div>
+
+            <h4
+              class="font-bold text-sm group-hover:text-brand-500 transition-colors flex items-center gap-1.5"
+            >
+              AI Models
+
+              <span
+                class="text-[10px] font-mono px-1 py-0.2 rounded bg-blue-500/15 text-blue-500"
+              >
+                Compare
+              </span>
+
+            </h4>
+
+            <p
+              class="text-xs text-gray-500 dark:text-gray-400 mt-0.5"
+            >
+              See the models behind GazChat and compare them side by side.
+            </p>
+
+          </div>
+
+        </a>
+
+        <!-- Roadmap -->
+
+        <a
+          href="Leaks.html"
+          class="p-4 rounded-2xl bg-black/[0.02] dark:bg-white/[0.03] hover:bg-brand-500/10 border border-black/[0.06] dark:border-white/[0.06] hover:border-brand-500/30 transition-all group flex items-start gap-3.5"
+        >
+
+          <div
+            class="w-10 h-10 rounded-xl bg-amber-500/15 text-amber-500 flex items-center justify-center text-lg font-bold shrink-0"
+          >
+            ➜
+          </div>
+
+          <div>
+
+            <h4
+              class="font-bold text-sm group-hover:text-brand-500 transition-colors flex items-center gap-1.5"
+            >
+              Roadmap &amp; Leaks
+
+              <span
+                class="text-[10px] font-mono px-1 py-0.2 rounded bg-amber-500/15 text-amber-500"
+              >
+                Preview
+              </span>
+
+            </h4>
+
+            <p
+              class="text-xs text-gray-500 dark:text-gray-400 mt-0.5"
+            >
+              What's coming next to GazStudios.
+            </p>
+
+          </div>
+
+        </a>
+
       </div>
 
       <!-- Modal Footer -->
@@ -1769,20 +1926,8 @@
       const htmlEl =
         document.documentElement;
 
-      const savedTheme =
-        localStorage.getItem('gaz_theme') ||
-        (
-          window.matchMedia('(prefers-color-scheme: light)').matches
-            ? 'light'
-            : 'dark'
-        );
-
-      if (savedTheme === 'dark') {
-        htmlEl.classList.add('dark');
-      } else {
-        htmlEl.classList.remove('dark');
-      }
-
+      // The theme was already applied in <head>; this just handles the toggle.
+      // Storage is wrapped in try/catch: if the browser blocks it, the page still works.
       if (themeToggleBtn) {
 
         themeToggleBtn.addEventListener(
@@ -1792,15 +1937,18 @@
             const isDark =
               htmlEl.classList.toggle('dark');
 
-            localStorage.setItem(
-              'gaz_theme',
-              isDark ? 'dark' : 'light'
-            );
+            try {
+              localStorage.setItem('gaz_theme', isDark ? 'dark' : 'light');
+            } catch (e) {}
 
           }
         );
 
       }
+
+      /* Footer year stays current */
+      const yearEl = document.getElementById('year');
+      if (yearEl) yearEl.textContent = new Date().getFullYear();
 
       /* =========================================
          SCROLL PROGRESS
@@ -1939,7 +2087,16 @@
         particles.push(new Particle());
       }
 
+      const reduceMotion =
+        window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
       function animateParticles() {
+
+        // Stop drawing when the tab is hidden or the user prefers less motion (saves battery)
+        if (document.hidden || reduceMotion) {
+          setTimeout(() => requestAnimationFrame(animateParticles), 500);
+          return;
+        }
 
         ctx.clearRect(
           0,
@@ -2018,7 +2175,12 @@
       const revealItems =
         document.querySelectorAll('.reveal-item');
 
-      const revealObserver =
+      // Old browsers without IntersectionObserver: just show everything
+      if (!('IntersectionObserver' in window)) {
+        revealItems.forEach(item => item.classList.add('visible'));
+      }
+
+      const revealObserver = !('IntersectionObserver' in window) ? null :
         new IntersectionObserver(
           (entries) => {
 
@@ -2047,10 +2209,11 @@
       revealItems.forEach(
         (item, index) => {
 
+          // Small stagger, capped so items further down don't wait seconds to appear
           item.style.transitionDelay =
-            `${index * 80}ms`;
+            `${Math.min(index, 4) * 80}ms`;
 
-          revealObserver.observe(item);
+          if (revealObserver) revealObserver.observe(item);
 
         }
       );
@@ -2161,7 +2324,7 @@
       const mockResponses = {
 
         speed:
-          "GazChat Nano is compiled down to optimized edge bytecode with minimal inference latency (avg 14ms). No bloated tracking layers or blocking handshakes.",
+          "GazChat Nano opens straight in your browser — no account, no login screen and no trackers — so you can start typing right away.",
 
         js:
           "const debounce = (fn, ms = 300) => { let t; return (...args) => { clearTimeout(t); t = setTimeout(() => fn(...args), ms); }; };",
@@ -2170,7 +2333,7 @@
           "In 2099 Neo-London, memories are currency and your synth-brain is hacked. Rewire reality before the memory debt collectors log your wipe command.",
 
         default:
-          "Processing complete via GazNano Engine in 12.4ms. Clean execution, verified syntax, zero token overhead."
+          "This preview only knows a few sample answers. Open GazChat Nano (the gold button above) to ask anything for real."
 
       };
 
@@ -2321,6 +2484,8 @@
           'mobileMoreAppsBtn'
         );
 
+      let lastFocused = null;
+
       function openModal(modal) {
 
         if (!modal) {
@@ -2354,6 +2519,11 @@
 
         document.body.style.overflow =
           'hidden';
+
+        modal.setAttribute('aria-hidden', 'false');
+        lastFocused = document.activeElement;
+        const closeBtn = document.getElementById('closeAppsModalBtn');
+        if (closeBtn) setTimeout(() => closeBtn.focus(), 50);
 
       }
 
@@ -2391,6 +2561,13 @@
         document.body.style.overflow =
           '';
 
+        modal.setAttribute('aria-hidden', 'true');
+        if (lastFocused && lastFocused.focus) lastFocused.focus();
+
+      }
+
+      function isModalOpen() {
+        return moreAppsModal && !moreAppsModal.classList.contains('pointer-events-none');
       }
 
       /* Desktop More Apps */
@@ -2499,7 +2676,7 @@
         'keydown',
         (e) => {
 
-          if (e.key === 'Escape') {
+          if (e.key === 'Escape' && isModalOpen()) {
 
             closeModal(
               moreAppsModal
@@ -2507,40 +2684,17 @@
 
           }
 
+          // Keep Tab inside the pop-up while it's open
+          if (e.key === 'Tab' && isModalOpen()) {
+            const focusables = moreAppsModal.querySelectorAll('a[href], button:not([disabled])');
+            if (!focusables.length) return;
+            const first = focusables[0], last = focusables[focusables.length - 1];
+            if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+            else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+          }
+
         }
       );
-
-      /* =========================================
-         MOBILE NAV SAFETY
-
-         Makes sure the page doesn't accidentally
-         create another document/page underneath.
-         ========================================= */
-
-      const mobileNav =
-        document.querySelector(
-          '.mobile-bottom-nav'
-        );
-
-      if (mobileNav) {
-
-        mobileNav.addEventListener(
-          'click',
-          (e) => {
-
-            const christmasLink =
-              e.target.closest(
-                'a[href="Gazchristmas.html"]'
-              );
-
-            if (christmasLink) {
-              return;
-            }
-
-          }
-        );
-
-      }
 
     })();
   </script>
