@@ -11,8 +11,7 @@
   <meta property="og:description" content="Free AI chat and coding tools that open instantly in your browser. No sign-up, no subscription.">
   <meta name="twitter:card" content="summary_large_image">
 
-  <!-- Set the theme before anything draws, so light-mode users don't see a dark flash.
-       Also marks that JavaScript is running, so fade-in content is only hidden when it can be revealed. -->
+  <!-- Set theme before render -->
   <script>
     (function () {
       var t = null;
@@ -23,7 +22,7 @@
     })();
   </script>
 
-  <!-- GazStudios Tab Favicon -->
+  <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23f7bd44'/%3E%3Cstop offset='100%25' stop-color='%23c58f1f'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='32' height='32' rx='8' fill='%23121217'/%3E%3Crect width='30' height='30' x='1' y='1' rx='7' fill='none' stroke='url(%23g)' stroke-width='1.5' stroke-opacity='0.6'/%3E%3Cg transform='translate(4,4)' stroke='url(%23g)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' fill='none'%3E%3Cpath d='M12 2L2 7l10 5 10-5-10-5z' fill='url(%23g)' fill-opacity='0.25'/%3E%3Cpath d='M2 17l10 5 10-5'/%3E%3Cpath d='M2 12l10 5 10-5'/%3E%3C/g%3E%3C/svg%3E">
 
   <!-- Tailwind CSS CDN -->
@@ -51,50 +50,25 @@
             darkcard: '#121217',
             darkborder: '#1f1f28'
           },
-
           fontFamily: {
-            sans: [
-              'Inter',
-              '-apple-system',
-              'BlinkMacSystemFont',
-              'Segoe UI',
-              'Roboto',
-              'sans-serif'
-            ],
-            mono: [
-              'JetBrains Mono',
-              'Fira Code',
-              'monospace'
-            ]
+            sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+            mono: ['JetBrains Mono', 'Fira Code', 'monospace']
           },
-
           animation: {
             'shimmer': 'shimmer 5s linear infinite',
             'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
             'float-slow': 'float 8s ease-in-out infinite',
             'spin-slow': 'spin 12s linear infinite'
           },
-
           keyframes: {
             shimmer: {
-              '0%': {
-                backgroundPosition: '0% 50%'
-              },
-              '50%': {
-                backgroundPosition: '100% 50%'
-              },
-              '100%': {
-                backgroundPosition: '0% 50%'
-              }
+              '0%': { backgroundPosition: '0% 50%' },
+              '50%': { backgroundPosition: '100% 50%' },
+              '100%': { backgroundPosition: '0% 50%' }
             },
-
             float: {
-              '0%, 100%': {
-                transform: 'translateY(0px)'
-              },
-              '50%': {
-                transform: 'translateY(-10px)'
-              }
+              '0%, 100%': { transform: 'translateY(0px)' },
+              '50%': { transform: 'translateY(-10px)' }
             }
           }
         }
@@ -105,31 +79,12 @@
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-  <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
-    rel="stylesheet"
-  >
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
   <style>
-    * {
-      box-sizing: border-box;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      transition:
-        background-color 0.3s ease,
-        color 0.3s ease;
-    }
-
-    /* =========================================
-       GLASSMORPHISM
-       ========================================= */
+    * { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+    html { scroll-behavior: smooth; }
+    body { transition: background-color 0.3s ease, color 0.3s ease; }
 
     .glass-panel {
       background: rgba(255, 255, 255, 0.7);
@@ -137,267 +92,105 @@
       -webkit-backdrop-filter: blur(20px);
       border: 1px solid rgba(228, 228, 231, 0.7);
     }
-
     .dark .glass-panel {
       background: rgba(18, 18, 23, 0.65);
       border: 1px solid rgba(255, 255, 255, 0.08);
     }
 
-    /* =========================================
-       SPOTLIGHT CARDS
-       ========================================= */
-
     .spotlight-card {
       position: relative;
       background: rgba(255, 255, 255, 0.85);
       border: 1px solid rgba(228, 228, 231, 0.9);
-
-      transition:
-        transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1),
-        box-shadow 0.25s ease,
-        border-color 0.2s ease;
-
+      transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.25s ease, border-color 0.2s ease;
       will-change: transform;
     }
-
     .dark .spotlight-card {
       background: rgba(18, 18, 23, 0.7);
       border: 1px solid rgba(255, 255, 255, 0.07);
     }
-
     .spotlight-card::before {
       content: "";
-
       position: absolute;
       inset: 0;
-
       border-radius: inherit;
-
-      background:
-        radial-gradient(
-          450px circle at var(--gx, 50%) var(--gy, 50%),
-          rgba(229, 169, 60, 0.18),
-          transparent 55%
-        );
-
+      background: radial-gradient(450px circle at var(--gx, 50%) var(--gy, 50%), rgba(229, 169, 60, 0.18), transparent 55%);
       opacity: 0;
-
       transition: opacity 0.3s ease;
-
       pointer-events: none;
-
       z-index: 1;
     }
-
-    .spotlight-card:hover::before {
-      opacity: 1;
-    }
-
+    .spotlight-card:hover::before { opacity: 1; }
     .spotlight-card:hover {
-      box-shadow:
-        0 20px 40px -15px rgba(229, 169, 60, 0.18);
-
-      border-color:
-        rgba(229, 169, 60, 0.4);
+      box-shadow: 0 20px 40px -15px rgba(229, 169, 60, 0.18);
+      border-color: rgba(229, 169, 60, 0.4);
     }
-
-    /* =========================================
-       AURORA ORBS
-       ========================================= */
 
     .aurora-orb {
       position: absolute;
-
       border-radius: 50%;
-
       filter: blur(100px);
-
       opacity: 0.45;
-
       pointer-events: none;
-
-      transition:
-        transform 0.2s cubic-bezier(0.1, 0.9, 0.2, 1);
+      transition: transform 0.2s cubic-bezier(0.1, 0.9, 0.2, 1);
     }
-
-    .dark .aurora-orb {
-      opacity: 0.35;
-      filter: blur(120px);
-    }
-
-    /* =========================================
-       SHIMMER TEXT
-       ========================================= */
+    .dark .aurora-orb { opacity: 0.35; filter: blur(120px); }
 
     .shimmer-text {
-      background:
-        linear-gradient(
-          110deg,
-          #b47b14 0%,
-          #e5a93c 25%,
-          #ffe7a3 50%,
-          #e5a93c 75%,
-          #b47b14 100%
-        );
-
+      background: linear-gradient(110deg, #b47b14 0%, #e5a93c 25%, #ffe7a3 50%, #e5a93c 75%, #b47b14 100%);
       background-size: 220% 100%;
-
       -webkit-background-clip: text;
       background-clip: text;
-
       -webkit-text-fill-color: transparent;
-
-      animation:
-        shimmer 6s linear infinite;
+      animation: shimmer 6s linear infinite;
     }
-
     .dark .shimmer-text {
-      background:
-        linear-gradient(
-          110deg,
-          #e5a93c 0%,
-          #fad67b 25%,
-          #ffffff 50%,
-          #f7bd44 75%,
-          #c58f1f 100%
-        );
-
+      background: linear-gradient(110deg, #e5a93c 0%, #fad67b 25%, #ffffff 50%, #f7bd44 75%, #c58f1f 100%);
       background-size: 220% 100%;
-
       -webkit-background-clip: text;
       background-clip: text;
-
       -webkit-text-fill-color: transparent;
     }
 
-    /* =========================================
-       GLOW BORDER
-       ========================================= */
-
-    .glow-border {
-      position: relative;
-    }
-
+    .glow-border { position: relative; }
     .glow-border::after {
       content: '';
-
       position: absolute;
       inset: -1px;
-
       border-radius: inherit;
-
       padding: 1px;
-
-      background:
-        linear-gradient(
-          135deg,
-          rgba(229, 169, 60, 0.6),
-          transparent 50%,
-          rgba(229, 169, 60, 0.2)
-        );
-
-      -webkit-mask:
-        linear-gradient(#fff 0 0) content-box,
-        linear-gradient(#fff 0 0);
-
-      mask:
-        linear-gradient(#fff 0 0) content-box,
-        linear-gradient(#fff 0 0);
-
+      background: linear-gradient(135deg, rgba(229, 169, 60, 0.6), transparent 50%, rgba(229, 169, 60, 0.2));
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
       -webkit-mask-composite: xor;
       mask-composite: exclude;
-
       pointer-events: none;
     }
-
-    /* =========================================
-       TERMINAL CURSOR
-       ========================================= */
 
     .typing-cursor::after {
       content: "▋";
-
       color: #e5a93c;
-
-      animation:
-        blink 1s step-start infinite;
-
+      animation: blink 1s step-start infinite;
       margin-left: 2px;
     }
+    @keyframes blink { 50% { opacity: 0; } }
 
-    @keyframes blink {
-      50% {
-        opacity: 0;
-      }
-    }
-
-    /* =========================================
-       REVEAL ANIMATION
-       ========================================= */
-
-    /* Only hidden when JS is running — if the script fails, content still shows */
     .js .reveal-item {
       opacity: 0;
-
-      transform:
-        translateY(24px)
-        scale(0.98);
-
-      transition:
-        opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
-        transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+      transform: translateY(24px) scale(0.98);
+      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
     }
+    .js .reveal-item.visible { opacity: 1; transform: translateY(0) scale(1); }
 
-    .js .reveal-item.visible {
-      opacity: 1;
-
-      transform:
-        translateY(0)
-        scale(1);
-    }
-
-    /* =========================================
-       MOBILE BOTTOM NAV
-       ========================================= */
-
-    .mobile-bottom-nav {
-      display: flex;
-    }
-
-    @media (min-width: 768px) {
-      .mobile-bottom-nav {
-        display: none !important;
-      }
-    }
-
-    @media (max-width: 767px) {
-      body {
-        padding-bottom: 82px;
-      }
-    }
+    .mobile-bottom-nav { display: flex; }
+    @media (min-width: 768px) { .mobile-bottom-nav { display: none !important; } }
+    @media (max-width: 767px) { body { padding-bottom: 82px; } }
 
     .mobile-nav-item {
       -webkit-tap-highlight-color: transparent;
-      transition:
-        transform 0.15s ease,
-        color 0.2s ease;
+      transition: transform 0.15s ease, color 0.2s ease;
     }
-
-    .mobile-nav-item:active {
-      transform: scale(0.92);
-    }
-
-    /* Keep center Christmas button visually centered */
-    .mobile-christmas-item {
-      position: relative;
-      z-index: 2;
-    }
-
-    /* =========================================
-       WHOLE-CARD LINKS
-       The card's "Open →" link stretches over the whole card,
-       so clicking anywhere on the card works.
-       ========================================= */
+    .mobile-nav-item:active { transform: scale(0.92); }
+    .mobile-christmas-item { position: relative; z-index: 2; }
 
     .card-link::after {
       content: "";
@@ -407,14 +200,12 @@
       z-index: 2;
     }
 
-    /* Clear keyboard focus ring */
     :focus-visible {
       outline: 2px solid #e5a93c;
       outline-offset: 3px;
       border-radius: 8px;
     }
 
-    /* Respect the "reduce motion" setting */
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after {
         animation: none !important;
@@ -427,572 +218,175 @@
   </style>
 </head>
 
-<body
-  class="bg-[#fbfbfa] dark:bg-[#0a0a0e] text-[#121215] dark:text-[#ececf0] min-h-screen overflow-x-hidden selection:bg-brand-500 selection:text-white transition-colors duration-300"
->
+<body class="bg-[#fbfbfa] dark:bg-[#0a0a0e] text-[#121215] dark:text-[#ececf0] min-h-screen overflow-x-hidden selection:bg-brand-500 selection:text-white transition-colors duration-300">
 
-  <!-- =========================================
-       READING PROGRESS BAR
-       ========================================= -->
+  <!-- READING PROGRESS BAR -->
+  <div id="progressBar" class="fixed top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-brand-600 via-brand-400 to-amber-300 z-50 origin-left scale-x-0 transition-transform duration-75"></div>
 
-  <div
-    id="progressBar"
-    class="fixed top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-brand-600 via-brand-400 to-amber-300 z-50 origin-left scale-x-0 transition-transform duration-75"
-  ></div>
-
-  <!-- =========================================
-       AMBIENT BACKGROUND
-       ========================================= -->
-
-  <div
-    class="fixed inset-0 pointer-events-none overflow-hidden -z-10"
-    aria-hidden="true"
-  >
-
-    <canvas
-      id="ambientCanvas"
-      class="absolute inset-0 w-full h-full opacity-60 dark:opacity-45"
-    ></canvas>
-
-    <div
-      id="orb1"
-      class="aurora-orb w-[540px] h-[540px] top-[-5%] left-[10%] bg-brand-500/35"
-    ></div>
-
-    <div
-      id="orb2"
-      class="aurora-orb w-[620px] h-[620px] top-[30%] right-[-5%] bg-amber-400/25"
-    ></div>
-
-    <div
-      id="orb3"
-      class="aurora-orb w-[480px] h-[480px] bottom-[10%] left-[30%] bg-blue-500/15 dark:bg-amber-600/20"
-    ></div>
-
+  <!-- AMBIENT BACKGROUND -->
+  <div class="fixed inset-0 pointer-events-none overflow-hidden -z-10" aria-hidden="true">
+    <canvas id="ambientCanvas" class="absolute inset-0 w-full h-full opacity-60 dark:opacity-45"></canvas>
+    <div id="orb1" class="aurora-orb w-[540px] h-[540px] top-[-5%] left-[10%] bg-brand-500/35"></div>
+    <div id="orb2" class="aurora-orb w-[620px] h-[620px] top-[30%] right-[-5%] bg-amber-400/25"></div>
+    <div id="orb3" class="aurora-orb w-[480px] h-[480px] bottom-[10%] left-[30%] bg-blue-500/15 dark:bg-amber-600/20"></div>
   </div>
 
-  <!-- =========================================
-       NAVBAR
-       ========================================= -->
-
-  <header
-    id="navbar"
-    class="sticky top-0 z-40 w-full border-b border-black/[0.06] dark:border-white/[0.08] backdrop-blur-xl bg-white/75 dark:bg-[#0a0a0e]/75 transition-all duration-300"
-  >
-
-    <div
-      class="max-w-7xl mx-auto px-5 sm:px-8 h-[72px] flex items-center justify-between"
-    >
-
+  <!-- NAVBAR -->
+  <header id="navbar" class="sticky top-0 z-40 w-full border-b border-black/[0.06] dark:border-white/[0.08] backdrop-blur-xl bg-white/75 dark:bg-[#0a0a0e]/75 transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-5 sm:px-8 h-[72px] flex items-center justify-between">
+      
       <!-- Brand -->
-
-      <a
-        href="#"
-        class="group flex items-center gap-3 text-current no-underline"
-      >
-
-        <div
-          class="relative w-9 h-9 rounded-xl bg-gradient-to-br from-brand-400 to-brand-600 p-[1.5px] shadow-sm shadow-brand-500/20 group-hover:scale-105 transition-transform duration-300"
-        >
-
-          <div
-            class="w-full h-full rounded-[10px] bg-white dark:bg-[#0f0f14] flex items-center justify-center"
-          >
-
-            <svg
-              class="w-5 h-5 text-brand-500 transform group-hover:rotate-12 transition-transform duration-300"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2.2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-
+      <a href="#" class="group flex items-center gap-3 text-current no-underline">
+        <div class="relative w-9 h-9 rounded-xl bg-gradient-to-br from-brand-400 to-brand-600 p-[1.5px] shadow-sm shadow-brand-500/20 group-hover:scale-105 transition-transform duration-300">
+          <div class="w-full h-full rounded-[10px] bg-white dark:bg-[#0f0f14] flex items-center justify-center">
+            <svg class="w-5 h-5 text-brand-500 transform group-hover:rotate-12 transition-transform duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
               <path d="M2 17l10 5 10-5"></path>
               <path d="M2 12l10 5 10-5"></path>
-
             </svg>
-
           </div>
-
         </div>
-
         <div class="flex flex-col">
-
-          <span
-            class="font-bold text-lg tracking-tight flex items-center gap-1.5"
-          >
+          <span class="font-bold text-lg tracking-tight flex items-center gap-1.5">
             GazStudios
-
-            <span
-              class="text-[10px] font-mono uppercase px-1.5 py-0.5 rounded bg-brand-500/10 dark:bg-brand-500/20 text-brand-600 dark:text-brand-400 border border-brand-500/20"
-            >
-              OS
-            </span>
-
+            <span class="text-[10px] font-mono uppercase px-1.5 py-0.5 rounded bg-brand-500/10 dark:bg-brand-500/20 text-brand-600 dark:text-brand-400 border border-brand-500/20">OS</span>
           </span>
-
         </div>
-
       </a>
 
       <!-- Desktop Navigation -->
-
-      <nav
-        class="hidden md:flex items-center gap-7 text-sm font-medium text-gray-600 dark:text-gray-300"
-      >
-
-        <a
-          href="https://jdug83.github.io/ai/"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="hover:text-brand-500 dark:hover:text-brand-400 transition-colors flex items-center gap-1"
-        >
+      <nav class="hidden md:flex items-center gap-7 text-sm font-medium text-gray-600 dark:text-gray-300">
+        <a href="https://jdug83.github.io/ai/" target="_blank" rel="noopener noreferrer" class="hover:text-brand-500 dark:hover:text-brand-400 transition-colors flex items-center gap-1">
           GazChat
-
-          <span
-            class="text-[10px] px-1 rounded bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 font-semibold"
-          >
-            Fast
-          </span>
+          <span class="text-[10px] px-1 rounded bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 font-semibold">Fast</span>
         </a>
-
-        <a
-          href="https://jdug83.github.io/GazCode/"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="hover:text-brand-500 dark:hover:text-brand-400 transition-colors"
-        >
-          GazCode
+        <a href="https://jdug83.github.io/GazCode/" target="_blank" rel="noopener noreferrer" class="hover:text-brand-500 dark:hover:text-brand-400 transition-colors">GazCode</a>
+        <a href="Gazchristmas.html" class="hover:text-brand-500 dark:hover:text-brand-400 transition-colors flex items-center gap-1">
+          <span>🎄</span> GazChristmas
         </a>
-
-        <a
-          href="Gazchristmas.html"
-          class="hover:text-brand-500 dark:hover:text-brand-400 transition-colors flex items-center gap-1"
-        >
-          <span>🎄</span>
-          GazChristmas
-        </a>
-
-        <a
-          href="Models.html"
-          class="hover:text-brand-500 dark:hover:text-brand-400 transition-colors"
-        >
-          Models
-        </a>
-
-        <a
-          href="#features"
-          class="hover:text-brand-500 dark:hover:text-brand-400 transition-colors"
-        >
-          Features
-        </a>
-
+        <a href="Models.html" class="hover:text-brand-500 dark:hover:text-brand-400 transition-colors">Models</a>
+        <a href="Team.html" class="hover:text-brand-500 dark:hover:text-brand-400 transition-colors">The Team</a>
+        <a href="#features" class="hover:text-brand-500 dark:hover:text-brand-400 transition-colors">Features</a>
       </nav>
 
       <!-- Action Cluster -->
-
       <div class="flex items-center gap-2.5 sm:gap-3">
-
         <!-- Theme Toggle -->
-
-        <button
-          id="themeToggleBtn"
-          type="button"
-          aria-label="Toggle theme"
-          class="p-2.5 rounded-full text-gray-500 dark:text-gray-400 hover:bg-black/5 dark:hover:bg-white/10 transition-colors"
-        >
-
-          <svg
-            id="sunIcon"
-            class="w-5 h-5 hidden dark:block text-brand-300"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
-            />
-
+        <button id="themeToggleBtn" type="button" aria-label="Toggle theme" class="p-2.5 rounded-full text-gray-500 dark:text-gray-400 hover:bg-black/5 dark:hover:bg-white/10 transition-colors">
+          <svg id="sunIcon" class="w-5 h-5 hidden dark:block text-brand-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
           </svg>
-
-          <svg
-            id="moonIcon"
-            class="w-5 h-5 block dark:hidden text-gray-700"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
-            />
-
+          <svg id="moonIcon" class="w-5 h-5 block dark:hidden text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
           </svg>
-
         </button>
 
         <!-- More Apps -->
-
-        <button
-          id="moreAppsBtn"
-          type="button"
-          class="relative group px-4 py-2 rounded-full text-xs sm:text-sm font-semibold border border-black/10 dark:border-white/15 bg-black/[0.03] dark:bg-white/[0.06] hover:bg-black/[0.08] dark:hover:bg-white/[0.12] transition-all flex items-center gap-2 active:scale-95"
-        >
-
+        <button id="moreAppsBtn" type="button" class="relative group px-4 py-2 rounded-full text-xs sm:text-sm font-semibold border border-black/10 dark:border-white/15 bg-black/[0.03] dark:bg-white/[0.06] hover:bg-black/[0.08] dark:hover:bg-white/[0.12] transition-all flex items-center gap-2 active:scale-95">
           <span>More Apps</span>
-
-          <svg
-            class="w-3.5 h-3.5 text-gray-500 group-hover:translate-x-0.5 transition-transform"
-            fill="none"
-            viewBox="0 0 24 24"
-          >
-
-            <path
-              stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2.5"
-              d="M9 5l7 7-7 7"
-            />
-
+          <svg class="w-3.5 h-3.5 text-gray-500 group-hover:translate-x-0.5 transition-transform" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7" />
           </svg>
-
         </button>
-
       </div>
 
     </div>
-
   </header>
 
-  <!-- =========================================
-       MAIN HERO
-       ========================================= -->
-
-  <main
-    class="relative z-10 max-w-7xl mx-auto px-5 sm:px-8 pt-16 sm:pt-24 pb-20 overflow-hidden"
-  >
-
-    <div
-      class="max-w-4xl mx-auto text-center flex flex-col items-center"
-    >
-
+  <!-- MAIN HERO -->
+  <main class="relative z-10 max-w-7xl mx-auto px-5 sm:px-8 pt-16 sm:pt-24 pb-20 overflow-hidden">
+    <div class="max-w-4xl mx-auto text-center flex flex-col items-center">
+      
       <!-- Status -->
-
-      <div
-        class="reveal-item inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full border border-brand-500/30 bg-brand-500/10 dark:bg-brand-500/15 backdrop-blur-md mb-8 shadow-sm"
-      >
-
+      <div class="reveal-item inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full border border-brand-500/30 bg-brand-500/10 dark:bg-brand-500/15 backdrop-blur-md mb-8 shadow-sm">
         <span class="relative flex h-2.5 w-2.5">
-
-          <span
-            class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-400 opacity-75"
-          ></span>
-
-          <span
-            class="relative inline-flex rounded-full h-2.5 w-2.5 bg-brand-500"
-          ></span>
-
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-400 opacity-75"></span>
+          <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-brand-500"></span>
         </span>
-
-        <span
-          class="text-xs font-semibold tracking-wide text-brand-700 dark:text-brand-300"
-        >
-          October Update!
-        </span>
-
-        <span
-          class="hidden sm:inline-block w-1 h-1 rounded-full bg-brand-500/40"
-        ></span>
-
-        <span
-          class="hidden sm:inline-block text-[11px] font-mono text-brand-600 dark:text-brand-400"
-        >
-          v3.4 live
-        </span>
-
+        <span class="text-xs font-semibold tracking-wide text-brand-700 dark:text-brand-300">October Update!</span>
+        <span class="hidden sm:inline-block w-1 h-1 rounded-full bg-brand-500/40"></span>
+        <span class="hidden sm:inline-block text-[11px] font-mono text-brand-600 dark:text-brand-400">v3.4 live</span>
       </div>
 
       <!-- Headline -->
-
-      <h1
-        class="reveal-item font-extrabold text-5xl sm:text-7xl lg:text-8xl tracking-tight leading-[1.05] mb-6"
-      >
-        AI that works
-        <br>
-
-        <span class="shimmer-text">
-          for everyone.
-        </span>
+      <h1 class="reveal-item font-extrabold text-5xl sm:text-7xl lg:text-8xl tracking-tight leading-[1.05] mb-6">
+        AI that works <br>
+        <span class="shimmer-text">for everyone.</span>
       </h1>
 
       <!-- Description -->
-
-      <p
-        class="reveal-item max-w-2xl text-lg sm:text-xl text-gray-600 dark:text-gray-300 leading-relaxed font-normal mb-10"
-      >
+      <p class="reveal-item max-w-2xl text-lg sm:text-xl text-gray-600 dark:text-gray-300 leading-relaxed font-normal mb-10">
         Free AI chat and coding tools that open instantly in your browser. No sign-up, no subscription — just try GazChat Nano and GazCode.
       </p>
 
       <!-- Primary Actions -->
-
-      <div
-        class="reveal-item flex flex-wrap items-center justify-center gap-4 w-full sm:w-auto mb-12"
-      >
-
-        <a
-          href="https://jdug83.github.io/ai/"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="w-full sm:w-auto px-7 py-3.5 rounded-full bg-brand-500 hover:bg-brand-400 text-black font-semibold text-sm sm:text-base shadow-lg shadow-brand-500/25 transition-all duration-200 transform hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center gap-2.5 group"
-        >
-
-          <span>
-            Launch GazChat Nano
-          </span>
-
-          <svg
-            class="w-4 h-4 transform group-hover:translate-x-1 transition-transform"
-            fill="none"
-            viewBox="0 0 24 24"
-          >
-
-            <path
-              stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2.5"
-              d="M14 5l7 7m0 0l-7 7m7-7H3"
-            />
-
+      <div class="reveal-item flex flex-wrap items-center justify-center gap-4 w-full sm:w-auto mb-12">
+        <a href="https://jdug83.github.io/ai/" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto px-7 py-3.5 rounded-full bg-brand-500 hover:bg-brand-400 text-black font-semibold text-sm sm:text-base shadow-lg shadow-brand-500/25 transition-all duration-200 transform hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center gap-2.5 group">
+          <span>Launch GazChat Nano</span>
+          <svg class="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
           </svg>
-
         </a>
 
-        <a
-          href="https://jdug83.github.io/GazCode/"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="w-full sm:w-auto px-7 py-3.5 rounded-full glass-panel hover:bg-black/5 dark:hover:bg-white/10 text-current font-semibold text-sm sm:text-base border border-black/10 dark:border-white/15 transition-all duration-200 transform hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center gap-2"
-        >
-
-          <svg
-            class="w-4 h-4 text-brand-500"
-            fill="none"
-            viewBox="0 0 24 24"
-          >
-
-            <path
-              stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"
-            />
-
+        <a href="https://jdug83.github.io/GazCode/" target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto px-7 py-3.5 rounded-full glass-panel hover:bg-black/5 dark:hover:bg-white/10 text-current font-semibold text-sm sm:text-base border border-black/10 dark:border-white/15 transition-all duration-200 transform hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center gap-2">
+          <svg class="w-4 h-4 text-brand-500" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
           </svg>
-
-          <span>
-            Open GazCode 26
-          </span>
-
+          <span>Open GazCode 26</span>
         </a>
-
       </div>
 
       <!-- Metrics -->
-
-      <div
-        class="reveal-item flex flex-wrap items-center justify-center gap-y-3 gap-x-8 text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400"
-      >
-
-        <div class="flex items-center gap-2">
-          <span class="text-emerald-500">●</span>
-          <span>100% Free & Open</span>
-        </div>
-
-        <div class="flex items-center gap-2">
-          <span class="text-brand-500">●</span>
-          <span>Runs in your browser</span>
-        </div>
-
-        <div class="flex items-center gap-2">
-          <span class="text-cyan-500">●</span>
-          <span>No sign-up needed</span>
-        </div>
-
+      <div class="reveal-item flex flex-wrap items-center justify-center gap-y-3 gap-x-8 text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400">
+        <div class="flex items-center gap-2"><span class="text-emerald-500">●</span><span>100% Free & Open</span></div>
+        <div class="flex items-center gap-2"><span class="text-brand-500">●</span><span>Runs in your browser</span></div>
+        <div class="flex items-center gap-2"><span class="text-cyan-500">●</span><span>No sign-up needed</span></div>
       </div>
 
     </div>
 
-    <!-- =========================================
-         AI TERMINAL
-         ========================================= -->
-
+    <!-- AI TERMINAL -->
     <div class="reveal-item mt-16 max-w-4xl mx-auto">
-
-      <div
-        class="spotlight-card rounded-2xl p-1 glow-border shadow-2xl backdrop-blur-2xl"
-      >
-
-        <div
-          class="rounded-xl bg-white/90 dark:bg-[#0e0e13]/90 p-5 sm:p-7"
-        >
-
-          <!-- Terminal Header -->
-
-          <div
-            class="flex items-center justify-between border-b border-black/[0.06] dark:border-white/[0.08] pb-4 mb-5"
-          >
-
+      <div class="spotlight-card rounded-2xl p-1 glow-border shadow-2xl backdrop-blur-2xl">
+        <div class="rounded-xl bg-white/90 dark:bg-[#0e0e13]/90 p-5 sm:p-7">
+          
+          <div class="flex items-center justify-between border-b border-black/[0.06] dark:border-white/[0.08] pb-4 mb-5">
             <div class="flex items-center gap-2">
-
               <div class="w-3 h-3 rounded-full bg-rose-500/80"></div>
               <div class="w-3 h-3 rounded-full bg-amber-500/80"></div>
               <div class="w-3 h-3 rounded-full bg-emerald-500/80"></div>
-
-              <span
-                class="ml-2 font-mono text-xs text-gray-400"
-              >
-                gazchat-nano://runtime
-              </span>
-
+              <span class="ml-2 font-mono text-xs text-gray-400">gazchat-nano://runtime</span>
             </div>
-
             <div class="flex items-center gap-3">
-
-              <span
-                class="text-[11px] font-mono px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-500 font-semibold border border-emerald-500/20 flex items-center gap-1"
-              >
-
-                <span
-                  class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"
-                ></span>
-
-                PREVIEW
-
+              <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-500 font-semibold border border-emerald-500/20 flex items-center gap-1">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> PREVIEW
               </span>
-
-              <span
-                class="text-xs text-gray-400 font-mono hidden sm:inline"
-              >
-                sample replies
-              </span>
-
+              <span class="text-xs text-gray-400 font-mono hidden sm:inline">sample replies</span>
             </div>
-
           </div>
-
-          <!-- Presets -->
 
           <div class="flex flex-wrap gap-2 mb-4">
-
-            <button
-              class="demo-preset-btn px-3 py-1 text-xs rounded-lg font-mono bg-brand-500/10 dark:bg-brand-500/20 text-brand-700 dark:text-brand-300 border border-brand-500/30 transition-all"
-              data-prompt="What makes GazChat Nano ultra fast?"
-            >
-              ⚡ Speed Engine
-            </button>
-
-            <button
-              class="demo-preset-btn px-3 py-1 text-xs rounded-lg font-mono bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 text-gray-600 dark:text-gray-300 border border-transparent transition-all"
-              data-prompt="Build a clean JavaScript debounce function in 3 lines."
-            >
-              💻 JS Snippet
-            </button>
-
-            <button
-              class="demo-preset-btn px-3 py-1 text-xs rounded-lg font-mono bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 text-gray-600 dark:text-gray-300 border border-transparent transition-all"
-              data-prompt="Write a 2-sentence pitch for a cyber-punk game."
-            >
-              🎮 Creative Pitch
-            </button>
-
+            <button class="demo-preset-btn px-3 py-1 text-xs rounded-lg font-mono bg-brand-500/10 dark:bg-brand-500/20 text-brand-700 dark:text-brand-300 border border-brand-500/30 transition-all" data-prompt="What makes GazChat Nano ultra fast?">⚡ Speed Engine</button>
+            <button class="demo-preset-btn px-3 py-1 text-xs rounded-lg font-mono bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 text-gray-600 dark:text-gray-300 border border-transparent transition-all" data-prompt="Build a clean JavaScript debounce function in 3 lines.">💻 JS Snippet</button>
+            <button class="demo-preset-btn px-3 py-1 text-xs rounded-lg font-mono bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 text-gray-600 dark:text-gray-300 border border-transparent transition-all" data-prompt="Write a 2-sentence pitch for a cyber-punk game.">🎮 Creative Pitch</button>
           </div>
 
-          <!-- Terminal Output -->
-
-          <div
-            id="aiTerminalOutput"
-            class="min-h-[140px] max-h-[220px] overflow-y-auto p-4 rounded-xl font-mono text-xs sm:text-sm bg-[#f5f5f4] dark:bg-[#07070a] border border-black/5 dark:border-white/5 text-gray-800 dark:text-gray-200 leading-relaxed mb-4"
-          >
-
-            <span
-              class="text-brand-600 dark:text-brand-400 font-bold"
-            >
-              $ GazNano:
-            </span>
-
-            <span
-              id="typedAIResponse"
-              class="typing-cursor"
-            >
-              This is a quick preview with sample replies. Try a preset above, then open GazChat Nano for real answers.
-            </span>
-
+          <div id="aiTerminalOutput" class="min-h-[140px] max-h-[220px] overflow-y-auto p-4 rounded-xl font-mono text-xs sm:text-sm bg-[#f5f5f4] dark:bg-[#07070a] border border-black/5 dark:border-white/5 text-gray-800 dark:text-gray-200 leading-relaxed mb-4">
+            <span class="text-brand-600 dark:text-brand-400 font-bold">$ GazNano:</span>
+            <span id="typedAIResponse" class="typing-cursor">This is a quick preview with sample replies. Try a preset above, then open GazChat Nano for real answers.</span>
           </div>
 
-          <!-- Input -->
-
-          <form
-            id="aiInteractiveForm"
-            class="relative flex items-center gap-2"
-          >
-
+          <form id="aiInteractiveForm" class="relative flex items-center gap-2">
             <div class="relative flex-1">
-
-              <span
-                class="absolute left-3.5 top-1/2 -translate-y-1/2 font-mono text-xs text-brand-500 select-none"
-              >
-                &gt;
-              </span>
-
-              <input
-                id="interactiveInput"
-                type="text"
-                placeholder="Ask GazChat anything or try a prompt..."
-                class="w-full pl-8 pr-4 py-3 rounded-xl bg-black/[0.03] dark:bg-white/[0.04] border border-black/10 dark:border-white/10 focus:border-brand-500 focus:outline-none text-xs sm:text-sm font-sans transition-colors placeholder:text-gray-400"
-              >
-
+              <span class="absolute left-3.5 top-1/2 -translate-y-1/2 font-mono text-xs text-brand-500 select-none">&gt;</span>
+              <input id="interactiveInput" type="text" placeholder="Ask GazChat anything or try a prompt..." class="w-full pl-8 pr-4 py-3 rounded-xl bg-black/[0.03] dark:bg-white/[0.04] border border-black/10 dark:border-white/10 focus:border-brand-500 focus:outline-none text-xs sm:text-sm font-sans transition-colors placeholder:text-gray-400">
             </div>
-
-            <button
-              type="submit"
-              class="px-5 py-3 rounded-xl bg-brand-500 hover:bg-brand-400 text-black font-semibold text-xs sm:text-sm transition-all active:scale-95 flex items-center gap-1.5 shadow-md shadow-brand-500/20"
-            >
-
-              <span>
-                Execute
-              </span>
-
-              <svg
-                class="w-3.5 h-3.5"
-                fill="none"
-                viewBox="0 0 24 24"
-              >
-
-                <path
-                  stroke="currentColor"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2.5"
-                  d="M13 7l5 5m0 0l-5 5m5-5H6"
-                />
-
+            <button type="submit" class="px-5 py-3 rounded-xl bg-brand-500 hover:bg-brand-400 text-black font-semibold text-xs sm:text-sm transition-all active:scale-95 flex items-center gap-1.5 shadow-md shadow-brand-500/20">
+              <span>Execute</span>
+              <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 7l5 5m0 0l-5 5m5-5H6" />
               </svg>
-
             </button>
-
           </form>
 
           <p class="mt-3 text-xs text-gray-500 dark:text-gray-400">
@@ -1002,1709 +396,534 @@
           </p>
 
         </div>
-
       </div>
-
     </div>
-
   </main>
 
-  <!-- =========================================
-       FEATURES
-       ========================================= -->
-
-  <section
-    id="features"
-    class="relative z-10 max-w-7xl mx-auto px-5 sm:px-8 py-20 border-t border-black/[0.06] dark:border-white/[0.06]"
-  >
-
+  <!-- FEATURES -->
+  <section id="features" class="relative z-10 max-w-7xl mx-auto px-5 sm:px-8 py-20 border-t border-black/[0.06] dark:border-white/[0.06]">
     <div class="max-w-2xl mx-auto text-center mb-16">
-
-      <div
-        class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-500/10 text-brand-600 dark:text-brand-400 text-xs font-semibold mb-3"
-      >
-        CORE ECOSYSTEM
-      </div>
-
-      <h2
-        class="text-3xl sm:text-5xl font-extrabold tracking-tight"
-      >
-        Simple. Powerful. Fluid.
-      </h2>
-
-      <p
-        class="mt-4 text-gray-600 dark:text-gray-400 text-base sm:text-lg"
-      >
-        Everything you need to create, experiment, and build with artificial intelligence without bloat.
-      </p>
-
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-500/10 text-brand-600 dark:text-brand-400 text-xs font-semibold mb-3">CORE ECOSYSTEM</div>
+      <h2 class="text-3xl sm:text-5xl font-extrabold tracking-tight">Simple. Powerful. Fluid.</h2>
+      <p class="mt-4 text-gray-600 dark:text-gray-400 text-base sm:text-lg">Everything you need to create, experiment, and build with artificial intelligence without bloat.</p>
     </div>
 
-    <!-- Cards -->
-
-    <div
-      class="grid grid-cols-1 md:grid-cols-2 gap-6"
-    >
-
+    <!-- Cards Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
       <!-- GazChat -->
-
-      <div
-        class="spotlight-card tilt-card p-8 rounded-2xl flex flex-col justify-between group"
-      >
-
+      <div class="spotlight-card tilt-card p-8 rounded-2xl flex flex-col justify-between group">
         <div>
-
-          <div
-            class="w-12 h-12 rounded-xl bg-amber-500/10 dark:bg-amber-400/10 text-brand-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform"
-          >
-
-            <svg
-              class="w-6 h-6"
-              fill="none"
-              viewBox="0 0 24 24"
-            >
-
-              <path
-                stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M13 10V3L4 14h7v7l9-11h-7z"
-              />
-
+          <div class="w-12 h-12 rounded-xl bg-amber-500/10 dark:bg-amber-400/10 text-brand-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
             </svg>
-
           </div>
-
-          <h3
-            class="text-xl sm:text-2xl font-bold mb-3 tracking-tight group-hover:text-brand-500 transition-colors"
-          >
-            GazChat Nano
-          </h3>
-
-          <p
-            class="text-gray-600 dark:text-gray-400 text-sm sm:text-base leading-relaxed mb-6"
-          >
-            A lightweight AI chat that starts instantly. Ask questions, brainstorm ideas and get help with writing and code.
-          </p>
-
+          <h3 class="text-xl sm:text-2xl font-bold mb-3 tracking-tight group-hover:text-brand-500 transition-colors">GazChat Nano</h3>
+          <p class="text-gray-600 dark:text-gray-400 text-sm sm:text-base leading-relaxed mb-6">A lightweight AI chat that starts instantly. Ask questions, brainstorm ideas and get help with writing and code.</p>
         </div>
-
-        <div
-          class="pt-4 border-t border-black/[0.05] dark:border-white/[0.05] flex items-center justify-between"
-        >
-
-          <a
-            href="https://jdug83.github.io/ai/"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="card-link inline-flex items-center gap-1.5 text-sm font-semibold text-brand-600 dark:text-brand-400 group-hover:gap-2.5 transition-all"
-          >
-            Open GazChat
-            <span>→</span>
+        <div class="pt-4 border-t border-black/[0.05] dark:border-white/[0.05] flex items-center justify-between">
+          <a href="https://jdug83.github.io/ai/" target="_blank" rel="noopener noreferrer" class="card-link inline-flex items-center gap-1.5 text-sm font-semibold text-brand-600 dark:text-brand-400 group-hover:gap-2.5 transition-all">
+            Open GazChat <span>→</span>
           </a>
-
-          <span
-            class="text-xs font-mono text-gray-400"
-          >
-            No sign-up
-          </span>
-
+          <span class="text-xs font-mono text-gray-400">No sign-up</span>
         </div>
-
       </div>
 
       <!-- Models -->
-
-      <div
-        class="spotlight-card tilt-card p-8 rounded-2xl flex flex-col justify-between group"
-      >
-
+      <div class="spotlight-card tilt-card p-8 rounded-2xl flex flex-col justify-between group">
         <div>
-
-          <div
-            class="w-12 h-12 rounded-xl bg-blue-500/10 text-blue-500 dark:text-blue-400 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform"
-          >
-
-            <svg
-              class="w-6 h-6"
-              fill="none"
-              viewBox="0 0 24 24"
-            >
-
-              <path
-                stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
-              />
-
+          <div class="w-12 h-12 rounded-xl bg-blue-500/10 text-blue-500 dark:text-blue-400 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
             </svg>
-
           </div>
-
-          <h3
-            class="text-xl sm:text-2xl font-bold mb-3 tracking-tight group-hover:text-brand-500 transition-colors"
-          >
-            AI Models
-          </h3>
-
-          <p
-            class="text-gray-600 dark:text-gray-400 text-sm sm:text-base leading-relaxed mb-6"
-          >
-            See the models behind GazChat, what each one is good at, and compare them side by side.
-          </p>
-
+          <h3 class="text-xl sm:text-2xl font-bold mb-3 tracking-tight group-hover:text-brand-500 transition-colors">AI Models</h3>
+          <p class="text-gray-600 dark:text-gray-400 text-sm sm:text-base leading-relaxed mb-6">See the models behind GazChat, what each one is good at, and compare them side by side.</p>
         </div>
-
-        <div
-          class="pt-4 border-t border-black/[0.05] dark:border-white/[0.05] flex items-center justify-between"
-        >
-
-          <a
-            href="Models.html"
-            class="card-link inline-flex items-center gap-1.5 text-sm font-semibold text-brand-600 dark:text-brand-400 group-hover:gap-2.5 transition-all"
-          >
-            Explore Models
-            <span>→</span>
+        <div class="pt-4 border-t border-black/[0.05] dark:border-white/[0.05] flex items-center justify-between">
+          <a href="Models.html" class="card-link inline-flex items-center gap-1.5 text-sm font-semibold text-brand-600 dark:text-brand-400 group-hover:gap-2.5 transition-all">
+            Explore Models <span>→</span>
           </a>
-
-          <span
-            class="text-xs font-mono text-gray-400"
-          >
-            Compare &amp; choose
-          </span>
-
+          <span class="text-xs font-mono text-gray-400">Compare &amp; choose</span>
         </div>
-
       </div>
 
       <!-- Speed -->
-
-      <div
-        class="spotlight-card p-8 rounded-2xl flex flex-col justify-between group"
-      >
-
+      <div class="spotlight-card p-8 rounded-2xl flex flex-col justify-between group">
         <div>
-
-          <div
-            class="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform"
-          >
-
-            <svg
-              class="w-6 h-6"
-              fill="none"
-              viewBox="0 0 24 24"
-            >
-
-              <path
-                stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 00-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
-              />
-
+          <div class="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 00-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
             </svg>
-
           </div>
-
-          <h3
-            class="text-xl sm:text-2xl font-bold mb-3 tracking-tight group-hover:text-brand-500 transition-colors"
-          >
-            Built for Speed
-          </h3>
-
-          <p
-            class="text-gray-600 dark:text-gray-400 text-sm sm:text-base leading-relaxed mb-6"
-          >
-            No sign-up, no trackers and nothing to install. Open any GazStudios tool and start straight away.
-          </p>
-
+          <h3 class="text-xl sm:text-2xl font-bold mb-3 tracking-tight group-hover:text-brand-500 transition-colors">Built for Speed</h3>
+          <p class="text-gray-600 dark:text-gray-400 text-sm sm:text-base leading-relaxed mb-6">No sign-up, no trackers and nothing to install. Open any GazStudios tool and start straight away.</p>
         </div>
-
-        <div
-          class="pt-4 border-t border-black/[0.05] dark:border-white/[0.05] flex items-center justify-between"
-        >
-
-          <span
-            class="text-xs font-mono text-emerald-600 dark:text-emerald-400 font-medium"
-          >
-            No accounts needed
-          </span>
-
-          <span
-            class="text-xs font-mono text-gray-400"
-          >
-            Privacy-friendly
-          </span>
-
+        <div class="pt-4 border-t border-black/[0.05] dark:border-white/[0.05] flex items-center justify-between">
+          <span class="text-xs font-mono text-emerald-600 dark:text-emerald-400 font-medium">No accounts needed</span>
+          <span class="text-xs font-mono text-gray-400">Privacy-friendly</span>
         </div>
-
       </div>
 
       <!-- GazCode -->
-
-      <div
-        class="spotlight-card tilt-card p-8 rounded-2xl flex flex-col justify-between group"
-      >
-
+      <div class="spotlight-card tilt-card p-8 rounded-2xl flex flex-col justify-between group">
         <div>
-
-          <div
-            class="w-12 h-12 rounded-xl bg-purple-500/10 text-purple-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform"
-          >
-
-            <svg
-              class="w-6 h-6"
-              fill="none"
-              viewBox="0 0 24 24"
-            >
-
-              <path
-                stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-              />
-
+          <div class="w-12 h-12 rounded-xl bg-purple-500/10 text-purple-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
             </svg>
-
           </div>
-
-          <h3
-            class="text-xl sm:text-2xl font-bold mb-3 tracking-tight group-hover:text-brand-500 transition-colors"
-          >
-            GazCode Editor 26
-          </h3>
-
-          <p
-            class="text-gray-600 dark:text-gray-400 text-sm sm:text-base leading-relaxed mb-6"
-          >
-            A browser code editor with live preview, syntax highlighting and AI help for writing and fixing code.
-          </p>
-
+          <h3 class="text-xl sm:text-2xl font-bold mb-3 tracking-tight group-hover:text-brand-500 transition-colors">GazCode Editor 26</h3>
+          <p class="text-gray-600 dark:text-gray-400 text-sm sm:text-base leading-relaxed mb-6">A browser code editor with live preview, syntax highlighting and AI help for writing and fixing code.</p>
         </div>
-
-        <div
-          class="pt-4 border-t border-black/[0.05] dark:border-white/[0.05] flex items-center justify-between"
-        >
-
-          <a
-            href="https://jdug83.github.io/GazCode/"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="card-link inline-flex items-center gap-1.5 text-sm font-semibold text-brand-600 dark:text-brand-400 group-hover:gap-2.5 transition-all"
-          >
-            Launch IDE
-            <span>→</span>
+        <div class="pt-4 border-t border-black/[0.05] dark:border-white/[0.05] flex items-center justify-between">
+          <a href="https://jdug83.github.io/GazCode/" target="_blank" rel="noopener noreferrer" class="card-link inline-flex items-center gap-1.5 text-sm font-semibold text-brand-600 dark:text-brand-400 group-hover:gap-2.5 transition-all">
+            Launch IDE <span>→</span>
           </a>
-
-          <span
-            class="text-xs font-mono text-gray-400"
-          >
-            Desktop & Web
-          </span>
-
+          <span class="text-xs font-mono text-gray-400">Desktop &amp; Web</span>
         </div>
-
       </div>
-
     </div>
-
   </section>
 
-  <!-- =========================================
-       FOOTER
-       ========================================= -->
-
-  <footer
-    class="relative z-10 border-t border-black/[0.06] dark:border-white/[0.06] py-12 px-5 sm:px-8 bg-black/[0.02] dark:bg-white/[0.02]"
-  >
-
-    <div
-      class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6"
-    >
-
+  <!-- FOOTER -->
+  <footer class="relative z-10 border-t border-black/[0.06] dark:border-white/[0.06] py-12 px-5 sm:px-8 bg-black/[0.02] dark:bg-white/[0.02]">
+    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6">
       <div class="flex items-center gap-3">
-
-        <div
-          class="w-6 h-6 rounded-md bg-brand-500/20 text-brand-500 flex items-center justify-center font-bold text-xs"
-        >
-          G
-        </div>
-
-        <span class="text-xs sm:text-sm text-gray-500">
-          © <span id="year">2026</span> GazStudios. Crafting lightweight AI for all.
-        </span>
-
+        <div class="w-6 h-6 rounded-md bg-brand-500/20 text-brand-500 flex items-center justify-center font-bold text-xs">G</div>
+        <span class="text-xs sm:text-sm text-gray-500">© <span id="year">2026</span> GazStudios. Crafting lightweight AI for all.</span>
       </div>
 
-      <div
-        class="flex items-center gap-6 text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400"
-      >
-
-        <a
-          href="Leaks.html"
-          class="hover:text-brand-500 transition-colors flex items-center gap-1.5"
-        >
-
-          <span
-            class="w-1.5 h-1.5 rounded-full bg-brand-500"
-          ></span>
-
-          <span>
-            Upcoming Roadmap & Leaks
-          </span>
-
+      <div class="flex items-center gap-6 text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400">
+        <a href="Team.html" class="hover:text-brand-500 transition-colors">The Team</a>
+        <a href="Leaks.html" class="hover:text-brand-500 transition-colors flex items-center gap-1.5">
+          <span class="w-1.5 h-1.5 rounded-full bg-brand-500"></span>
+          <span>Upcoming Roadmap &amp; Leaks</span>
         </a>
-
-        <a
-          href="https://jdug83.github.io/GazInvaders1/"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="hover:text-brand-500 transition-colors"
-        >
-          Gaz Invaders
-        </a>
-
+        <a href="https://jdug83.github.io/GazInvaders1/" target="_blank" rel="noopener noreferrer" class="hover:text-brand-500 transition-colors">Gaz Invaders</a>
       </div>
-
     </div>
-
   </footer>
 
-  <!-- =========================================
-       MOBILE BOTTOM NAVIGATION
-       MOBILE ONLY
-
-       Order:
-       Home | GazChat | 🎄 GazChristmas | GazCode | More
-       (Gaz Invaders lives in the "More" menu)
-       ========================================= -->
-
-  <nav
-    class="mobile-bottom-nav fixed bottom-0 left-0 right-0 z-[60] h-[72px] px-2 pb-[env(safe-area-inset-bottom)] bg-white/90 dark:bg-[#0d0d12]/90 backdrop-blur-2xl border-t border-black/[0.08] dark:border-white/[0.10] shadow-[0_-10px_35px_rgba(0,0,0,0.12)]"
-    aria-label="Mobile app navigation"
-  >
-
-    <div
-      class="w-full max-w-md mx-auto h-full grid grid-cols-5 items-center"
-    >
-
+  <!-- MOBILE BOTTOM NAVIGATION -->
+  <nav class="mobile-bottom-nav fixed bottom-0 left-0 right-0 z-[60] h-[72px] px-2 pb-[env(safe-area-inset-bottom)] bg-white/90 dark:bg-[#0d0d12]/90 backdrop-blur-2xl border-t border-black/[0.08] dark:border-white/[0.10] shadow-[0_-10px_35px_rgba(0,0,0,0.12)]" aria-label="Mobile app navigation">
+    <div class="w-full max-w-md mx-auto h-full grid grid-cols-5 items-center">
       <!-- HOME -->
-
-      <a
-        href="#"
-        class="mobile-nav-item flex flex-col items-center justify-center gap-1 h-full text-brand-500"
-      >
-
-        <div
-          class="w-9 h-9 rounded-xl bg-brand-500/15 flex items-center justify-center"
-        >
-
-          <svg
-            class="w-5 h-5"
-            fill="none"
-            viewBox="0 0 24 24"
-          >
-
-            <path
-              stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M3 10.5L12 3l9 7.5M5.5 9v10.5h13V9M9.5 19.5v-6h5v6"
-            />
-
+      <a href="#" class="mobile-nav-item flex flex-col items-center justify-center gap-1 h-full text-brand-500">
+        <div class="w-9 h-9 rounded-xl bg-brand-500/15 flex items-center justify-center">
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10.5L12 3l9 7.5M5.5 9v10.5h13V9M9.5 19.5v-6h5v6" />
           </svg>
-
         </div>
-
-        <span class="text-[10px] font-semibold">
-          Home
-        </span>
-
+        <span class="text-[10px] font-semibold">Home</span>
       </a>
 
       <!-- GAZCHAT -->
-
-      <a
-        href="https://jdug83.github.io/ai/"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="mobile-nav-item flex flex-col items-center justify-center gap-1 h-full text-gray-500 dark:text-gray-400 hover:text-brand-500"
-      >
-
-        <div
-          class="w-9 h-9 rounded-xl flex items-center justify-center"
-        >
-
-          <svg
-            class="w-5 h-5"
-            fill="none"
-            viewBox="0 0 24 24"
-            aria-hidden="true"
-          >
-
-            <path
-              stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"
-            />
-
+      <a href="https://jdug83.github.io/ai/" target="_blank" rel="noopener noreferrer" class="mobile-nav-item flex flex-col items-center justify-center gap-1 h-full text-gray-500 dark:text-gray-400 hover:text-brand-500">
+        <div class="w-9 h-9 rounded-xl flex items-center justify-center">
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z" />
           </svg>
-
         </div>
-
-        <span class="text-[10px] font-semibold">
-          GazChat
-        </span>
-
+        <span class="text-[10px] font-semibold">GazChat</span>
       </a>
 
-      <!-- =====================================
-           GAZCHRISTMAS — EXACT CENTER
-           ===================================== -->
-
-      <a
-        href="Gazchristmas.html"
-        class="mobile-nav-item mobile-christmas-item flex flex-col items-center justify-center gap-1 h-full text-gray-500 dark:text-gray-400 hover:text-brand-500"
-      >
-
-        <div
-          class="w-9 h-9 rounded-xl flex items-center justify-center text-lg"
-        >
-          🎄
-        </div>
-
-        <span
-          class="text-[10px] font-semibold whitespace-nowrap"
-        >
-          Christmas
-        </span>
-
+      <!-- GAZCHRISTMAS -->
+      <a href="Gazchristmas.html" class="mobile-nav-item mobile-christmas-item flex flex-col items-center justify-center gap-1 h-full text-gray-500 dark:text-gray-400 hover:text-brand-500">
+        <div class="w-9 h-9 rounded-xl flex items-center justify-center text-lg">🎄</div>
+        <span class="text-[10px] font-semibold whitespace-nowrap">Christmas</span>
       </a>
 
       <!-- GAZCODE -->
-
-      <a
-        href="https://jdug83.github.io/GazCode/"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="mobile-nav-item flex flex-col items-center justify-center gap-1 h-full text-gray-500 dark:text-gray-400 hover:text-brand-500"
-      >
-
-        <div
-          class="w-9 h-9 rounded-xl flex items-center justify-center"
-        >
-
-          <svg
-            class="w-5 h-5"
-            fill="none"
-            viewBox="0 0 24 24"
-          >
-
-            <path
-              stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-            />
-
+      <a href="https://jdug83.github.io/GazCode/" target="_blank" rel="noopener noreferrer" class="mobile-nav-item flex flex-col items-center justify-center gap-1 h-full text-gray-500 dark:text-gray-400 hover:text-brand-500">
+        <div class="w-9 h-9 rounded-xl flex items-center justify-center">
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
           </svg>
-
         </div>
-
-        <span class="text-[10px] font-semibold">
-          GazCode
-        </span>
-
+        <span class="text-[10px] font-semibold">GazCode</span>
       </a>
 
       <!-- MORE -->
-
-      <button
-        id="mobileMoreAppsBtn"
-        type="button"
-        class="mobile-nav-item flex flex-col items-center justify-center gap-1 h-full text-gray-500 dark:text-gray-400 hover:text-brand-500"
-      >
-
-        <div
-          class="w-9 h-9 rounded-xl flex items-center justify-center"
-        >
-
-          <svg
-            class="w-5 h-5"
-            fill="none"
-            viewBox="0 0 24 24"
-          >
-
-            <circle
-              cx="5"
-              cy="12"
-              r="1.5"
-              fill="currentColor"
-            />
-
-            <circle
-              cx="12"
-              cy="12"
-              r="1.5"
-              fill="currentColor"
-            />
-
-            <circle
-              cx="19"
-              cy="12"
-              r="1.5"
-              fill="currentColor"
-            />
-
+      <button id="mobileMoreAppsBtn" type="button" class="mobile-nav-item flex flex-col items-center justify-center gap-1 h-full text-gray-500 dark:text-gray-400 hover:text-brand-500">
+        <div class="w-9 h-9 rounded-xl flex items-center justify-center">
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24">
+            <circle cx="5" cy="12" r="1.5" fill="currentColor" />
+            <circle cx="12" cy="12" r="1.5" fill="currentColor" />
+            <circle cx="19" cy="12" r="1.5" fill="currentColor" />
           </svg>
-
         </div>
-
-        <span class="text-[10px] font-semibold">
-          More
-        </span>
-
+        <span class="text-[10px] font-semibold">More</span>
       </button>
-
     </div>
-
   </nav>
 
-  <!-- =========================================
-       MORE APPS MODAL
-       ========================================= -->
-
-  <div
-    id="moreAppsModal"
-    role="dialog"
-    aria-modal="true"
-    aria-labelledby="moreAppsTitle"
-    aria-hidden="true"
-    class="fixed inset-0 z-[70] flex items-center justify-center p-4 sm:p-6 bg-black/60 backdrop-blur-md opacity-0 pointer-events-none transition-all duration-300"
-  >
-
-    <div
-      class="modal-content relative w-full max-w-2xl rounded-3xl glass-panel bg-white/95 dark:bg-[#121217]/95 p-6 sm:p-8 shadow-2xl border border-black/10 dark:border-white/10 transform scale-95 transition-all duration-300"
-    >
-
+  <!-- MORE APPS MODAL -->
+  <div id="moreAppsModal" role="dialog" aria-modal="true" aria-labelledby="moreAppsTitle" aria-hidden="true" class="fixed inset-0 z-[70] flex items-center justify-center p-4 sm:p-6 bg-black/60 backdrop-blur-md opacity-0 pointer-events-none transition-all duration-300">
+    <div class="modal-content relative w-full max-w-2xl rounded-3xl glass-panel bg-white/95 dark:bg-[#121217]/95 p-6 sm:p-8 shadow-2xl border border-black/10 dark:border-white/10 transform scale-95 transition-all duration-300">
+      
       <!-- Close -->
-
-      <button
-        id="closeAppsModalBtn"
-        type="button"
-        aria-label="Close"
-        class="absolute top-5 right-5 p-2 rounded-full text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/10 transition-colors"
-      >
-
-        <svg
-          class="w-5 h-5"
-          fill="none"
-          viewBox="0 0 24 24"
-        >
-
-          <path
-            stroke="currentColor"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M6 18L18 6M6 6l12 12"
-          />
-
+      <button id="closeAppsModalBtn" type="button" aria-label="Close" class="absolute top-5 right-5 p-2 rounded-full text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/10 transition-colors">
+        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
         </svg>
-
       </button>
 
       <div class="mb-6">
-
-        <div
-          class="inline-block px-3 py-1 rounded-full bg-brand-500/10 text-brand-600 dark:text-brand-400 text-xs font-semibold mb-2"
-        >
-          ECOSYSTEM DIRECTORY
-        </div>
-
-        <h2
-          id="moreAppsTitle"
-          class="text-2xl sm:text-3xl font-bold tracking-tight"
-        >
-          GazStudios Applications
-        </h2>
-
-        <p
-          class="text-sm text-gray-500 dark:text-gray-400 mt-1"
-        >
-          Explore specialized standalone tools, arcade games, and experimental previews.
-        </p>
-
+        <div class="inline-block px-3 py-1 rounded-full bg-brand-500/10 text-brand-600 dark:text-brand-400 text-xs font-semibold mb-2">ECOSYSTEM DIRECTORY</div>
+        <h2 id="moreAppsTitle" class="text-2xl sm:text-3xl font-bold tracking-tight">GazStudios Applications</h2>
+        <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Explore specialized standalone tools, arcade games, and experimental previews.</p>
       </div>
 
       <!-- App Grid -->
-
-      <div
-        class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 mb-6 max-h-[50vh] overflow-y-auto pr-1"
-      >
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 mb-6 max-h-[50vh] overflow-y-auto pr-1">
+        
+        <!-- The Team -->
+        <a href="Team.html" class="p-4 rounded-2xl bg-black/[0.02] dark:bg-white/[0.03] hover:bg-brand-500/10 border border-black/[0.06] dark:border-white/[0.06] hover:border-brand-500/30 transition-all group flex items-start gap-3.5">
+          <div class="w-10 h-10 rounded-xl bg-blue-500/15 text-blue-500 flex items-center justify-center text-lg font-bold shrink-0">👥</div>
+          <div>
+            <h4 class="font-bold text-sm group-hover:text-brand-500 transition-colors flex items-center gap-1.5">
+              The Team
+              <span class="text-[10px] font-mono px-1 py-0.2 rounded bg-blue-500/15 text-blue-500">People</span>
+            </h4>
+            <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Meet the creators and developers behind GazStudios.</p>
+          </div>
+        </a>
 
         <!-- Gaz Invaders -->
-
-        <a
-          href="https://jdug83.github.io/GazInvaders1/"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="p-4 rounded-2xl bg-black/[0.02] dark:bg-white/[0.03] hover:bg-brand-500/10 border border-black/[0.06] dark:border-white/[0.06] hover:border-brand-500/30 transition-all group flex items-start gap-3.5"
-        >
-
-          <div
-            class="w-10 h-10 rounded-xl bg-rose-500/15 text-rose-500 flex items-center justify-center text-lg font-bold shrink-0"
-          >
-            👾
-          </div>
-
+        <a href="https://jdug83.github.io/GazInvaders1/" target="_blank" rel="noopener noreferrer" class="p-4 rounded-2xl bg-black/[0.02] dark:bg-white/[0.03] hover:bg-brand-500/10 border border-black/[0.06] dark:border-white/[0.06] hover:border-brand-500/30 transition-all group flex items-start gap-3.5">
+          <div class="w-10 h-10 rounded-xl bg-rose-500/15 text-rose-500 flex items-center justify-center text-lg font-bold shrink-0">👾</div>
           <div>
-
-            <h4
-              class="font-bold text-sm group-hover:text-brand-500 transition-colors flex items-center gap-1.5"
-            >
+            <h4 class="font-bold text-sm group-hover:text-brand-500 transition-colors flex items-center gap-1.5">
               Gaz Invaders
-
-              <span
-                class="text-[10px] font-mono px-1 py-0.2 rounded bg-rose-500/15 text-rose-500"
-              >
-                Playable
-              </span>
-
+              <span class="text-[10px] font-mono px-1 py-0.2 rounded bg-rose-500/15 text-rose-500">Playable</span>
             </h4>
-
-            <p
-              class="text-xs text-gray-500 dark:text-gray-400 mt-0.5"
-            >
-              Classic retro arcade shooter reimagined with neon vectors and boss rounds.
-            </p>
-
+            <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Classic retro arcade shooter reimagined with neon vectors and boss rounds.</p>
           </div>
-
         </a>
 
         <!-- GazCode -->
-
-        <a
-          href="https://jdug83.github.io/GazCode/"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="p-4 rounded-2xl bg-black/[0.02] dark:bg-white/[0.03] hover:bg-brand-500/10 border border-black/[0.06] dark:border-white/[0.06] hover:border-brand-500/30 transition-all group flex items-start gap-3.5"
-        >
-
-          <div
-            class="w-10 h-10 rounded-xl bg-purple-500/15 text-purple-500 flex items-center justify-center text-lg font-bold shrink-0"
-          >
-            💻
-          </div>
-
+        <a href="https://jdug83.github.io/GazCode/" target="_blank" rel="noopener noreferrer" class="p-4 rounded-2xl bg-black/[0.02] dark:bg-white/[0.03] hover:bg-brand-500/10 border border-black/[0.06] dark:border-white/[0.06] hover:border-brand-500/30 transition-all group flex items-start gap-3.5">
+          <div class="w-10 h-10 rounded-xl bg-purple-500/15 text-purple-500 flex items-center justify-center text-lg font-bold shrink-0">💻</div>
           <div>
-
-            <h4
-              class="font-bold text-sm group-hover:text-brand-500 transition-colors flex items-center gap-1.5"
-            >
+            <h4 class="font-bold text-sm group-hover:text-brand-500 transition-colors flex items-center gap-1.5">
               GazCode Studio
-
-              <span
-                class="text-[10px] font-mono px-1 py-0.2 rounded bg-purple-500/15 text-purple-500"
-              >
-                IDE
-              </span>
-
+              <span class="text-[10px] font-mono px-1 py-0.2 rounded bg-purple-500/15 text-purple-500">IDE</span>
             </h4>
-
-            <p
-              class="text-xs text-gray-500 dark:text-gray-400 mt-0.5"
-            >
-              Live reactive web editor with real-time compilation and AI code assist.
-            </p>
-
+            <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Live reactive web editor with real-time compilation and AI code assist.</p>
           </div>
-
         </a>
 
         <!-- GazChristmas -->
-
-        <a
-          href="Gazchristmas.html"
-          class="p-4 rounded-2xl bg-black/[0.02] dark:bg-white/[0.03] hover:bg-brand-500/10 border border-black/[0.06] dark:border-white/[0.06] hover:border-brand-500/30 transition-all group flex items-start gap-3.5"
-        >
-
-          <div
-            class="w-10 h-10 rounded-xl bg-emerald-500/15 text-emerald-500 flex items-center justify-center text-lg font-bold shrink-0"
-          >
-            🎄
-          </div>
-
+        <a href="Gazchristmas.html" class="p-4 rounded-2xl bg-black/[0.02] dark:bg-white/[0.03] hover:bg-brand-500/10 border border-black/[0.06] dark:border-white/[0.06] hover:border-brand-500/30 transition-all group flex items-start gap-3.5">
+          <div class="w-10 h-10 rounded-xl bg-emerald-500/15 text-emerald-500 flex items-center justify-center text-lg font-bold shrink-0">🎄</div>
           <div>
-
-            <h4
-              class="font-bold text-sm group-hover:text-brand-500 transition-colors flex items-center gap-1.5"
-            >
+            <h4 class="font-bold text-sm group-hover:text-brand-500 transition-colors flex items-center gap-1.5">
               GazChristmas
-
-              <span
-                class="text-[10px] font-mono px-1 py-0.2 rounded bg-emerald-500/15 text-emerald-500"
-              >
-                Seasonal
-              </span>
-
+              <span class="text-[10px] font-mono px-1 py-0.2 rounded bg-emerald-500/15 text-emerald-500">Seasonal</span>
             </h4>
-
-            <p
-              class="text-xs text-gray-500 dark:text-gray-400 mt-0.5"
-            >
-              Festive holiday experience, seasonal easter eggs, and custom themes.
-            </p>
-
+            <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Festive holiday experience, seasonal easter eggs, and custom themes.</p>
           </div>
-
         </a>
 
         <!-- GazChat -->
-
-        <a
-          href="https://jdug83.github.io/ai/"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="p-4 rounded-2xl bg-black/[0.02] dark:bg-white/[0.03] hover:bg-brand-500/10 border border-black/[0.06] dark:border-white/[0.06] hover:border-brand-500/30 transition-all group flex items-start gap-3.5"
-        >
-
-          <div
-            class="w-10 h-10 rounded-xl bg-brand-500/15 text-brand-500 flex items-center justify-center text-lg font-bold shrink-0"
-          >
-            ✦
-          </div>
-
+        <a href="https://jdug83.github.io/ai/" target="_blank" rel="noopener noreferrer" class="p-4 rounded-2xl bg-black/[0.02] dark:bg-white/[0.03] hover:bg-brand-500/10 border border-black/[0.06] dark:border-white/[0.06] hover:border-brand-500/30 transition-all group flex items-start gap-3.5">
+          <div class="w-10 h-10 rounded-xl bg-brand-500/15 text-brand-500 flex items-center justify-center text-lg font-bold shrink-0">✦</div>
           <div>
-
-            <h4
-              class="font-bold text-sm group-hover:text-brand-500 transition-colors flex items-center gap-1.5"
-            >
+            <h4 class="font-bold text-sm group-hover:text-brand-500 transition-colors flex items-center gap-1.5">
               GazChat Web
-
-              <span
-                class="text-[10px] font-mono px-1 py-0.2 rounded bg-brand-500/15 text-brand-500"
-              >
-                AI
-              </span>
-
+              <span class="text-[10px] font-mono px-1 py-0.2 rounded bg-brand-500/15 text-brand-500">AI</span>
             </h4>
-
-            <p
-              class="text-xs text-gray-500 dark:text-gray-400 mt-0.5"
-            >
-              High-velocity generative dialogue engine with immediate prompt turnaround.
-            </p>
-
+            <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">High-velocity generative dialogue engine with immediate prompt turnaround.</p>
           </div>
-
         </a>
 
         <!-- Models -->
-
-        <a
-          href="Models.html"
-          class="p-4 rounded-2xl bg-black/[0.02] dark:bg-white/[0.03] hover:bg-brand-500/10 border border-black/[0.06] dark:border-white/[0.06] hover:border-brand-500/30 transition-all group flex items-start gap-3.5"
-        >
-
-          <div
-            class="w-10 h-10 rounded-xl bg-blue-500/15 text-blue-500 flex items-center justify-center text-lg font-bold shrink-0"
-          >
-            ◈
-          </div>
-
+        <a href="Models.html" class="p-4 rounded-2xl bg-black/[0.02] dark:bg-white/[0.03] hover:bg-brand-500/10 border border-black/[0.06] dark:border-white/[0.06] hover:border-brand-500/30 transition-all group flex items-start gap-3.5">
+          <div class="w-10 h-10 rounded-xl bg-blue-500/15 text-blue-500 flex items-center justify-center text-lg font-bold shrink-0">◈</div>
           <div>
-
-            <h4
-              class="font-bold text-sm group-hover:text-brand-500 transition-colors flex items-center gap-1.5"
-            >
+            <h4 class="font-bold text-sm group-hover:text-brand-500 transition-colors flex items-center gap-1.5">
               AI Models
-
-              <span
-                class="text-[10px] font-mono px-1 py-0.2 rounded bg-blue-500/15 text-blue-500"
-              >
-                Compare
-              </span>
-
+              <span class="text-[10px] font-mono px-1 py-0.2 rounded bg-blue-500/15 text-blue-500">Compare</span>
             </h4>
-
-            <p
-              class="text-xs text-gray-500 dark:text-gray-400 mt-0.5"
-            >
-              See the models behind GazChat and compare them side by side.
-            </p>
-
+            <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">See the models behind GazChat and compare them side by side.</p>
           </div>
-
         </a>
 
         <!-- Roadmap -->
-
-        <a
-          href="Leaks.html"
-          class="p-4 rounded-2xl bg-black/[0.02] dark:bg-white/[0.03] hover:bg-brand-500/10 border border-black/[0.06] dark:border-white/[0.06] hover:border-brand-500/30 transition-all group flex items-start gap-3.5"
-        >
-
-          <div
-            class="w-10 h-10 rounded-xl bg-amber-500/15 text-amber-500 flex items-center justify-center text-lg font-bold shrink-0"
-          >
-            ➜
-          </div>
-
+        <a href="Leaks.html" class="p-4 rounded-2xl bg-black/[0.02] dark:bg-white/[0.03] hover:bg-brand-500/10 border border-black/[0.06] dark:border-white/[0.06] hover:border-brand-500/30 transition-all group flex items-start gap-3.5">
+          <div class="w-10 h-10 rounded-xl bg-amber-500/15 text-amber-500 flex items-center justify-center text-lg font-bold shrink-0">➜</div>
           <div>
-
-            <h4
-              class="font-bold text-sm group-hover:text-brand-500 transition-colors flex items-center gap-1.5"
-            >
+            <h4 class="font-bold text-sm group-hover:text-brand-500 transition-colors flex items-center gap-1.5">
               Roadmap &amp; Leaks
-
-              <span
-                class="text-[10px] font-mono px-1 py-0.2 rounded bg-amber-500/15 text-amber-500"
-              >
-                Preview
-              </span>
-
+              <span class="text-[10px] font-mono px-1 py-0.2 rounded bg-amber-500/15 text-amber-500">Preview</span>
             </h4>
-
-            <p
-              class="text-xs text-gray-500 dark:text-gray-400 mt-0.5"
-            >
-              What's coming next to GazStudios.
-            </p>
-
+            <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">What's coming next to GazStudios.</p>
           </div>
-
         </a>
 
       </div>
 
       <!-- Modal Footer -->
-
-      <div
-        class="flex justify-end pt-3 border-t border-black/[0.06] dark:border-white/[0.06]"
-      >
-
-        <button
-          id="closeAppsBtnSecondary"
-          type="button"
-          class="px-5 py-2 rounded-xl text-xs font-semibold bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/15 transition-colors"
-        >
+      <div class="flex justify-end pt-3 border-t border-black/[0.06] dark:border-white/[0.06]">
+        <button id="closeAppsBtnSecondary" type="button" class="px-5 py-2 rounded-xl text-xs font-semibold bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/15 transition-colors">
           Close Overview
         </button>
-
       </div>
 
     </div>
-
   </div>
 
-  <!-- =========================================
-       JAVASCRIPT
-       ========================================= -->
-
+  <!-- MAIN SCRIPT -->
   <script>
     (function () {
+      /* THEME MANAGEMENT */
+      const themeToggleBtn = document.getElementById('themeToggleBtn');
+      const htmlEl = document.documentElement;
 
-      /* =========================================
-         THEME MANAGEMENT
-         ========================================= */
-
-      const themeToggleBtn =
-        document.getElementById('themeToggleBtn');
-
-      const htmlEl =
-        document.documentElement;
-
-      // The theme was already applied in <head>; this just handles the toggle.
-      // Storage is wrapped in try/catch: if the browser blocks it, the page still works.
       if (themeToggleBtn) {
-
-        themeToggleBtn.addEventListener(
-          'click',
-          () => {
-
-            const isDark =
-              htmlEl.classList.toggle('dark');
-
-            try {
-              localStorage.setItem('gaz_theme', isDark ? 'dark' : 'light');
-            } catch (e) {}
-
-          }
-        );
-
+        themeToggleBtn.addEventListener('click', () => {
+          const isDark = htmlEl.classList.toggle('dark');
+          try { localStorage.setItem('gaz_theme', isDark ? 'dark' : 'light'); } catch (e) {}
+        });
       }
 
-      /* Footer year stays current */
+      /* Year */
       const yearEl = document.getElementById('year');
       if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-      /* =========================================
-         SCROLL PROGRESS
-         ========================================= */
+      /* SCROLL PROGRESS */
+      const progressBar = document.getElementById('progressBar');
+      window.addEventListener('scroll', () => {
+        const winScroll = document.documentElement.scrollTop;
+        const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const scrolled = height > 0 ? winScroll / height : 0;
+        progressBar.style.transform = `scaleX(${scrolled})`;
+      }, { passive: true });
 
-      const progressBar =
-        document.getElementById('progressBar');
-
-      window.addEventListener(
-        'scroll',
-        () => {
-
-          const winScroll =
-            document.documentElement.scrollTop;
-
-          const height =
-            document.documentElement.scrollHeight -
-            document.documentElement.clientHeight;
-
-          const scrolled =
-            height > 0
-              ? winScroll / height
-              : 0;
-
-          progressBar.style.transform =
-            `scaleX(${scrolled})`;
-
-        },
-        { passive: true }
-      );
-
-      /* =========================================
-         BACKGROUND PARTICLES
-         ========================================= */
-
-      const canvas =
-        document.getElementById('ambientCanvas');
-
-      const ctx =
-        canvas.getContext('2d');
-
+      /* BACKGROUND PARTICLES */
+      const canvas = document.getElementById('ambientCanvas');
+      const ctx = canvas.getContext('2d');
       let particles = [];
-
-      let width = 0;
-      let height = 0;
+      let width = 0, height = 0;
 
       function resizeCanvas() {
-
-        width =
-          canvas.width =
-          window.innerWidth;
-
-        height =
-          canvas.height =
-          window.innerHeight;
-
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
       }
-
-      window.addEventListener(
-        'resize',
-        resizeCanvas
-      );
-
+      window.addEventListener('resize', resizeCanvas);
       resizeCanvas();
 
       class Particle {
-
-        constructor() {
-          this.reset();
-        }
-
+        constructor() { this.reset(); }
         reset() {
-
-          this.x =
-            Math.random() * width;
-
-          this.y =
-            Math.random() * height;
-
-          this.size =
-            Math.random() * 2 + 0.5;
-
-          this.vx =
-            (Math.random() - 0.5) * 0.4;
-
-          this.vy =
-            (Math.random() - 0.5) * 0.4;
-
-          this.alpha =
-            Math.random() * 0.5 + 0.1;
-
+          this.x = Math.random() * width;
+          this.y = Math.random() * height;
+          this.size = Math.random() * 2 + 0.5;
+          this.vx = (Math.random() - 0.5) * 0.4;
+          this.vy = (Math.random() - 0.5) * 0.4;
+          this.alpha = Math.random() * 0.5 + 0.1;
         }
-
         update() {
-
           this.x += this.vx;
           this.y += this.vy;
-
-          if (
-            this.x < 0 ||
-            this.x > width ||
-            this.y < 0 ||
-            this.y > height
-          ) {
-
-            this.reset();
-
-          }
-
+          if (this.x < 0 || this.x > width || this.y < 0 || this.y > height) this.reset();
         }
-
         draw() {
-
           ctx.beginPath();
-
-          ctx.arc(
-            this.x,
-            this.y,
-            this.size,
-            0,
-            Math.PI * 2
-          );
-
-          ctx.fillStyle =
-            htmlEl.classList.contains('dark')
-              ? `rgba(229, 169, 60, ${this.alpha})`
-              : `rgba(180, 120, 20, ${this.alpha * 0.6})`;
-
+          ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+          ctx.fillStyle = htmlEl.classList.contains('dark')
+            ? `rgba(229, 169, 60, ${this.alpha})`
+            : `rgba(180, 120, 20, ${this.alpha * 0.6})`;
           ctx.fill();
-
         }
-
       }
 
-      for (let i = 0; i < 45; i++) {
-        particles.push(new Particle());
-      }
+      for (let i = 0; i < 45; i++) particles.push(new Particle());
 
-      const reduceMotion =
-        window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       function animateParticles() {
-
-        // Stop drawing when the tab is hidden or the user prefers less motion (saves battery)
         if (document.hidden || reduceMotion) {
           setTimeout(() => requestAnimationFrame(animateParticles), 500);
           return;
         }
-
-        ctx.clearRect(
-          0,
-          0,
-          width,
-          height
-        );
-
-        particles.forEach(p => {
-
-          p.update();
-          p.draw();
-
-        });
-
-        requestAnimationFrame(
-          animateParticles
-        );
-
+        ctx.clearRect(0, 0, width, height);
+        particles.forEach(p => { p.update(); p.draw(); });
+        requestAnimationFrame(animateParticles);
       }
-
       animateParticles();
 
-      /* =========================================
-         MOUSE PARALLAX
-         ========================================= */
+      /* MOUSE PARALLAX */
+      const orb1 = document.getElementById('orb1');
+      const orb2 = document.getElementById('orb2');
+      const orb3 = document.getElementById('orb3');
+      window.addEventListener('mousemove', (e) => {
+        const nx = (e.clientX / window.innerWidth) - 0.5;
+        const ny = (e.clientY / window.innerHeight) - 0.5;
+        if (orb1) orb1.style.transform = `translate(${nx * 40}px, ${ny * 40}px)`;
+        if (orb2) orb2.style.transform = `translate(${-nx * 50}px, ${-ny * 50}px)`;
+        if (orb3) orb3.style.transform = `translate(${nx * 30}px, ${-ny * 30}px)`;
+      }, { passive: true });
 
-      const orb1 =
-        document.getElementById('orb1');
-
-      const orb2 =
-        document.getElementById('orb2');
-
-      const orb3 =
-        document.getElementById('orb3');
-
-      window.addEventListener(
-        'mousemove',
-        (e) => {
-
-          const nx =
-            (e.clientX / window.innerWidth) - 0.5;
-
-          const ny =
-            (e.clientY / window.innerHeight) - 0.5;
-
-          if (orb1) {
-
-            orb1.style.transform =
-              `translate(${nx * 40}px, ${ny * 40}px)`;
-
-          }
-
-          if (orb2) {
-
-            orb2.style.transform =
-              `translate(${-nx * 50}px, ${-ny * 50}px)`;
-
-          }
-
-          if (orb3) {
-
-            orb3.style.transform =
-              `translate(${nx * 30}px, ${-ny * 30}px)`;
-
-          }
-
-        },
-        { passive: true }
-      );
-
-      /* =========================================
-         REVEAL ON SCROLL
-         ========================================= */
-
-      const revealItems =
-        document.querySelectorAll('.reveal-item');
-
-      // Old browsers without IntersectionObserver: just show everything
+      /* REVEAL ON SCROLL */
+      const revealItems = document.querySelectorAll('.reveal-item');
       if (!('IntersectionObserver' in window)) {
         revealItems.forEach(item => item.classList.add('visible'));
       }
-
       const revealObserver = !('IntersectionObserver' in window) ? null :
-        new IntersectionObserver(
-          (entries) => {
-
-            entries.forEach(entry => {
-
-              if (entry.isIntersecting) {
-
-                entry.target.classList.add(
-                  'visible'
-                );
-
-                revealObserver.unobserve(
-                  entry.target
-                );
-
-              }
-
-            });
-
-          },
-          {
-            threshold: 0.1
-          }
-        );
-
-      revealItems.forEach(
-        (item, index) => {
-
-          // Small stagger, capped so items further down don't wait seconds to appear
-          item.style.transitionDelay =
-            `${Math.min(index, 4) * 80}ms`;
-
-          if (revealObserver) revealObserver.observe(item);
-
-        }
-      );
-
-      /* =========================================
-         3D TILT CARDS
-         ========================================= */
-
-      const cards =
-        document.querySelectorAll(
-          '.spotlight-card'
-        );
-
-      cards.forEach(card => {
-
-        card.addEventListener(
-          'mousemove',
-          (e) => {
-
-            const rect =
-              card.getBoundingClientRect();
-
-            const x =
-              e.clientX - rect.left;
-
-            const y =
-              e.clientY - rect.top;
-
-            const px =
-              x / rect.width;
-
-            const py =
-              y / rect.height;
-
-            card.style.setProperty(
-              '--gx',
-              `${px * 100}%`
-            );
-
-            card.style.setProperty(
-              '--gy',
-              `${py * 100}%`
-            );
-
-            if (
-              card.classList.contains(
-                'tilt-card'
-              )
-            ) {
-
-              const rotX =
-                -(py - 0.5) * 10;
-
-              const rotY =
-                (px - 0.5) * 10;
-
-              card.style.transform =
-                `perspective(1000px) rotateX(${rotX}deg) rotateY(${rotY}deg) translateY(-4px)`;
-
+        new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('visible');
+              revealObserver.unobserve(entry.target);
             }
+          });
+        }, { threshold: 0.1 });
 
-          }
-        );
-
-        card.addEventListener(
-          'mouseleave',
-          () => {
-
-            if (
-              card.classList.contains(
-                'tilt-card'
-              )
-            ) {
-
-              card.style.transform = '';
-
-            }
-
-          }
-        );
-
+      revealItems.forEach((item, index) => {
+        item.style.transitionDelay = `${Math.min(index, 4) * 80}ms`;
+        if (revealObserver) revealObserver.observe(item);
       });
 
-      /* =========================================
-         AI PLAYGROUND
-         ========================================= */
+      /* 3D TILT CARDS */
+      const cards = document.querySelectorAll('.spotlight-card');
+      cards.forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+          const rect = card.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+          const px = x / rect.width;
+          const py = y / rect.height;
+          card.style.setProperty('--gx', `${px * 100}%`);
+          card.style.setProperty('--gy', `${py * 100}%`);
+          if (card.classList.contains('tilt-card')) {
+            const rotX = -(py - 0.5) * 10;
+            const rotY = (px - 0.5) * 10;
+            card.style.transform = `perspective(1000px) rotateX(${rotX}deg) rotateY(${rotY}deg) translateY(-4px)`;
+          }
+        });
+        card.addEventListener('mouseleave', () => {
+          if (card.classList.contains('tilt-card')) card.style.transform = '';
+        });
+      });
 
-      const typedOutput =
-        document.getElementById(
-          'typedAIResponse'
-        );
-
-      const interactiveForm =
-        document.getElementById(
-          'aiInteractiveForm'
-        );
-
-      const interactiveInput =
-        document.getElementById(
-          'interactiveInput'
-        );
-
-      const presetBtns =
-        document.querySelectorAll(
-          '.demo-preset-btn'
-        );
+      /* AI TERMINAL */
+      const typedOutput = document.getElementById('typedAIResponse');
+      const interactiveForm = document.getElementById('aiInteractiveForm');
+      const interactiveInput = document.getElementById('interactiveInput');
+      const presetBtns = document.querySelectorAll('.demo-preset-btn');
 
       const mockResponses = {
-
-        speed:
-          "GazChat Nano opens straight in your browser — no account, no login screen and no trackers — so you can start typing right away.",
-
-        js:
-          "const debounce = (fn, ms = 300) => { let t; return (...args) => { clearTimeout(t); t = setTimeout(() => fn(...args), ms); }; };",
-
-        pitch:
-          "In 2099 Neo-London, memories are currency and your synth-brain is hacked. Rewire reality before the memory debt collectors log your wipe command.",
-
-        default:
-          "This preview only knows a few sample answers. Open GazChat Nano (the gold button above) to ask anything for real."
-
+        speed: "GazChat Nano opens straight in your browser — no account, no login screen and no trackers — so you can start typing right away.",
+        js: "const debounce = (fn, ms = 300) => { let t; return (...args) => { clearTimeout(t); t = setTimeout(() => fn(...args), ms); }; };",
+        pitch: "In 2099 Neo-London, memories are currency and your synth-brain is hacked. Rewire reality before the memory debt collectors log your wipe command.",
+        default: "This preview only knows a few sample answers. Open GazChat Nano (the gold button above) to ask anything for real."
       };
 
       let typingInterval = null;
-
       function typeText(text) {
-
-        clearInterval(
-          typingInterval
-        );
-
+        clearInterval(typingInterval);
         typedOutput.textContent = '';
-
-        typedOutput.classList.add(
-          'typing-cursor'
-        );
-
+        typedOutput.classList.add('typing-cursor');
         let i = 0;
-
-        typingInterval =
-          setInterval(
-            () => {
-
-              if (i < text.length) {
-
-                typedOutput.textContent +=
-                  text.charAt(i);
-
-                i++;
-
-              } else {
-
-                clearInterval(
-                  typingInterval
-                );
-
-                typedOutput.classList.remove(
-                  'typing-cursor'
-                );
-
-              }
-
-            },
-            14
-          );
-
+        typingInterval = setInterval(() => {
+          if (i < text.length) {
+            typedOutput.textContent += text.charAt(i);
+            i++;
+          } else {
+            clearInterval(typingInterval);
+            typedOutput.classList.remove('typing-cursor');
+          }
+        }, 14);
       }
 
       presetBtns.forEach(btn => {
-
-        btn.addEventListener(
-          'click',
-          () => {
-
-            const prompt =
-              btn.getAttribute(
-                'data-prompt'
-              );
-
-            interactiveInput.value =
-              prompt;
-
-            triggerSimulatedAI(
-              prompt
-            );
-
-          }
-        );
-
+        btn.addEventListener('click', () => {
+          const prompt = btn.getAttribute('data-prompt');
+          interactiveInput.value = prompt;
+          triggerSimulatedAI(prompt);
+        });
       });
 
-      interactiveForm.addEventListener(
-        'submit',
-        (e) => {
-
-          e.preventDefault();
-
-          const prompt =
-            interactiveInput.value.trim();
-
-          if (!prompt) {
-            return;
-          }
-
-          triggerSimulatedAI(
-            prompt
-          );
-
-        }
-      );
+      interactiveForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const prompt = interactiveInput.value.trim();
+        if (!prompt) return;
+        triggerSimulatedAI(prompt);
+      });
 
       function triggerSimulatedAI(prompt) {
-
-        const lower =
-          prompt.toLowerCase();
-
-        let reply =
-          mockResponses.default;
-
-        if (
-          lower.includes('speed') ||
-          lower.includes('fast')
-        ) {
-
-          reply =
-            mockResponses.speed;
-
-        } else if (
-          lower.includes('javascript') ||
-          lower.includes('debounce') ||
-          lower.includes('code')
-        ) {
-
-          reply =
-            mockResponses.js;
-
-        } else if (
-          lower.includes('pitch') ||
-          lower.includes('creative') ||
-          lower.includes('game')
-        ) {
-
-          reply =
-            mockResponses.pitch;
-
-        }
-
+        const lower = prompt.toLowerCase();
+        let reply = mockResponses.default;
+        if (lower.includes('speed') || lower.includes('fast')) reply = mockResponses.speed;
+        else if (lower.includes('javascript') || lower.includes('debounce') || lower.includes('code')) reply = mockResponses.js;
+        else if (lower.includes('pitch') || lower.includes('creative') || lower.includes('game')) reply = mockResponses.pitch;
         typeText(reply);
-
       }
 
-      /* =========================================
-         MORE APPS MODAL
-         ========================================= */
-
-      const moreAppsModal =
-        document.getElementById(
-          'moreAppsModal'
-        );
-
-      const moreAppsBtn =
-        document.getElementById(
-          'moreAppsBtn'
-        );
-
-      const mobileMoreAppsBtn =
-        document.getElementById(
-          'mobileMoreAppsBtn'
-        );
-
+      /* MORE APPS MODAL */
+      const moreAppsModal = document.getElementById('moreAppsModal');
+      const moreAppsBtn = document.getElementById('moreAppsBtn');
+      const mobileMoreAppsBtn = document.getElementById('mobileMoreAppsBtn');
       let lastFocused = null;
 
       function openModal(modal) {
-
-        if (!modal) {
-          return;
-        }
-
-        modal.classList.remove(
-          'pointer-events-none'
-        );
-
-        modal.classList.add(
-          'opacity-100'
-        );
-
-        const content =
-          modal.querySelector(
-            '.modal-content'
-          );
-
-        if (content) {
-
-          content.classList.remove(
-            'scale-95'
-          );
-
-          content.classList.add(
-            'scale-100'
-          );
-
-        }
-
-        document.body.style.overflow =
-          'hidden';
-
+        if (!modal) return;
+        modal.classList.remove('pointer-events-none');
+        modal.classList.add('opacity-100');
+        const content = modal.querySelector('.modal-content');
+        if (content) { content.classList.remove('scale-95'); content.classList.add('scale-100'); }
+        document.body.style.overflow = 'hidden';
         modal.setAttribute('aria-hidden', 'false');
         lastFocused = document.activeElement;
         const closeBtn = document.getElementById('closeAppsModalBtn');
         if (closeBtn) setTimeout(() => closeBtn.focus(), 50);
-
       }
 
       function closeModal(modal) {
-
-        if (!modal) {
-          return;
-        }
-
-        modal.classList.add(
-          'pointer-events-none'
-        );
-
-        modal.classList.remove(
-          'opacity-100'
-        );
-
-        const content =
-          modal.querySelector(
-            '.modal-content'
-          );
-
-        if (content) {
-
-          content.classList.remove(
-            'scale-100'
-          );
-
-          content.classList.add(
-            'scale-95'
-          );
-
-        }
-
-        document.body.style.overflow =
-          '';
-
+        if (!modal) return;
+        modal.classList.add('pointer-events-none');
+        modal.classList.remove('opacity-100');
+        const content = modal.querySelector('.modal-content');
+        if (content) { content.classList.remove('scale-100'); content.classList.add('scale-95'); }
+        document.body.style.overflow = '';
         modal.setAttribute('aria-hidden', 'true');
         if (lastFocused && lastFocused.focus) lastFocused.focus();
-
       }
 
       function isModalOpen() {
         return moreAppsModal && !moreAppsModal.classList.contains('pointer-events-none');
       }
 
-      /* Desktop More Apps */
+      if (moreAppsBtn) moreAppsBtn.addEventListener('click', () => openModal(moreAppsModal));
+      if (mobileMoreAppsBtn) mobileMoreAppsBtn.addEventListener('click', () => openModal(moreAppsModal));
 
-      if (moreAppsBtn) {
+      const closeAppsModalBtn = document.getElementById('closeAppsModalBtn');
+      if (closeAppsModalBtn) closeAppsModalBtn.addEventListener('click', () => closeModal(moreAppsModal));
 
-        moreAppsBtn.addEventListener(
-          'click',
-          () => {
-
-            openModal(
-              moreAppsModal
-            );
-
-          }
-        );
-
-      }
-
-      /* Mobile More Apps */
-
-      if (mobileMoreAppsBtn) {
-
-        mobileMoreAppsBtn.addEventListener(
-          'click',
-          () => {
-
-            openModal(
-              moreAppsModal
-            );
-
-          }
-        );
-
-      }
-
-      /* Close buttons */
-
-      const closeAppsModalBtn =
-        document.getElementById(
-          'closeAppsModalBtn'
-        );
-
-      if (closeAppsModalBtn) {
-
-        closeAppsModalBtn.addEventListener(
-          'click',
-          () => {
-
-            closeModal(
-              moreAppsModal
-            );
-
-          }
-        );
-
-      }
-
-      const closeAppsBtnSecondary =
-        document.getElementById(
-          'closeAppsBtnSecondary'
-        );
-
-      if (closeAppsBtnSecondary) {
-
-        closeAppsBtnSecondary.addEventListener(
-          'click',
-          () => {
-
-            closeModal(
-              moreAppsModal
-            );
-
-          }
-        );
-
-      }
-
-      /* Backdrop close */
+      const closeAppsBtnSecondary = document.getElementById('closeAppsBtnSecondary');
+      if (closeAppsBtnSecondary) closeAppsBtnSecondary.addEventListener('click', () => closeModal(moreAppsModal));
 
       if (moreAppsModal) {
-
-        moreAppsModal.addEventListener(
-          'click',
-          (e) => {
-
-            if (
-              e.target ===
-              moreAppsModal
-            ) {
-
-              closeModal(
-                moreAppsModal
-              );
-
-            }
-
-          }
-        );
-
+        moreAppsModal.addEventListener('click', (e) => {
+          if (e.target === moreAppsModal) closeModal(moreAppsModal);
+        });
       }
 
-      /* ESC close */
-
-      document.addEventListener(
-        'keydown',
-        (e) => {
-
-          if (e.key === 'Escape' && isModalOpen()) {
-
-            closeModal(
-              moreAppsModal
-            );
-
-          }
-
-          // Keep Tab inside the pop-up while it's open
-          if (e.key === 'Tab' && isModalOpen()) {
-            const focusables = moreAppsModal.querySelectorAll('a[href], button:not([disabled])');
-            if (!focusables.length) return;
-            const first = focusables[0], last = focusables[focusables.length - 1];
-            if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
-            else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
-          }
-
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && isModalOpen()) closeModal(moreAppsModal);
+        if (e.key === 'Tab' && isModalOpen()) {
+          const focusables = moreAppsModal.querySelectorAll('a[href], button:not([disabled])');
+          if (!focusables.length) return;
+          const first = focusables[0], last = focusables[focusables.length - 1];
+          if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+          else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
         }
-      );
-
+      });
     })();
   </script>
 
-  <!-- =========================================
-       MOBILE IN-SITE APP VIEWER
-       Apps open inside the site on phones,
-       with the bottom dock always visible.
-       ========================================= -->
-
+  <!-- MOBILE IN-SITE APP VIEWER -->
   <style>
     .gz-viewer {
       position: fixed;
@@ -2772,7 +991,6 @@
     }
     @keyframes gzspin { to { transform: rotate(360deg); } }
 
-    /* Dock highlight follows the open app */
     .mobile-bottom-nav.gz-app-open a[href="#"] { color: #6b7280 !important; }
     .dark .mobile-bottom-nav.gz-app-open a[href="#"] { color: #9ca3af !important; }
     .mobile-bottom-nav.gz-app-open a[href="#"] > div { background: transparent !important; }
@@ -2811,14 +1029,14 @@
     (function () {
       'use strict';
 
-      // Which links open inside the site on phones
       var APPS = [
-        { key: 'chat',   name: 'GazChat Nano',    match: 'jdug83.github.io/ai/',          url: 'https://jdug83.github.io/ai/' },
-        { key: 'code',   name: 'GazCode 26',      match: 'jdug83.github.io/GazCode/',     url: 'https://jdug83.github.io/GazCode/' },
-        { key: 'game',   name: 'Gaz Invaders',    match: 'jdug83.github.io/GazInvaders1/', url: 'https://jdug83.github.io/GazInvaders1/' },
-        { key: 'xmas',   name: 'GazChristmas',    match: 'Gazchristmas.html',             url: 'Gazchristmas.html' },
-        { key: 'models', name: 'Models',          match: 'Models.html',                   url: 'Models.html' },
-        { key: 'leaks',  name: 'Roadmap & Leaks', match: 'Leaks.html',                    url: 'Leaks.html' }
+        { key: 'chat',   name: 'GazChat Nano',     match: 'jdug83.github.io/ai/',          url: 'https://jdug83.github.io/ai/' },
+        { key: 'code',   name: 'GazCode 26',       match: 'jdug83.github.io/GazCode/',     url: 'https://jdug83.github.io/GazCode/' },
+        { key: 'game',   name: 'Gaz Invaders',     match: 'jdug83.github.io/GazInvaders1/', url: 'https://jdug83.github.io/GazInvaders1/' },
+        { key: 'xmas',   name: 'GazChristmas',     match: 'Gazchristmas.html',             url: 'Gazchristmas.html' },
+        { key: 'models', name: 'Models',           match: 'Models.html',                   url: 'Models.html' },
+        { key: 'team',   name: 'The Team',         match: 'Team.html',                     url: 'Team.html' },
+        { key: 'leaks',  name: 'Roadmap & Leaks',  match: 'Leaks.html',                    url: 'Leaks.html' }
       ];
 
       var mobile  = window.matchMedia('(max-width: 767px)');
@@ -2892,13 +1110,11 @@
         if (frame.getAttribute('src')) loading.classList.add('hide');
       });
 
-      // Intercept app links on phones (capture phase, so it runs before anything else)
       document.addEventListener('click', function (e) {
         if (!mobile.matches || e.metaKey || e.ctrlKey || e.shiftKey) return;
         var a = e.target.closest('a');
         if (!a || a.id === 'gzExternal') return;
 
-        // Home in the dock closes the app
         if (a.getAttribute('href') === '#' && a.closest('.mobile-bottom-nav')) {
           if (viewer.classList.contains('open')) { e.preventDefault(); closeApp(); }
           return;
@@ -2918,18 +1134,15 @@
         frame.src = app.url;
       });
 
-      // Phone back button closes / switches apps
       window.addEventListener('popstate', function () {
         var m = location.hash.match(/^#app=(\w+)/);
         var app = m && byKey(m[1]);
         if (app && mobile.matches) openApp(app, false); else closeApp(false);
       });
 
-      // Deep link: yoursite/#app=chat opens straight into the app on phones
       var start = location.hash.match(/^#app=(\w+)/);
       if (start && byKey(start[1]) && mobile.matches) openApp(byKey(start[1]), false);
 
-      // Going wider than phone size closes the viewer
       var onChange = function (ev) { if (!ev.matches && viewer.classList.contains('open')) closeApp(); };
       if (mobile.addEventListener) mobile.addEventListener('change', onChange); else mobile.addListener(onChange);
     })();
