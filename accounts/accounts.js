@@ -1,133 +1,120 @@
-/* Real shared identity; Supabase verifies accounts and enforces database access. */
-(function(){
+(function () {
 'use strict';
-const script=document.currentScript, app=script.dataset.app||'studios';
-const config=window.GAZ_ACCOUNTS_CONFIG||{};
-let resolveReady;const ready=new Promise(r=>resolveReady=r);
-const A=window.GazAccounts={ready,app,user:null,store:null,client:null,storage:null};
-let client,box,state,status,timer,sessionUser=null,handledRecovery=false,booted=false, activation=null, authEpoch=0;
-const keys={studios:['gaz_theme'],gazcode:['gazcode.v1.projects','gazcode.v1.settings','gazcode.v1.session'],gazchat:['gz.chats.3.account','gz.prefs.3','gz.active.3'],gizmo:['gn2.prefs','gn2.chats','gn2.projects','gn2.openproj','gn2.usage2','gn2.feedback']};
-function rawGet(k){try{return localStorage.getItem(k);}catch{return null;}}
-function rawSet(k,v){try{localStorage.setItem(k,v);}catch{notice('This device cannot keep a pending copy. Keep this page open until cloud saving succeeds.');}}
-function name(){return A.user?.user_metadata?.display_name||A.user?.email||'GazStudios account';}
-function message(text){if(state)state.textContent=text;}
-function notice(text){if(status)status.textContent=text;}
-function el(tag,text){const n=document.createElement(tag);if(text!==undefined)n.textContent=text;return n;}
-function button(text,action){const b=el('button',text);b.type='button';b.onclick=action;return b;}
-function download(value,label){const u=URL.createObjectURL(new Blob([JSON.stringify(value,null,2)],{type:'application/json'}));const a=document.createElement('a');a.href=u;a.download=label;a.click();setTimeout(()=>URL.revokeObjectURL(u),1000);}
-function configured(){return /^https:\/\/[a-z0-9-]+\.supabase\.co\/?$/i.test(config.supabaseUrl||'')&&/^sb_publishable_/.test(config.publishableKey||'');}
-function fatal(text){message(text);box.hidden=false;}
-function authForm(mode='login'){
- const form=box.querySelector('form');form.replaceChildren();
- const title=el('h2',mode==='signup'?'Create your GazStudios account':mode==='reset'?'Reset your password':mode==='recovery'?'Set a new password':'Sign in to GazStudios');form.append(title,el('p','One account for Studios, GazCode, GazChat and Gizmo.'));
- let display,email,password;
- function input(label,type,autocomplete){const wrap=el('label',label),i=el('input');i.type=type;i.required=true;i.autocomplete=autocomplete;wrap.append(i);form.append(wrap);return i;}
- if(mode==='signup'){display=input('Your name','text','name');display.maxLength=80;}
- if(mode!=='recovery')email=input('Email','email','email');
- if(mode!=='reset'){password=input('Password','password',mode==='login'?'current-password':'new-password');password.minLength=mode==='login'?1:12;password.maxLength=128;}
- const submit=el('button',mode==='signup'?'Create account':mode==='reset'?'Send reset email':mode==='recovery'?'Save password':'Sign in');submit.type='submit';form.append(submit);
- const links=el('div');links.className='ga-links';
- if(mode==='login'){links.append(button('Create account',()=>authForm('signup')),button('Forgot password?',()=>authForm('reset')));}
- else if(mode!=='recovery')links.append(button('Back to sign in',()=>authForm('login')));
- form.append(links);
- form.onsubmit=async e=>{e.preventDefault();if(!client){message('Accounts are not configured yet.');return;}submit.disabled=true;message('Working…');
- try{
-  let result;
-  if(mode==='signup')result=await client.auth.signUp({email:email.value.trim(),password:password.value,options:{data:{display_name:display.value.trim()},emailRedirectTo:config.accountUrl}});
-  else if(mode==='reset')result=await client.auth.resetPasswordForEmail(email.value.trim(),{redirectTo:config.accountUrl});
-  else if(mode==='recovery'){result=await client.auth.updateUser({password:password.value});if(!result.error){handledRecovery=false;await activate(result.data.user);message('Password updated.');showAccount();}}
-  else result=await client.auth.signInWithPassword({email:email.value.trim(),password:password.value});
-  if(result?.error)throw result.error;
-  if(mode==='signup'&&!result.data.session)message('Check your email to confirm your account, then sign in.');
-  else if(mode==='reset')message('If this address can receive a reset email, a link will arrive shortly.');
- }catch(err){message(err.message||'Could not sign in.');}finally{submit.disabled=false;if(password)password.value='';}
- };
+const app = document.currentScript.dataset.app || 'studios';
+const config=window.GAZ_FIREBASE_CONFIG||{};
+const accountUrl=window.GAZ_ACCOUNT_URL||'https://jdug83.github.io/Studios/Account.html';
+const clientModule=new URL('firebase-client.mjs',document.currentScript.src).href;
+let backendClient;
+const keys = {studios:['gaz_theme'],gazcode:['gazcode.v1.projects','gazcode.v1.settings','gazcode.v1.session'],gazchat:['gz.chats.3.account','gz.prefs.3','gz.active.3'],gizmo:['gn2.prefs','gn2.chats','gn2.projects','gn2.openproj','gn2.usage2','gn2.feedback']}[app];
+let resolveReady, box, form, message, status, timer, booted = false, activeUser = null, activating;
+const A = window.GazAccounts = {ready:new Promise(r => {resolveReady=r;}),user:null,store:null};
+function el(tag, text) { const x=document.createElement(tag);if(text!==undefined)x.textContent=text;return x; }
+function button(label, fn) { const x=el('button',label);x.type='button';x.onclick=()=>Promise.resolve().then(fn).catch(e=>say(e.message));return x; }
+function say(text) {message.textContent=text;}
+function raw(key) {try{return localStorage.getItem(key);}catch{return null;}}
+function save(key,value) {try{localStorage.setItem(key,value);}catch{status.textContent='Device cache is full. Keep this page open until saved.';}}
+function cacheKey() {return 'gaz.firebase.v1:'+config.projectId+':'+activeUser+':'+app;}
+function canonical(key) {return app==='gazchat'&&key.startsWith('gz.chats.3.')?'gz.chats.3.account':key;}
+async function api(route,value){
+ if(!backendClient)throw Error('Firebase accounts are not configured yet.');
+ try{return await backendClient.api(route,value,activeUser);}
+ catch(e){if(e.status===401&&booted&&!['password'].includes(route)){A.store?.close();location.reload();}throw e;}
 }
-function showAccount(){
- if(!A.user){box.hidden=false;authForm();return;}
- box.hidden=false;const form=box.querySelector('form');form.replaceChildren(el('h2','Your GazStudios account'),el('p',A.user.email));
- const label=el('label','Display name'),input=el('input');input.value=A.user.user_metadata?.display_name||'';input.maxLength=80;label.append(input);form.append(label);
- const save=el('button','Save name');save.type='submit';form.append(save);form.onsubmit=async e=>{e.preventDefault();save.disabled=true;try{const {data,error}=await client.auth.updateUser({data:{display_name:input.value.trim()}});if(error)throw error;A.user=data.user;message('Name saved.');}catch(e){message(e.message);}save.disabled=false;};
- form.append(button('Save to cloud now',()=>A.flush().catch(e=>message(e.message))),button('Send password reset email',async()=>{const {error}=await client.auth.resetPasswordForEmail(A.user.email,{redirectTo:config.accountUrl});message(error?error.message:'Check your email for a password reset link.');}),button('Download account data',async()=>{try{await A.flush();const {data,error}=await client.from('gaz_app_data').select('app,payload,revision,updated_at');if(error)throw error;download({email:A.user.email,apps:data},'gazstudios-account.json');}catch(e){message(e.message);}}),button('Export pending copy',()=>download(A.store?.pendingCopy||A.store?.payload||{},app+'-pending.json')),button('Import this browser’s older data',importLegacy),button('Sign out',()=>A.signOut().catch(e=>message(e.message))),button('Close',()=>{if(booted&&!A.store?.conflict)box.hidden=true;}));
- if(A.store?.conflict)form.append(button('Reload cloud version',()=>{if(confirm('Export your pending copy first. Reloading will replace this device’s unsaved changes with the cloud version.')){try{localStorage.removeItem(cacheKey());}catch{}location.reload();}}));
- message(A.store?.conflict?'Another device changed the cloud data. Export your pending copy, then reload the cloud version.':'Signed in. Data belongs to this account.');
+
+function download(value, filename) {const u=URL.createObjectURL(new Blob([JSON.stringify(value,null,2)],{type:'application/json'}));const a=el('a');a.href=u;a.download=filename;a.click();setTimeout(()=>URL.revokeObjectURL(u),1000);}
+function field(label,type='text',autocomplete='off') {const wrap=el('label',label),input=el('input');input.type=type;input.required=true;input.autocomplete=autocomplete;wrap.append(input);form.append(wrap);return input;}
+function authForm(mode='login') {
+ box.hidden=false;form.replaceChildren();say('');
+ form.append(el('h2',mode==='signup'?'Create your GazStudios account':mode==='reset'?'Reset your password':'Sign in to GazStudios'),el('p','One account for Studios, GazCode, GazChat and Gizmo.'));
+ let display,password;
+ if(mode==='signup'){display=field('Display name','text','name');display.maxLength=80;}
+ const email=field('Email','email','email');email.autocapitalize='none';email.spellcheck=false;
+ if(mode!=='reset'){password=field('Password','password',mode==='login'?'current-password':'new-password');password.minLength=mode==='login'?1:12;password.maxLength=128;}
+ if(mode==='signup')form.append(el('p','We will send a verification email before you can open your saved data.'));
+ const submit=el('button',mode==='signup'?'Create account':mode==='reset'?'Send reset email':'Sign in');submit.type='submit';form.append(submit);
+ if(mode==='login')form.append(button('Create account',()=>authForm('signup')),button('Forgot password?',()=>authForm('reset')));
+ else form.append(button('Back to sign in',()=>authForm()));
+ form.onsubmit=async e=>{e.preventDefault();submit.disabled=true;say('Working…');try{
+  const result=await api(mode==='signup'?'signup':mode==='reset'?'reset':'login',{email:email.value.trim(),...(password?{password:password.value}:{}),...(display?{displayName:display.value.trim()}:{})});
+  if(mode==='reset'){say('If this account can receive a reset email, a link will arrive shortly. Check spam too.');return;}
+  await activate(result.user);
+  if(result.verificationError)say('Your account was created, but the verification email could not be sent: '+result.verificationError+'. Use Resend verification email below.');
+ }catch(err){say(err.message);}finally{submit.disabled=false;if(password)password.value='';}};
 }
-A.open=showAccount;
-function cacheKey(){return 'gaz.accounts.v1:'+sessionUser+':'+app;}
-function canonical(key){if(app==='gazchat'&&key.startsWith('gz.chats.3.'))return 'gz.chats.3.account';return key;}
-A.storage={
- getItem(key){key=canonical(key);if(!A.store)return null;if(keys[app].includes(key))return A.store.get(key);return rawGet(cacheKey()+':local:'+key);},
- setItem(key,value){key=canonical(key);if(!A.user||!A.store)throw Error('Sign in before saving.');if(!keys[app].includes(key)){rawSet(cacheKey()+':local:'+key,String(value));return;}A.store.set(key,value);notice('Saving to account…');clearTimeout(timer);timer=setTimeout(()=>A.flush().catch(()=>{}),650);},
- removeItem(key){key=canonical(key);if(!keys[app].includes(key)){try{localStorage.removeItem(cacheKey()+':local:'+key);}catch{}return;}A.store.set(key,null);notice('Saving to account…');clearTimeout(timer);timer=setTimeout(()=>A.flush().catch(()=>{}),650);}
-};
-A.flush=async()=>{if(!A.store)return;clearTimeout(timer);try{await A.store.flush();notice('Saved to account');}catch(e){notice(A.store.conflict?'Save conflict — open Account':'Not saved to cloud — pending on this device');if(A.store.conflict)showAccount();throw e;}};
-A.signOut=async()=>{
- if(!client)return;
- try{await A.flush();}catch(e){showAccount();message('Sign-out paused because cloud saving failed. Export your pending copy, then retry once the connection is restored.');throw e;}
- const {error}=await client.auth.signOut({scope:'local'});if(error)throw error;
-};
-async function importLegacy(){
- if(!A.store||A.store.conflict)return;
- if(!confirm('Only import data that belongs to you. This adds this browser’s older data only where your current account has no saved value. Existing account data is kept.'))return;
- try{
-  const entries=keys[app];let count=0;
-  const lists=new Set(['gazcode.v1.projects','gz.chats.3.account','gn2.chats','gn2.projects']);
-  for(const key of entries){
-   const legacy=key==='gz.chats.3.account'?'gz.chats.3.local':key,value=rawGet(legacy);if(value===null)continue;
-   const incoming=JSON.parse(value),current=A.store.get(key);
-   if(current===null){A.store.set(key,value);count++;continue;}
-   if(lists.has(key)&&Array.isArray(incoming)){
-    const existing=JSON.parse(current);if(!Array.isArray(existing))continue;
-    const ids=new Set(existing.map(x=>x.id));const extra=incoming.filter(x=>x&&x.id&&!ids.has(x.id));
-    if(extra.length){A.store.set(key,JSON.stringify(existing.concat(extra)));count+=extra.length;}
-   }
-  }
-  await A.flush();message(count?'Imported. Reload this page to see the imported data.':'No older data found, or the account already has data for those items.');
- }catch(e){message(e.message);}
+function showVerification(){
+ box.hidden=false;form.replaceChildren(el('h2','Verify your email'),el('p','Check '+A.user.email+' for your GazStudios verification email. Click its link, then return here. Check spam too.'));
+ form.append(button('I verified my email',async()=>{const result=await api('verify-status');await activate(result.user);if(!result.user.emailVerified)say('Your email is not verified yet. Follow the link in your email first.');}),button('Resend verification email',async()=>{await api('resend-verification',{});say('Verification email sent. Check your inbox and spam folder.');}),button('Sign out',()=>A.signOut()));
+ say('Email verification is required before saved data can load.');
 }
-async function activateOnce(user){
- const activationEpoch=authEpoch;
- if(sessionUser&&user.id!==sessionUser){A.store?.close();location.reload();return;}
- if(booted)return;sessionUser=user.id;A.user=user;
- let cache;try{cache=JSON.parse(rawGet(cacheKey())||'null');}catch{}
- const remote={read:async()=>{const {data,error}=await client.from('gaz_app_data').select('payload,revision').eq('app',app).eq('user_id',user.id).maybeSingle();if(error)throw error;return data;},write:async(payload,revision)=>{const {data,error}=await client.rpc('gaz_save_data',{p_app:app,p_payload:payload,p_revision:revision});if(error)throw error;return data;}};
- A.store=new GazAccountStore({remote,cache,saveCache:c=>rawSet(cacheKey(),JSON.stringify(c))});
- try{await A.store.init();}catch(e){A.store=null;message('Could not load account data: '+e.message+'. Check the database setup and connection, then reload.');return;}
- if(activationEpoch!==authEpoch){A.store?.close();return;}
+
+async function activateOnce(user) {
+ if(activeUser&&activeUser!==user.id){A.store?.close();location.reload();return;}
+ if(booted){A.user=user;return;}
+ activeUser=user.id;A.user=user;
+ if(!user.emailVerified){showVerification();return;}
+ let cache;try{cache=JSON.parse(raw(cacheKey())||'null');}catch{}
+ A.store=new GazAccountStore({cache,saveCache:c=>save(cacheKey(),JSON.stringify(c)),remote:{read:()=>api('data/'+app),write:async(payload,revision)=>(await api('data/'+app,{payload,revision})).revision}});
+ try{await A.store.init();}catch(e){A.store=null;throw e;}
  if(A.store.conflict){showAccount();return;}
- booted=true;box.hidden=true;notice('Signed in · '+name());resolveReady(A);
+ booted=true;box.hidden=true;status.textContent='Signed in · '+user.email;resolveReady(A);
  if(A.store.generation)A.flush().catch(()=>{});
 }
-async function activate(user){if(activation)return activation;activation=activateOnce(user);try{return await activation;}finally{activation=null;}}
-async function authEvent(event,session){
- if(event==='PASSWORD_RECOVERY'){handledRecovery=true;box.hidden=false;authForm('recovery');message('Enter a new password.');}
- if(event==='SIGNED_OUT'){
-  authEpoch++;
-  A.store?.close();A.user=null;box.hidden=false;authForm();notice('Signed out');if(booted)location.reload();return;
- }
- if(session?.user&&!handledRecovery){
-  try{const {data,error}=await client.auth.getUser();if(error)throw error;await activate(data.user);}catch(e){message('Session could not be verified: '+e.message);}
- }
+async function activate(user){if(activating)return activating;activating=activateOnce(user);try{return await activating;}finally{activating=null;}}
+A.storage={
+ getItem(key){key=canonical(key);return !A.store?null:keys.includes(key)?A.store.get(key):raw(cacheKey()+':device:'+key);},
+ setItem(key,value){if(!A.user||!A.store)throw Error('Sign in before saving.');key=canonical(key);if(!keys.includes(key)){save(cacheKey()+':device:'+key,String(value));return;}A.store.set(key,value);status.textContent='Saving to account…';clearTimeout(timer);timer=setTimeout(()=>A.flush().catch(()=>{}),650);},
+ removeItem(key){key=canonical(key);if(!keys.includes(key)){try{localStorage.removeItem(cacheKey()+':device:'+key);}catch{}return;}if(!A.store)throw Error('Sign in first.');A.store.set(key,null);clearTimeout(timer);timer=setTimeout(()=>A.flush().catch(()=>{}),650);}
+};
+A.flush=async()=>{if(!A.store)return;clearTimeout(timer);try{await A.store.flush();status.textContent='Saved to account';}catch(e){status.textContent=A.store.conflict?'Save conflict — open Account':'Cloud unavailable — changes pending on this device';if(A.store.conflict)showAccount();throw e;}};
+A.signOut=async()=>{await A.flush();await api('logout',{});A.store?.close();location.reload();};
+async function importData(){
+ const picker=el('input');picker.type='file';picker.accept='.json,application/json';picker.onchange=async()=>{try{
+  const file=picker.files[0];if(!file)return;if(file.size>22*1024*1024)throw Error('Import file is too large.');
+  const data=JSON.parse(await file.text());const incoming=data.apps?.find(x=>x.app===app)?.payload;
+  if(!incoming||typeof incoming!=='object'||Array.isArray(incoming))throw Error('Select an account export containing data for this app.');
+  if(!confirm('Import into your signed-in account? Existing items with the same key will be replaced. Export current data first.'))return;
+  for(const key of keys)if(Object.hasOwn(incoming,key)&&typeof incoming[key]==='string')A.store.set(key,incoming[key]);
+  await A.flush();location.reload();
+ }catch(e){say(e.message);}};picker.click();
 }
-async function init(){
- const style=el('style');style.textContent=`:root{--ga-bg:#fffbf0;--ga-overlay:#fffbf0f5;--ga-text:#17171c;--ga-muted:#55555f;--ga-border:#d6bb7a;--ga-button:#fce8ad}.dark{--ga-bg:#121217;--ga-overlay:#0a0a0ef5;--ga-text:#f5f5f6;--ga-muted:#aaaab4;--ga-border:#66532b;--ga-button:#59431e}
+function showAccount(){
+ if(!A.user){authForm();return;}if(!A.user.emailVerified){showVerification();return;}
+ box.hidden=false;form.replaceChildren(el('h2','Your GazStudios account'),el('p',A.user.email));
+ const display=field('Display name');display.value=A.user.user_metadata.display_name;display.maxLength=80;
+ const submit=el('button','Save name');submit.type='submit';form.append(submit);
+ form.onsubmit=async e=>{e.preventDefault();try{A.user=(await api('profile',{displayName:display.value})).user;say('Name saved.');}catch(e){say(e.message);}};
+ form.append(button('Save now',()=>A.flush()),button('Export account data',async()=>{await A.flush();download(await api('export'),'GazStudios-Account.json');}),button('Import account export',importData),button('Export pending changes',()=>download({apps:[{app,payload:A.store?.pendingCopy||A.store?.payload||{}}]},'GazStudios-Pending.json')),button('Change password',()=>passwordForm()),button('Sign out',()=>A.signOut()),button('Close',()=>{if(booted&&!A.store?.conflict)box.hidden=true;}));
+ if(A.store?.conflict){form.append(button('Reload cloud data',()=>{if(confirm('Export pending changes first. Reloading replaces unsaved changes on this device.')){localStorage.removeItem(cacheKey());location.reload();}}));say('Another device changed your data. Export pending changes before reloading.');}else say('Your data is saved to your GazStudios account.');
+}
+function passwordForm(){
+ form.replaceChildren(el('h2','Change password'));
+ const current=field('Current password','password','current-password');current.maxLength=128;
+ const next=field('New password','password','new-password');next.minLength=12;next.maxLength=128;
+ const submit=el('button','Save password');submit.type='submit';form.append(submit,button('Back',showAccount));say('');
+ form.onsubmit=async e=>{e.preventDefault();submit.disabled=true;try{await A.flush();await api('password',{currentPassword:current.value,password:next.value});showAccount();say('Password updated.');}catch(e){say(e.message);}finally{current.value='';next.value='';submit.disabled=false;}};
+}
 
-#ga-bar{position:fixed;right:14px;bottom:12px;z-index:2147483600;display:flex;align-items:center;gap:10px;padding:7px 10px;border:1px solid var(--ga-border);border-radius:9px;background:var(--ga-bg);color:var(--ga-text);font:12px/1.4 system-ui,sans-serif;box-shadow:0 2px 12px #00000020;max-width:calc(100vw - 28px)}#ga-bar button{border:0;border-radius:6px;background:var(--ga-button);color:var(--ga-text);padding:7px 12px;font:600 12px system-ui;cursor:pointer}#ga-status{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-#ga-gate{position:fixed;inset:0;z-index:2147483601;background:var(--ga-overlay);display:grid;place-items:center;padding:20px;overflow:auto;color:var(--ga-text);font:15px/1.6 system-ui,sans-serif}#ga-gate[hidden]{display:none!important}#ga-card{background:var(--ga-bg);border:1px solid var(--ga-border);border-radius:16px;padding:28px;width:min(100%,440px)}#ga-card *{box-sizing:border-box}#ga-card h2{font:600 26px/1.2 system-ui;margin:0 0 12px;letter-spacing:-.7px}#ga-card p{margin:0 0 16px;color:var(--ga-muted)}#ga-card label{display:block;margin:14px 0;font:500 13px system-ui}#ga-card input{display:block;width:100%;border:1px solid var(--ga-border);border-radius:8px;padding:12px;margin-top:6px;background:var(--ga-bg);color:var(--ga-text);font:15px system-ui}#ga-card button{background:var(--ga-button);color:var(--ga-text);border:1px solid var(--ga-border);padding:11px 14px;border-radius:8px;font:600 13px system-ui;cursor:pointer;margin:5px 5px 5px 0}#ga-card button:disabled{opacity:.6;cursor:wait}#ga-card :focus-visible{outline:2px solid #c58f1f;outline-offset:3px}#ga-message{font-size:13px;white-space:pre-wrap;overflow-wrap:anywhere;min-height:20px;margin-top:16px}.ga-links{display:flex;flex-wrap:wrap}@media(max-width:767px){#ga-bar{bottom:85px;font-size:11px}#ga-card{padding:22px}}
-`;document.head.append(style);
- box=el('div');box.id='ga-gate';box.setAttribute('role','dialog');box.setAttribute('aria-modal','true');box.setAttribute('aria-label','GazStudios account');const card=el('section');card.id='ga-card';card.append(el('form'));state=el('div');state.id='ga-message';state.setAttribute('role','status');card.append(state);box.append(card);document.body.append(box);
- box.addEventListener('keydown',e=>{if(e.key==='Escape'&&A.user&&!A.store?.conflict&&!handledRecovery)box.hidden=true;if(e.key==='Tab'){const a=[...box.querySelectorAll('input,button')].filter(x=>!x.disabled);if(!a.length)return;const first=a[0],last=a[a.length-1];if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}}});
- const bar=el('div');bar.id='ga-bar';status=el('span','Connecting accounts…');status.id='ga-status';bar.append(status,button('Account',showAccount));document.body.append(bar);
+A.open=showAccount;
+async function init(){
+ const style=el('style');style.textContent=`
+ :root{--ga-bg:#fffaf0;--ga-text:#22222a;--ga-muted:#5a5a66;--ga-border:#d8bd7f;--ga-button:#fce8ad;--ga-overlay:#fffaf0f5}.dark{--ga-bg:#121217;--ga-text:#f5f5f7;--ga-muted:#b8b8c0;--ga-border:#66532b;--ga-button:#59431e;--ga-overlay:#0a0a0ef5}
+ #ga-bar{position:fixed;bottom:12px;right:14px;z-index:2147483600;display:flex;align-items:center;gap:10px;padding:8px 12px;background:var(--ga-bg);color:var(--ga-text);border:1px solid var(--ga-border);border-radius:10px;font:12px system-ui;max-width:calc(100vw - 28px)}#ga-status{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}#ga-bar button,#ga-card button{background:var(--ga-button);color:var(--ga-text);border:1px solid var(--ga-border);border-radius:8px;padding:10px 13px;font:600 13px system-ui;cursor:pointer}#ga-gate{position:fixed;inset:0;z-index:2147483601;background:var(--ga-overlay);color:var(--ga-text);display:grid;place-items:center;overflow:auto;padding:20px;font:15px/1.6 system-ui}#ga-gate[hidden]{display:none!important}#ga-card{box-sizing:border-box;width:min(100%,460px);padding:28px;border:1px solid var(--ga-border);border-radius:18px;background:var(--ga-bg);max-height:calc(100dvh - 40px);overflow:auto}#ga-card *{box-sizing:border-box}#ga-card h2{font:600 25px/1.3 system-ui;margin:0 0 14px}#ga-card p{color:var(--ga-muted);margin:0 0 16px}#ga-card label{display:block;margin:14px 0;font:500 13px system-ui}#ga-card input{display:block;width:100%;padding:12px;margin-top:7px;border:1px solid var(--ga-border);border-radius:8px;background:var(--ga-bg);color:var(--ga-text);font:15px system-ui}#ga-card button{margin:5px 6px 5px 0}#ga-card button:disabled{opacity:.6;cursor:wait}#ga-message{white-space:pre-wrap;overflow-wrap:anywhere;margin-top:14px;font-size:13px}#ga-card :focus-visible{outline:2px solid #d6a94f;outline-offset:3px}@media(max-width:767px){#ga-bar{bottom:85px}#ga-card{padding:20px}}
+ `;document.head.append(style);
+ box=el('div');box.id='ga-gate';box.setAttribute('role','dialog');box.setAttribute('aria-modal','true');box.setAttribute('aria-label','GazStudios account');const card=el('section');card.id='ga-card';form=el('form');message=el('div');message.id='ga-message';message.setAttribute('role','status');card.append(form,message);box.append(card);document.body.append(box);
+ const bar=el('div');bar.id='ga-bar';status=el('span','Connecting Firebase accounts…');status.id='ga-status';bar.append(status,button('Account',showAccount));document.body.append(bar);
+ box.addEventListener('keydown',e=>{if(e.key==='Escape'&&booted&&!A.store?.conflict)box.hidden=true;if(e.key==='Tab'){const nodes=[...box.querySelectorAll('input,button')].filter(x=>!x.disabled),first=nodes[0],last=nodes.at(-1);if(e.shiftKey&&document.activeElement===first){e.preventDefault();last?.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first?.focus();}}});
  authForm();
- if(!configured()){box.querySelector('form').hidden=true;fatal('Accounts are not connected yet. The website owner must configure the Supabase project URL and public publishable key in accounts-config.js.');notice('Accounts setup required');return;}
- client=A.client=window.GazSupabase.createClient(config.supabaseUrl,config.publishableKey,{auth:{storageKey:'gazstudios.auth.v1',persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,flowType:'implicit'}});
- client.auth.onAuthStateChange((event,session)=>{setTimeout(()=>authEvent(event,session),0);});
- // SDK owns token refresh. Database permissions never rely on this page's user object.
- const {data,error}=await client.auth.getSession();if(error){message(error.message);return;}
- if(data.session)setTimeout(()=>authEvent('INITIAL_SESSION',data.session),0);else notice('Sign in to save across devices');
+ if(!config.apiKey||!config.authDomain||!config.projectId||!config.appId){
+  form.replaceChildren(el('h2','Firebase setup required'),el('p','The owner needs to add the Firebase Web app configuration to Studios/accounts/accounts-config.js.'));status.textContent='Firebase not configured';return;
+ }
+ try{
+  const {createBackend}=await import(clientModule);
+  backendClient=await createBackend(config,accountUrl,uid=>{if(activeUser&&uid!==activeUser){A.store?.close();location.reload();}});
+  try{await activate((await api('session')).user);}catch(e){if(e.status===401)status.textContent='Sign in to save across devices';else throw e;}
+ }catch(e){say('Could not connect Firebase accounts: '+e.message);status.textContent='Accounts unavailable';}
  window.addEventListener('online',()=>A.flush().catch(()=>{}));
- window.addEventListener('beforeunload',e=>{if(A.store&&(A.store.generation!==A.store.savedGeneration||A.store.conflict)){e.preventDefault();e.returnValue='';}});
- document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden'&&A.user)A.flush().catch(()=>{});});
+ window.addEventListener('beforeunload',e=>{if(A.store&&(A.store.conflict||A.store.generation!==A.store.savedGeneration)){e.preventDefault();e.returnValue='';}});
+ document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')A.flush().catch(()=>{});else if(booted)api('session').then(data=>{if(data.user.id!==activeUser){A.store.close();location.reload();}}).catch(()=>{});});
 }
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>init().catch(e=>message(e.message)),{once:true});else init().catch(e=>message(e.message));
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>init().catch(console.error),{once:true});else init().catch(console.error);
 })();
