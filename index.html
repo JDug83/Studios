@@ -51,6 +51,7 @@
 <a class="hover:text-brand-500 transition-colors flex items-center gap-1" href="Gazchristmas.html">
 <span>🎄</span> GazChristmas
         </a>
+<a class="hover:text-brand-500 transition-colors" href="https://jdug83.github.io/Build/" target="_blank" rel="noopener noreferrer">GazBuilder</a>
 <a class="hover:text-brand-500 transition-colors" href="Models.html">Models</a>
 <a class="hover:text-brand-500 transition-colors" href="Team.html">The Team</a>
 <a class="hover:text-brand-500 transition-colors" href="#features">Features</a>
@@ -241,8 +242,8 @@
 <span class="text-xs font-mono text-gray-400">Desktop &amp; Web</span>
 </div>
 </div>
-<!-- GazBuilder — coming soon, not available to launch -->
-<article class="spotlight-card p-8 rounded-2xl flex flex-col justify-between md:col-span-2" id="gazbuilder-coming-soon">
+<!-- GazBuilder -->
+<article class="spotlight-card p-8 rounded-2xl flex flex-col justify-between md:col-span-2" id="gazbuilder">
 <div class="flex flex-col sm:flex-row sm:items-start gap-5">
 <div aria-hidden="true" class="w-12 h-12 rounded-xl bg-cyan-500/10 text-cyan-600 flex items-center justify-center shrink-0">
 <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24">
@@ -252,14 +253,14 @@
 <div class="min-w-0 flex-1">
 <div class="flex flex-wrap items-center gap-3 mb-3">
 <h3 class="text-xl sm:text-2xl font-bold tracking-tight">GazBuilder</h3>
-<span class="px-3 py-1 rounded-full bg-brand-500/10 text-brand-700 border border-brand-500/20 text-xs font-semibold">Coming soon</span>
+<span class="px-3 py-1 rounded-full bg-brand-500/10 text-brand-700 border border-brand-500/20 text-xs font-semibold">Available now</span>
 </div>
 <p class="text-gray-600 text-sm sm:text-base leading-relaxed mb-6">Your ideas, built your way. A visual website builder for dragging and resizing elements, adding custom HTML, CSS and JavaScript, and exporting your page as HTML.</p>
 </div>
 </div>
 <div class="pt-4 border-t border-black/[0.05] flex flex-wrap items-center justify-between gap-3">
-<span class="text-sm text-gray-500">In development — not available yet.</span>
-<button class="px-4 py-2 rounded-full bg-black/[0.04] border border-black/10 text-gray-500 text-xs font-semibold cursor-not-allowed" disabled="" type="button">Coming soon</button>
+<span class="text-sm text-gray-500">Available to everyone — open in your browser.</span>
+<a class="card-link inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-brand-500/10 hover:bg-brand-500/20 border border-brand-500/20 text-brand-700 text-sm font-semibold transition-all" href="https://jdug83.github.io/Build/" target="_blank" rel="noopener noreferrer">Open GazBuilder <span aria-hidden="true">→</span></a>
 </div>
 </article>
 </div>
@@ -345,14 +346,14 @@
 </div>
 <!-- App Grid -->
 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 mb-6 max-h-[50vh] overflow-y-auto pr-1">
-<!-- GazBuilder — coming soon -->
-<div class="p-4 rounded-2xl bg-black/[0.02] border border-black/[0.06] flex items-start gap-3.5" id="gazbuilder-directory">
+<!-- GazBuilder -->
+<a class="p-4 rounded-2xl bg-black/[0.02] hover:bg-brand-500/10 border border-black/[0.06] hover:border-brand-500/30 transition-all group flex items-start gap-3.5" id="gazbuilder-directory" href="https://jdug83.github.io/Build/" target="_blank" rel="noopener noreferrer">
 <div aria-hidden="true" class="w-10 h-10 rounded-xl bg-cyan-500/15 text-cyan-600 flex items-center justify-center text-lg font-bold shrink-0">▧</div>
 <div class="min-w-0">
-<h4 class="font-bold text-sm flex flex-wrap items-center gap-1.5">GazBuilder <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-brand-500/15 text-brand-700">Coming soon</span></h4>
-<p class="text-xs text-gray-500 mt-0.5">Design websites visually and export HTML. In development — not available yet.</p>
+<h4 class="font-bold text-sm flex flex-wrap items-center gap-1.5">GazBuilder <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-brand-500/15 text-brand-700">Available now</span></h4>
+<p class="text-xs text-gray-500 mt-0.5">Design websites visually and export HTML. Available to everyone — open in your browser.</p>
 </div>
-</div>
+</a>
 <!-- The Team -->
 <a class="p-4 rounded-2xl bg-black/[0.02] hover:bg-brand-500/10 border border-black/[0.06] hover:border-brand-500/30 transition-all group flex items-start gap-3.5" href="Gizmo.html">
 <div class="w-10 h-10 rounded-xl bg-blue-500/15 text-blue-500 flex items-center justify-center text-lg font-bold shrink-0">👥</div>
@@ -657,6 +658,7 @@
       'use strict';
 
       var APPS = [
+        { key: 'builder', name: 'GazBuilder', match: 'jdug83.github.io/Build/', url: 'https://jdug83.github.io/Build/' },
         { key: 'gizmo', name: 'Gizmo', match: 'Gizmo.html', url: 'Gizmo.html' },
         { key: 'chat',   name: 'GazChat Nano',     match: 'jdug83.github.io/ai/',          url: 'Gizmo.html' },
         { key: 'code',   name: 'GazCode 26',       match: 'jdug83.github.io/Code/',     url: 'https://jdug83.github.io/Code/' },
